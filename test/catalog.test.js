@@ -88,6 +88,9 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal(created.status, 201);
   assert.equal((await (await fetch(`${base}/api/avatars/preset-ada`)).json()).name, 'Ada');
   assert.equal((await (await fetch(`${base}/api/avatars.json`)).json()).length, 1);
+  const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée'})});
+  assert.equal((await updated.json()).id, 'preset-ada');
   assert.equal((await fetch(`${base}/api/avatars/preset-ada`, {method:'DELETE'})).status, 200);
   assert.deepEqual(await (await fetch(`${base}/api/avatars`)).json(), []);
+  assert.equal(existsSync(join(root, 'images', 'photo.png')), false);
 });

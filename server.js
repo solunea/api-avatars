@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, voices} from './lib/catalog.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices} from './lib/catalog.js';
 import {generateBundle} from './lib/generation.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
@@ -40,6 +40,17 @@ function cleanAvatar(input, previous) {
     preset: true, createdAt: previous?.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString()
   };
 }
+function avatarMedia(avatar) {
+  return [avatar.photo, avatar.decor, avatar.preview, ...Object.values(avatar.tones || {})].filter(Boolean);
+}
+function removeUnusedMedia(previous, remaining) {
+  const used = new Set(remaining.flatMap(avatarMedia));
+  for (const path of new Set(avatarMedia(previous))) {
+    if (used.has(path)) continue;
+    const target = mediaPath(root, path);
+    if (target) rmSync(target, {force: true});
+  }
+}
 
 app.get('/api/voices', (_request, response) => response.json(voices.map(name => `gemini:${name}`)));
 app.get('/api/avatars', (_request, response) => response.json(readCatalog(root)));
@@ -63,18 +74,23 @@ app.put('/api/avatars/:id', (request, response) => {
     const avatars = readCatalog(root);
     const index = avatars.findIndex(item => item.id === request.params.id);
     if (index === -1) return response.status(404).json({error: 'Avatar introuvable'});
-    const avatar = cleanAvatar(request.body, avatars[index]);
+    const previous = avatars[index];
+    const avatar = cleanAvatar(request.body, previous);
     const errors = validateAvatar(avatar, root);
     if (errors.length) return response.status(400).json({error: errors.join(', ')});
     avatars[index] = avatar;
     saveCatalog(root, avatars);
+    removeUnusedMedia(previous, avatars);
     response.json(avatar);
   } catch (error) { mediaResponse(response, error); }
 });
 app.delete('/api/avatars/:id', (request, response) => {
   const avatars = readCatalog(root);
-  if (!avatars.some(item => item.id === request.params.id)) return response.status(404).json({error: 'Avatar introuvable'});
-  saveCatalog(root, avatars.filter(item => item.id !== request.params.id));
+  const deleted = avatars.find(item => item.id === request.params.id);
+  if (!deleted) return response.status(404).json({error: 'Avatar introuvable'});
+  const remaining = avatars.filter(item => item.id !== request.params.id);
+  saveCatalog(root, remaining);
+  removeUnusedMedia(deleted, remaining);
   response.json({ok: true});
 });
 app.post('/api/upload', upload.single('image'), (request, response) => {
