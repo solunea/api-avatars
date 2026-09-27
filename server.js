@@ -109,7 +109,7 @@ app.post('/api/push', async (_request, response) => {
     const remote = (await runGit('git', ['remote', 'get-url', 'origin'], options)).stdout.trim();
     if (!/github\.com[:/]solunea\/api-avatars(?:\.git)?$/i.test(remote)) throw new Error('Configurez origin vers solunea/api-avatars avant de publier');
     await runGit('git', ['add', 'data', 'api', 'images'], options);
-    const status = (await runGit('git', ['status', '--porcelain'], options)).stdout.trim();
+    const status = (await runGit('git', ['diff', '--cached', '--name-only'], options)).stdout.trim();
     if (!status) return response.json({message: 'Aucun changement à publier'});
     await runGit('git', ['commit', '-m', `Update avatars ${new Date().toISOString()}`], options);
     await runGit('git', ['push', 'origin', 'HEAD:main'], options);

@@ -51,10 +51,11 @@ test('validation bloque les médias absents, chemins dangereux et voix non parta
 test('génération IA prépare les trois tons et le détourage sans décor', async t => {
   const root = fixture(t);
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['An empathetic front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run);
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
+  assert.equal(calls.filter(call => call.model === 'google/gemini-3.1-pro').length, 3);
   assert.equal(calls[0].options.input.input_images.length, 1);
   assert.equal(result.tones.neutral, result.preview);
   assert.ok(result.tonePrompts.failure.includes('empathetic'));
@@ -65,9 +66,9 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
 test('génération avec décor transmet les deux références sans détourage', async t => {
   const root = fixture(t);
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['A front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 3);
+  assert.equal(calls.length, 6);
   assert.equal(calls[0].options.input.input_images.length, 2);
 });
 
