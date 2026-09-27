@@ -15,12 +15,25 @@ const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
 const imagesDir = join(root, 'images');
 const uploadDir = join(root, 'uploads');
+const port = Number(process.env.PORT) || 3005;
 mkdirSync(imagesDir, {recursive: true});
 mkdirSync(uploadDir, {recursive: true});
 const app = express();
 const upload = multer({dest: uploadDir, limits: {fileSize: 10 * 1024 * 1024}});
 const runGit = promisify(execFile);
 app.use(express.json({limit: '1mb'}));
+app.use((request, response, next) => {
+  const origin = request.get('origin');
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method) && origin) {
+    try {
+      const source = new URL(origin);
+      if (!['localhost', '127.0.0.1'].includes(source.hostname) || Number(source.port || 80) !== port) {
+        return response.status(403).json({error: 'Origine non autorisée'});
+      }
+    } catch { return response.status(403).json({error: 'Origine non autorisée'}); }
+  }
+  next();
+});
 app.use(express.static(join(projectDir, 'admin')));
 app.use('/images', express.static(imagesDir));
 app.use('/api', express.static(join(root, 'api')));
@@ -134,4 +147,4 @@ app.post('/api/push', async (_request, response) => {
 });
 
 app.use((error, _request, response, _next) => response.status(400).json({error: error.message || String(error)}));
-app.listen(Number(process.env.PORT) || 3005, '127.0.0.1', () => console.log(`Avatar admin: http://127.0.0.1:${Number(process.env.PORT) || 3005}`));
+app.listen(port, '127.0.0.1', () => console.log(`Avatar admin: http://127.0.0.1:${port}`));

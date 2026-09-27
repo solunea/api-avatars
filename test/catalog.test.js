@@ -84,6 +84,8 @@ test('administration locale accepte la création puis la suppression', async t =
     await new Promise(resolve => setTimeout(resolve, 100));
   }
   assert.ok(ready, 'serveur local démarré');
+  const foreignOrigin = await fetch(`${base}/api/build`, {method:'POST',headers:{Origin:'https://example.org'}});
+  assert.equal(foreignOrigin.status, 403);
   const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(avatar())});
   assert.equal(created.status, 201);
   assert.equal((await (await fetch(`${base}/api/avatars/preset-ada`)).json()).name, 'Ada');
