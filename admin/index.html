@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bibliothèque d’avatars</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header><div><small>Solunea · Cannelle</small><h1>Bibliothèque d’avatars</h1><p>Préparez les portraits et publiez le catalogue utilisé dans l’éditeur.</p></div><div class="toolbar"><button id="new" type="button">Nouvel avatar</button><button id="build" type="button">Valider l’API</button><button id="publish" class="primary" type="button">Publier</button></div></header>
+  <div id="message" role="status"></div>
+  <main>
+    <section class="catalog"><h2>Catalogue <span id="count"></span></h2><input id="search" type="search" placeholder="Rechercher"><div id="list"></div></section>
+    <form id="editor">
+      <div class="form-header"><div><small id="record-id">Nouvel avatar</small><h2>Portrait et voix</h2></div><button id="delete" class="danger" type="button" hidden>Supprimer</button></div>
+      <div class="fields"><label>Nom <input name="name" required maxlength="80"></label><label>Voix Cannelle <select name="voiceKey" required></select></label></div>
+      <label>Description <textarea name="description" rows="2" maxlength="500"></textarea></label>
+      <div class="media-grid" id="media-fields"></div>
+      <div class="generate"><div><strong>Créer les expressions avec l’IA</strong><p>Une photo est nécessaire. Le décor est facultatif. Les portraits générés peuvent ensuite être remplacés.</p></div><button id="generate" type="button">Générer aperçu et tons</button></div>
+      <h3>Descriptions des tons</h3><div class="prompts" id="prompt-fields"></div>
+      <footer><button id="save" class="primary" type="submit">Enregistrer l’avatar</button></footer>
+    </form>
+  </main>
+</body>
+</html>
