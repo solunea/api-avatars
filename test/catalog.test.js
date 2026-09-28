@@ -95,12 +95,19 @@ test('les tons demandent des expressions faciales visibles et distinctes du neut
 test('avec décor, la scène est reconstruite autour du cadrage du portrait', () => {
   const neutral = portraitPrompt('Ada', 'neutral', true, true);
   const success = portraitPrompt('Ada', 'success', false, false, true);
+  const failure = portraitPrompt('Ada', 'failure', false, false, true);
   assert.match(neutral, /Reference image 2 defines the location/);
   assert.match(neutral, /centered medium close-up/);
   assert.match(neutral, /Adapt the room to this close camera viewpoint instead of moving or shrinking the person/);
   assert.match(neutral, /vanishing lines/);
   assert.match(neutral, /softly receding background/);
-  assert.match(success, /Preserve the exact camera viewpoint, person position and scale/);
+  assert.match(success, /Preserve the camera viewpoint, horizontal person position, approximate scale/);
+  for (const prompt of [neutral, success, failure]) {
+    assert.match(prompt, /highest point of the complete head, crown, hairstyle or headwear at least 10%/);
+    assert.match(prompt, /clearly visible band of background above it/);
+    assert.match(prompt, /horizontally centered and in a medium close-up/);
+  }
+  assert.match(failure, /Adjust the vertical framing slightly and extend the scene above the person/);
   assert.doesNotMatch(success, /Reference image 2/);
 });
 
@@ -147,7 +154,8 @@ test('génération avec décor transmet les deux références sans détourage', 
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
   assert.equal(fluxCalls[1].options.input.input_images.length, 1);
   assert.equal(fluxCalls[2].options.input.input_images.length, 1);
-  assert.match(fluxCalls[1].options.input.prompt, /person position and scale/);
+  assert.match(fluxCalls[1].options.input.prompt, /horizontal person position, approximate scale/);
+  assert.match(fluxCalls[2].options.input.prompt, /highest point of the complete head, crown, hairstyle or headwear at least 10%/);
 });
 
 test('les descriptions et métadonnées sont régénérées en un seul appel sans recréer les portraits', async t => {
