@@ -3,20 +3,10 @@
     "id": "preset-rudy",
     "name": "Rudy",
     "description": "Rudy est un homme âgé au visage ridé, portant une casquette plate en velours côtelé marron, des lunettes rondes orange, une longue barbe blanche et une chemise beige avec un tablier marron.",
-    "preview": "images/2cd8fcaa-4d87-4817-ae91-f990a6c4cee6.png",
+    "preview": "images/f7c5f6ca-639b-430f-b370-886ef0ff5671.png",
     "decor": "",
     "voiceKey": "gemini:Schedar",
     "speechPersonality": "Chaleureuse",
-    "updatedAt": "2026-09-28T13:50:36.126Z"
-  },
-  {
-    "id": "preset-sophia",
-    "name": "Sophia",
-    "description": "Avatar féminin aux longs cheveux noirs, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital bien éclairé. Son expression est neutre.",
-    "preview": "images/33ab1fc5-e187-4826-9f13-e8264a69790b.png",
-    "decor": "images/ddbfa0b6-7c07-4f8f-9c4b-cb3751bf6b11.jpg",
-    "voiceKey": "gemini:Kore",
-    "speechPersonality": "Une voix posée et chaleureuse, au débit modéré et à l'articulation très claire, reflétant le professionnalisme et la bienveillance de l'avatar. Elle inspire confiance et calme, adaptée à des communications éducatives et informatives.",
-    "updatedAt": "2026-09-28T13:32:50.264Z"
+    "updatedAt": "2026-09-28T14:03:57.175Z"
   }
 ]
