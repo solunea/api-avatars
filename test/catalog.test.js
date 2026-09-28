@@ -59,8 +59,19 @@ test('validation bloque les médias absents, chemins dangereux et voix non parta
   assert.ok(errors.includes('ton failure manquant'));
 });
 
+test('succès et échec doivent avoir chacun leur propre image', t => {
+  const root = fixture(t);
+  const item = avatar();
+  item.tones.success = item.tones.neutral;
+  item.tones.failure = item.tones.neutral;
+  const errors = validateAvatar(item, root);
+  assert.ok(errors.includes('image success identique au ton neutral'));
+  assert.ok(errors.includes('image failure identique à un autre ton'));
+});
+
 test('génération IA prépare les trois tons et le détourage sans décor', async t => {
   const root = fixture(t);
+  writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['An empathetic front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run);
@@ -68,7 +79,13 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
   assert.equal(calls.filter(call => call.model === 'google/gemini-3.1-pro').length, 3);
   assert.equal(calls[0].options.input.input_images.length, 1);
+  const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
+  assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
+  assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
+  assert.deepEqual(fluxCalls[2].options.input.input_images[0], png);
   assert.equal(result.tones.neutral, result.preview);
+  assert.notEqual(result.tones.success, result.tones.neutral);
+  assert.notEqual(result.tones.failure, result.tones.success);
   assert.ok(result.tonePrompts.failure.includes('empathetic'));
   for (const path of Object.values(result.tones)) assert.ok(existsSync(join(root, path)));
   saveCatalog(root, [{...avatar(), preview:result.preview, tones:result.tones, tonePrompts:result.tonePrompts}]);
@@ -76,11 +93,15 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
 
 test('génération avec décor transmet les deux références sans détourage', async t => {
   const root = fixture(t);
+  writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['A front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
   assert.equal(calls.length, 6);
   assert.equal(calls[0].options.input.input_images.length, 2);
+  const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
+  assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
+  assert.deepEqual(fluxCalls[1].options.input.input_images[1], png);
 });
 
 test('administration locale accepte la création puis la suppression', async t => {

@@ -12,7 +12,7 @@ npm run dev
 
 L’administration est accessible sur `http://127.0.0.1:3005`. Renseigner `REPLICATE_API_TOKEN` dans `.env` pour générer des portraits à partir d’une photo. L’import manuel fonctionne sans jeton. L’administration écoute uniquement sur l’interface locale.
 
-Une fiche requiert un nom, une voix Gemini intégrée à Cannelle, une photo de référence, une image de sélection, les trois tons (`neutral`, `success`, `failure`) et une description de chacun. Un décor et une `speechPersonality` facultative (300 caractères maximum) peuvent être ajoutés. L’administration accepte PNG, JPEG et WebP. La génération utilise FLUX.2 Pro et, sans décor, le détourage employé par Cannelle.
+Une fiche requiert un nom, une voix Gemini intégrée à Cannelle, une photo de référence, une image de sélection, les trois tons (`neutral`, `success`, `failure`) et une description de chacun. Les images de succès et d’échec doivent être distinctes entre elles et du portrait neutre. Un décor et une `speechPersonality` facultative (300 caractères maximum) peuvent être ajoutés. L’administration accepte PNG, JPEG et WebP. La génération utilise FLUX.2 Pro et, sans décor, le détourage employé par Cannelle. Le portrait de sélection sert de référence au ton neutre, puis aux générations distinctes de succès et d’échec. Vérifiez les trois images avant d’enregistrer la fiche.
 
 ```bash
 npm run build
