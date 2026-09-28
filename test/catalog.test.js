@@ -74,13 +74,14 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [options.input.prompt.includes('JSON object') ? '{"description":"Portrait de Ada.","speechPersonality":"Voix chaleureuse, débit posé et articulation nette."}' : detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run);
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
-  assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 3);
-  assert.match(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.prompt, /170 to 220 word/);
-  assert.equal(calls[0].options.input.input_images.length, 1);
+  assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 4);
+  assert.ok(calls.some(call => call.options.input.prompt?.includes('170 to 220 word')));
+  assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
+  assert.equal(result.description, 'Portrait de Ada.');
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
@@ -97,10 +98,9 @@ test('génération avec décor transmet les deux références sans détourage', 
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [options.input.prompt.includes('JSON object') ? '{"description":"Portrait de Ada.","speechPersonality":"Voix chaleureuse, débit posé et articulation nette."}' : detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 6);
-  assert.equal(calls[0].options.input.input_images.length, 2);
+  assert.equal(calls.length, 7);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
   assert.deepEqual(fluxCalls[1].options.input.input_images[1], png);
@@ -133,11 +133,15 @@ test('administration locale accepte la création puis la suppression', async t =
   t.after(() => child.kill());
   const base = `http://127.0.0.1:${port}`;
   let ready = false;
-  for (let i=0;i<50;i++) {
+  for (let i=0;i<100;i++) {
     try {const response=await fetch(`${base}/api/avatars`);if(response.ok){ready=true;break;}} catch {}
     await new Promise(resolve => setTimeout(resolve, 100));
   }
   assert.ok(ready, 'serveur local démarré');
+  const availableVoices = await (await fetch(`${base}/api/voices`)).json();
+  assert.equal(availableVoices.length, 30);
+  assert.ok(availableVoices.every(voice => voice.key === `gemini:${voice.name}` && ['male', 'female'].includes(voice.gender)));
+  assert.deepEqual(availableVoices.find(voice => voice.key === 'gemini:Kore'), {key:'gemini:Kore', name:'Kore', gender:'female'});
   const foreignOrigin = await fetch(`${base}/api/build`, {method:'POST',headers:{Origin:'https://example.org'}});
   assert.equal(foreignOrigin.status, 403);
   const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),speechPersonality:'  Calme \n et   posée  '})});

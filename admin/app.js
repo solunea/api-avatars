@@ -1,64 +1,307 @@
-const fields = ['photo', 'decor', 'preview', 'neutral', 'success', 'failure'];
-const labels = {photo:'Photo de référence', decor:'Décor facultatif', preview:'Image de sélection', neutral:'Ton neutre', success:'Succès', failure:'Échec'};
 const tones = ['neutral', 'success', 'failure'];
+const fields = ['photo', 'decor', 'preview', ...tones];
 const $ = selector => document.querySelector(selector);
 let catalog = [];
 let current = emptyAvatar();
+let activeTone = 'neutral';
+let newMode = true;
+let dirty = false;
+let busy = false;
+let messageTimer;
 
-function emptyAvatar(){return {id:'',name:'',description:'',voiceKey:'gemini:Kore',speechPersonality:'',photo:'',decor:'',preview:'',tones:{neutral:'',success:'',failure:''},tonePrompts:{neutral:'',success:'',failure:''}};}
-function message(value, ok=false){$('#message').textContent=value;$('#message').classList.toggle('ok',ok);}
-async function api(path, options={}){const response=await fetch(path,options);const data=await response.json();if(!response.ok)throw new Error(data.error||`Erreur ${response.status}`);return data;}
-function image(path){return path ? `/${path}` : '';}
-function setMedia(field,path){if(tones.includes(field))current.tones[field]=path;else current[field]=path;const preview=$(`#image-${field}`);preview.src=image(path);preview.hidden=!path;}
-function media(field){return tones.includes(field)?current.tones[field]:current[field];}
-function renderForm(){
-  $('#record-id').textContent=current.id||'Nouvel avatar';$('#delete').hidden=!current.id;
-  for(const key of ['name','description','voiceKey','speechPersonality'])$(`[name="${key}"]`).value=current[key]||'';
-  for(const field of fields)setMedia(field,media(field));
-  for(const tone of tones)$(`[name="prompt-${tone}"]`).value=current.tonePrompts[tone]||'';
+function emptyAvatar() {
+  return {id: '', name: '', description: '', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
+    tones: {neutral: '', success: '', failure: ''}, tonePrompts: {neutral: '', success: '', failure: ''}};
 }
-function renderList(){
-  const query=$('#search').value.trim().toLowerCase();const target=$('#list');target.replaceChildren();
-  for(const avatar of catalog.filter(item=>`${item.name} ${item.description||''}`.toLowerCase().includes(query))){
-    const button=document.createElement('button');button.type='button';button.className='catalog-item';
-    const img=document.createElement('img');img.src=image(avatar.preview);img.alt='';button.append(img);
-    const body=document.createElement('span');const name=document.createElement('strong');name.textContent=avatar.name;const id=document.createElement('small');id.textContent=avatar.id;body.append(name,id);button.append(body);
-    button.onclick=()=>{current=structuredClone(avatar);renderForm();};target.append(button);
+
+function message(value, ok = false) {
+  clearTimeout(messageTimer);
+  const element = $('#message');
+  element.textContent = value;
+  element.dataset.state = ok ? 'ok' : 'error';
+  element.hidden = !value;
+  if (ok && value) messageTimer = setTimeout(() => { element.hidden = true; }, 6500);
+}
+
+async function api(path, options = {}) {
+  const response = await fetch(path, options);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || `Erreur ${response.status}`);
+  return data;
+}
+
+function media(field) { return tones.includes(field) ? current.tones[field] : current[field]; }
+function mediaUrl(path) { return path ? `/${path}` : ''; }
+function wordCount(value) { return String(value || '').trim().split(/\s+/).filter(Boolean).length; }
+
+function renderMedia(field) {
+  const path = media(field);
+  const image = $(`#image-${field}`);
+  const status = $(`#status-${field}`);
+  image.hidden = !path;
+  if (path) image.src = mediaUrl(path);
+  else image.removeAttribute('src');
+  status.textContent = path ? (tones.includes(field) ? 'Prêt' : path.split('/').at(-1)) : (field === 'decor' ? 'Facultatif' : 'À ajouter');
+  status.classList.toggle('ready', !!path && tones.includes(field));
+  if (tones.includes(field)) {
+    $(`#empty-${field}`).hidden = !!path;
+    $(`#details-${field}`).textContent = path ? path.split('/').at(-1) : 'PNG, JPEG ou WebP';
+    if (path) image.onload = () => {
+      if (media(field) === path) $(`#details-${field}`).textContent = `${image.naturalWidth} × ${image.naturalHeight} · ${path.split('.').at(-1).toUpperCase()}`;
+    };
   }
-  $('#count').textContent=`(${catalog.length})`;
+  if (field === 'decor') $('#clear-decor').hidden = !path;
+  image.onerror = () => {
+    if (media(field) !== path) return;
+    status.textContent = 'Image indisponible';
+    status.classList.remove('ready');
+  };
 }
-async function load(){catalog=await api('/api/avatars');renderList();}
-for(const field of fields){
-  const card=document.createElement('div');card.className='media';
-  const imageElement=document.createElement('img');imageElement.id=`image-${field}`;imageElement.alt=`Aperçu ${labels[field]}`;imageElement.hidden=true;
-  const label=document.createElement('label');label.textContent=labels[field];const input=document.createElement('input');input.type='file';input.accept='image/png,image/jpeg,image/webp';
-  input.onchange=async()=>{const file=input.files[0];if(!file)return;try{message('Envoi en cours…');const body=new FormData();body.append('image',file);const result=await api('/api/upload',{method:'POST',body});setMedia(field,result.path);message('Image chargée',true);}catch(error){message(error.message);}finally{input.value='';}};
-  label.append(input);card.append(imageElement,label);if(field==='decor'){const clear=document.createElement('button');clear.type='button';clear.textContent='Retirer le décor';clear.onclick=()=>setMedia('decor','');card.append(clear);}$('#media-fields').append(card);
+
+function setMedia(field, path) {
+  if (tones.includes(field)) current.tones[field] = path;
+  else current[field] = path;
+  dirty = true;
+  renderMedia(field);
 }
-for(const tone of tones){const label=document.createElement('label');label.textContent=labels[tone];const textarea=document.createElement('textarea');textarea.name=`prompt-${tone}`;textarea.rows=9;textarea.required=true;label.append(textarea);$('#prompt-fields').append(label);}
-api('/api/voices').then(voices=>{for(const voice of voices){const option=document.createElement('option');option.value=voice;option.textContent=voice.replace('gemini:','');$('[name="voiceKey"]').append(option);}renderForm();}).catch(error=>message(error.message));
-$('#new').onclick=()=>{current=emptyAvatar();renderForm();message('');};
-$('#search').oninput=renderList;
-$('#build').onclick=async()=>{try{const result=await api('/api/build',{method:'POST'});message(`API validée : ${result.count} avatar(s)`,true);}catch(error){message(error.message);}};
-$('#publish').onclick=async()=>{try{message('Publication en cours…');const result=await api('/api/push',{method:'POST'});message(result.message,true);}catch(error){message(error.message);}};
-$('#generate').onclick=async()=>{const button=$('#generate');try{
-  current.name=$('[name="name"]').value.trim();if(!current.name||!current.photo)throw new Error('Indiquez un nom et chargez une photo.');
-  button.disabled=true;message('Génération des trois portraits en cours…');const result=await api('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:current.name,photo:current.photo,decor:current.decor})});
-  setMedia('preview',result.preview);for(const tone of tones){setMedia(tone,result.tones[tone]);$(`[name="prompt-${tone}"]`).value=result.tonePrompts[tone];}message('Portraits prêts à vérifier',true);
-}catch(error){message(error.message);}finally{button.disabled=false;}};
-$('#describe').onclick=async()=>{const button=$('#describe');try{
-  const portraitPaths={neutral:current.tones.neutral||current.preview,success:current.tones.success,failure:current.tones.failure};
-  if(tones.some(tone=>!portraitPaths[tone]))throw new Error('Chargez les trois portraits avant de générer leurs descriptions.');
-  button.disabled=true;message('Description détaillée des trois portraits en cours…');
-  const result=await api('/api/describe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tones:portraitPaths,decor:current.decor})});
-  for(const tone of tones){current.tonePrompts[tone]=result.tonePrompts[tone];$(`[name="prompt-${tone}"]`).value=result.tonePrompts[tone];}
-  message('Descriptions prêtes à relire',true);
-}catch(error){message(error.message);}finally{button.disabled=false;}};
-$('#editor').onsubmit=async event=>{event.preventDefault();try{
-  current.name=$('[name="name"]').value.trim();current.description=$('[name="description"]').value.trim();current.voiceKey=$('[name="voiceKey"]').value;current.speechPersonality=$('[name="speechPersonality"]').value;
-  for(const tone of tones)current.tonePrompts[tone]=$(`[name="prompt-${tone}"]`).value.trim();
-  const saved=await api(current.id?`/api/avatars/${current.id}`:'/api/avatars',{method:current.id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(current)});
-  current=saved;await load();renderForm();message('Avatar enregistré',true);
-}catch(error){message(error.message);}};
-$('#delete').onclick=async()=>{if(!current.id||!confirm(`Supprimer ${current.name} du catalogue ?`))return;try{await api(`/api/avatars/${current.id}`,{method:'DELETE'});current=emptyAvatar();await load();renderForm();message('Avatar supprimé',true);}catch(error){message(error.message);}};
-load().catch(error=>message(error.message));
+
+function renderPrompts() {
+  for (const tone of tones) {
+    $(`#prompt-${tone}`).value = current.tonePrompts[tone] || '';
+    $(`#words-${tone}`).textContent = `${wordCount(current.tonePrompts[tone])} mots`;
+  }
+  selectTone(activeTone);
+}
+
+function selectTone(tone) {
+  activeTone = tone;
+  for (const item of tones) {
+    const selected = item === tone;
+    $(`#tab-${item}`).classList.toggle('active', selected);
+    $(`#tab-${item}`).setAttribute('aria-selected', String(selected));
+    $(`#tab-${item}`).tabIndex = selected ? 0 : -1;
+    $(`#panel-${item}`).hidden = !selected;
+  }
+}
+
+function renderList() {
+  const query = $('#search').value.trim().toLocaleLowerCase('fr');
+  const list = $('#list');
+  list.replaceChildren();
+  const matches = catalog.filter(avatar => `${avatar.name} ${avatar.description || ''}`.toLocaleLowerCase('fr').includes(query));
+  for (const avatar of matches) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `catalog-item${avatar.id === current.id ? ' active' : ''}`;
+    button.setAttribute('aria-pressed', String(avatar.id === current.id));
+    const img = document.createElement('img');
+    img.src = mediaUrl(avatar.preview);
+    img.alt = '';
+    img.loading = 'lazy';
+    const copy = document.createElement('span');
+    copy.className = 'catalog-item-copy';
+    const name = document.createElement('strong');
+    name.textContent = avatar.name;
+    const subtitle = document.createElement('small');
+    subtitle.textContent = '3 expressions';
+    copy.append(name, subtitle);
+    const dot = document.createElement('span');
+    dot.className = 'catalog-dot';
+    dot.setAttribute('aria-label', 'Fiche enregistrée');
+    button.append(img, copy, dot);
+    button.addEventListener('click', () => {
+      if (busy || !canLeave()) return;
+      current = structuredClone(avatar);
+      newMode = false;
+      dirty = false;
+      renderForm();
+      message('');
+    });
+    list.append(button);
+  }
+  $('#count').textContent = catalog.length;
+  $('#catalog-empty').hidden = matches.length > 0;
+  $('#catalog-empty').textContent = catalog.length ? 'Aucun avatar ne correspond à cette recherche.' : 'Aucun avatar enregistré. Créez votre première fiche.';
+}
+
+function renderForm() {
+  document.body.classList.toggle('new-mode', newMode);
+  const title = current.name || 'Nouvel avatar';
+  $('#current-name').textContent = title;
+  $('#breadcrumb-name').textContent = title;
+  $('#record-status').textContent = current.id ? 'Enregistré' : 'Brouillon';
+  $('#record-status').className = `status-badge ${current.id ? 'status-saved' : 'status-draft'}`;
+  $('#delete').hidden = !current.id;
+  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) $(`[name="${key}"]`).value = current[key] || '';
+  for (const field of fields) renderMedia(field);
+  renderPrompts();
+  renderList();
+}
+
+function canLeave() {
+  return !dirty || confirm('Des modifications ne sont pas enregistrées. Les abandonner ?');
+}
+
+async function refreshCatalog() {
+  catalog = await api('/api/avatars');
+  renderList();
+}
+
+async function run(button, progress, action) {
+  if (busy) return;
+  busy = true;
+  button.disabled = true;
+  message(progress, true);
+  try { await action(); }
+  catch (error) { message(error.message || String(error)); }
+  finally { button.disabled = false; busy = false; }
+}
+
+for (const input of document.querySelectorAll('input[type="file"][data-field]')) {
+  input.addEventListener('change', async () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    const field = input.dataset.field;
+    await run(input.closest('.button'), 'Envoi de l’image…', async () => {
+      const body = new FormData();
+      body.append('image', file);
+      const result = await api('/api/upload', {method: 'POST', body});
+      setMedia(field, result.path);
+      message('Image chargée', true);
+    });
+    input.value = '';
+  });
+}
+
+for (const tone of tones) {
+  $(`#tab-${tone}`).addEventListener('click', () => selectTone(tone));
+  $(`#prompt-${tone}`).addEventListener('input', event => {
+    current.tonePrompts[tone] = event.target.value;
+    $(`#words-${tone}`).textContent = `${wordCount(event.target.value)} mots`;
+    dirty = true;
+  });
+}
+
+for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) {
+  $(`[name="${key}"]`).addEventListener('input', event => {
+    current[key] = event.target.value;
+    dirty = true;
+    if (key === 'name') {
+      $('#current-name').textContent = current.name || 'Nouvel avatar';
+      $('#breadcrumb-name').textContent = current.name || 'Nouvel avatar';
+    }
+  });
+}
+
+$('#new').addEventListener('click', () => {
+  if (busy || !canLeave()) return;
+  current = emptyAvatar();
+  newMode = true;
+  activeTone = 'neutral';
+  dirty = false;
+  renderForm();
+  $('#avatar-name').focus();
+  message('');
+});
+$('#search').addEventListener('input', renderList);
+$('#clear-decor').addEventListener('click', () => setMedia('decor', ''));
+$('#manual-mode').addEventListener('click', () => {
+  newMode = false;
+  renderForm();
+  $('#upload-neutral').focus();
+});
+
+async function generateFromReferences(button) {
+  current.name = $('#avatar-name').value.trim();
+  if (!current.name || !current.photo) return message('Indiquez un nom et chargez une photo de référence.');
+  const wasNew = newMode;
+  await run(button, 'Génération des portraits, descriptions et personnalité vocale…', async () => {
+    const result = await api('/api/generate', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name: current.name, photo: current.photo, decor: current.decor, voiceKey: $('#avatar-voice').value})});
+    setMedia('preview', result.preview);
+    for (const tone of tones) {
+      setMedia(tone, result.tones[tone]);
+      current.tonePrompts[tone] = result.tonePrompts[tone];
+    }
+    if (wasNew || !current.description) current.description = result.description;
+    if (wasNew || !current.speechPersonality) current.speechPersonality = result.speechPersonality;
+    newMode = false;
+    renderForm();
+    message('Portraits, descriptions et personnalité vocale prêts à vérifier', true);
+  });
+}
+$('#generate').addEventListener('click', () => generateFromReferences($('#generate')));
+$('#generate-all').addEventListener('click', () => generateFromReferences($('#generate-all')));
+
+$('#describe').addEventListener('click', async () => {
+  const paths = {neutral: current.tones.neutral || current.preview, success: current.tones.success, failure: current.tones.failure};
+  if (tones.some(tone => !paths[tone])) return message('Chargez les trois portraits avant de générer leurs descriptions.');
+  await run($('#describe'), 'Description détaillée des trois portraits…', async () => {
+    const result = await api('/api/describe', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({tones: paths, decor: current.decor})});
+    current.tonePrompts = result.tonePrompts;
+    dirty = true;
+    renderPrompts();
+    message('Descriptions prêtes à relire', true);
+  });
+});
+
+$('#editor').addEventListener('submit', async event => {
+  event.preventDefault();
+  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) current[key] = $(`[name="${key}"]`).value.trim();
+  for (const tone of tones) current.tonePrompts[tone] = $(`#prompt-${tone}`).value.trim();
+  await run($('#save'), 'Enregistrement de l’avatar…', async () => {
+    const saved = await api(current.id ? `/api/avatars/${encodeURIComponent(current.id)}` : '/api/avatars', {
+      method: current.id ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(current)
+    });
+    current = saved;
+    dirty = false;
+    await refreshCatalog();
+    renderForm();
+    message('Avatar enregistré. Utilisez Publier pour le diffuser.', true);
+  });
+});
+
+$('#delete').addEventListener('click', async () => {
+  if (!current.id || !confirm(`Supprimer ${current.name} du catalogue ?`)) return;
+  await run($('#delete'), 'Suppression de l’avatar…', async () => {
+    await api(`/api/avatars/${encodeURIComponent(current.id)}`, {method: 'DELETE'});
+    current = emptyAvatar();
+    dirty = false;
+    await refreshCatalog();
+    renderForm();
+    message('Avatar supprimé', true);
+  });
+});
+
+$('#build').addEventListener('click', () => run($('#build'), 'Validation de l’API…', async () => {
+  const result = await api('/api/build', {method: 'POST'});
+  message(`API validée : ${result.count} avatar(s)`, true);
+}));
+
+$('#publish').addEventListener('click', () => {
+  if (dirty) return message('Enregistrez les modifications avant de publier.');
+  return run($('#publish'), 'Publication en cours…', async () => {
+    const result = await api('/api/push', {method: 'POST'});
+    message(result.message, true);
+  });
+});
+
+async function init() {
+  try {
+    const [voices] = await Promise.all([api('/api/voices'), refreshCatalog()]);
+    const select = $('#avatar-voice');
+    const group = document.createElement('optgroup');
+    group.label = 'Gemini 3.1 Flash TTS';
+    for (const voice of voices) {
+      const option = document.createElement('option');
+      option.value = voice.key;
+      option.textContent = `${voice.name} · ${voice.gender === 'female' ? 'féminine' : 'masculine'}`;
+      group.append(option);
+    }
+    select.replaceChildren(group);
+    renderForm();
+  } catch (error) { message(error.message || String(error)); }
+}
+
+init();

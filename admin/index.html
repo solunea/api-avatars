@@ -3,26 +3,100 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bibliothèque d’avatars</title>
+  <title>Studio d’avatars · Cannelle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=studio-2"></script>
 </head>
 <body>
-  <header><div><small>Solunea · Cannelle</small><h1>Bibliothèque d’avatars</h1><p>Préparez les portraits et publiez le catalogue utilisé dans l’éditeur.</p></div><div class="toolbar"><button id="new" type="button">Nouvel avatar</button><button id="build" type="button">Valider l’API</button><button id="publish" class="primary" type="button">Publier</button></div></header>
-  <div id="message" role="status"></div>
-  <main>
-    <section class="catalog"><h2>Catalogue <span id="count"></span></h2><input id="search" type="search" placeholder="Rechercher"><div id="list"></div></section>
-    <form id="editor">
-      <div class="form-header"><div><small id="record-id">Nouvel avatar</small><h2>Portrait et voix</h2></div><button id="delete" class="danger" type="button" hidden>Supprimer</button></div>
-      <div class="fields"><label>Nom <input name="name" required maxlength="80"></label><label>Voix Cannelle <select name="voiceKey" required></select></label></div>
-      <label>Personnalité vocale <small>(facultatif, voix Gemini)</small><textarea name="speechPersonality" rows="2" maxlength="300" placeholder="Ex. Pédagogue chaleureux, débit posé, encourage sans exagération."></textarea></label>
-      <label>Description <textarea name="description" rows="2" maxlength="500"></textarea></label>
-      <div class="media-grid" id="media-fields"></div>
-      <div class="generate"><div><strong>Créer les expressions avec l’IA</strong><p>Une photo est nécessaire. Le décor est facultatif. Les portraits générés peuvent ensuite être remplacés.</p></div><button id="generate" type="button">Générer aperçu et tons</button></div>
-      <div class="generate"><div><strong>Descriptions pour la génération text-to-image</strong><p>Chaque portrait reçoit une description détaillée de ses traits, vêtements, expression, cadrage, fond et lumière. Vous pouvez la corriger avant publication.</p></div><button id="describe" type="button">Décrire les portraits</button></div>
-      <div class="prompts" id="prompt-fields"></div>
-      <footer><button id="save" class="primary" type="submit">Enregistrer l’avatar</button></footer>
-    </form>
+  <header class="topbar">
+    <a class="brand" href="#studio" aria-label="api-avatars, accueil du studio"><span>api-</span><strong>avatars</strong></a>
+    <nav class="topnav" aria-label="Navigation principale">
+      <a class="active" href="#studio">Studio</a>
+      <a href="#catalog-title">Bibliothèque</a>
+      <a href="#inspector-title">Voix</a>
+      <a href="#prompts-title">Prompts</a>
+    </nav>
+    <div class="top-actions">
+      <button id="build" class="button button-quiet" type="button">Valider l’API</button>
+      <button id="publish" class="button button-primary" type="button">Publier</button>
+    </div>
+  </header>
+
+  <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+
+  <main id="studio" class="workspace">
+    <aside class="catalog-panel" aria-labelledby="catalog-title">
+      <div class="side-heading"><h2 id="catalog-title">Avatars <span id="count">0</span></h2><button id="new" class="button button-primary button-small" type="button">+ Nouvel avatar</button></div>
+      <label class="search-label"><span class="sr-only">Rechercher un avatar</span><input id="search" type="search" placeholder="Rechercher un avatar…" autocomplete="off"></label>
+      <div id="list" class="catalog-list"></div>
+      <div id="catalog-empty" class="catalog-empty" hidden>Aucun avatar enregistré. Créez votre première fiche.</div>
+    </aside>
+
+    <section class="studio-panel" aria-labelledby="current-name">
+      <div class="studio-heading">
+        <div>
+          <div class="breadcrumb">Studio <span>›</span> <span id="breadcrumb-name">Nouvel avatar</span></div>
+          <div class="title-row"><h1 id="current-name">Nouvel avatar</h1><span id="record-status" class="status-badge status-draft">Brouillon</span></div>
+        </div>
+        <div class="studio-actions"><button id="generate" class="button button-primary" type="button">Générer les portraits</button><button id="delete" class="button button-danger" type="button" hidden>Supprimer</button></div>
+      </div>
+
+      <div class="portrait-grid" aria-label="Portraits par tonalité">
+        <article class="portrait-card" data-tone="neutral">
+          <div class="portrait-card-heading"><div><h2>Neutre</h2><small>Portrait de référence</small></div><span id="status-neutral" class="media-status">À ajouter</span></div>
+          <div class="portrait-frame"><img id="image-neutral" alt="Portrait neutre" hidden><span id="empty-neutral" class="portrait-empty">Aucun portrait neutre</span></div>
+          <div id="details-neutral" class="portrait-details">PNG, JPEG ou WebP</div>
+          <label class="button button-secondary portrait-upload">Importer une image<input id="upload-neutral" data-field="neutral" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+        </article>
+        <article class="portrait-card" data-tone="success">
+          <div class="portrait-card-heading"><div><h2>Succès</h2><small>Expression encourageante</small></div><span id="status-success" class="media-status">À ajouter</span></div>
+          <div class="portrait-frame"><img id="image-success" alt="Portrait de succès" hidden><span id="empty-success" class="portrait-empty">Aucun portrait de succès</span></div>
+          <div id="details-success" class="portrait-details">PNG, JPEG ou WebP</div>
+          <label class="button button-secondary portrait-upload">Importer une image<input id="upload-success" data-field="success" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+        </article>
+        <article class="portrait-card" data-tone="failure">
+          <div class="portrait-card-heading"><div><h2>Échec</h2><small>Expression rassurante</small></div><span id="status-failure" class="media-status">À ajouter</span></div>
+          <div class="portrait-frame"><img id="image-failure" alt="Portrait d’échec" hidden><span id="empty-failure" class="portrait-empty">Aucun portrait d’échec</span></div>
+          <div id="details-failure" class="portrait-details">PNG, JPEG ou WebP</div>
+          <label class="button button-secondary portrait-upload">Importer une image<input id="upload-failure" data-field="failure" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+        </article>
+      </div>
+
+      <section class="prompt-panel" aria-labelledby="prompts-title">
+        <div class="prompt-heading"><div><h2 id="prompts-title">Descriptions text-to-image <span class="info-tip" tabindex="0" role="note" aria-label="Une description détaillée par expression, modifiable avant publication." data-tooltip="Une description détaillée par expression, modifiable avant publication.">i</span></h2></div><button id="describe" class="button button-secondary" type="button">Décrire les portraits</button></div>
+        <div class="tone-tabs" role="tablist" aria-label="Description par tonalité">
+          <button class="tone-tab active" id="tab-neutral" type="button" role="tab" aria-selected="true" aria-controls="panel-neutral" data-tone="neutral">Neutre</button>
+          <button class="tone-tab" id="tab-success" type="button" role="tab" aria-selected="false" aria-controls="panel-success" data-tone="success">Succès</button>
+          <button class="tone-tab" id="tab-failure" type="button" role="tab" aria-selected="false" aria-controls="panel-failure" data-tone="failure">Échec</button>
+        </div>
+        <div class="tone-panel" id="panel-neutral" role="tabpanel" aria-labelledby="tab-neutral"><label for="prompt-neutral">Description du portrait neutre <span id="words-neutral">0 mot</span></label><textarea id="prompt-neutral" name="prompt-neutral" rows="7" placeholder="Décrivez précisément le visage, les vêtements, le cadrage, le fond et la lumière…"></textarea></div>
+        <div class="tone-panel" id="panel-success" role="tabpanel" aria-labelledby="tab-success" hidden><label for="prompt-success">Description du portrait de succès <span id="words-success">0 mot</span></label><textarea id="prompt-success" name="prompt-success" rows="7" placeholder="Décrivez le même personnage avec son expression de succès…"></textarea></div>
+        <div class="tone-panel" id="panel-failure" role="tabpanel" aria-labelledby="tab-failure" hidden><label for="prompt-failure">Description du portrait d’échec <span id="words-failure">0 mot</span></label><textarea id="prompt-failure" name="prompt-failure" rows="7" placeholder="Décrivez le même personnage avec son expression d’échec…"></textarea></div>
+      </section>
+    </section>
+
+    <aside class="inspector" aria-labelledby="inspector-title">
+      <form id="editor">
+        <div class="inspector-heading"><h2 id="inspector-title">Paramètres de l’avatar <span class="info-tip" tabindex="0" role="note" aria-label="Créez un avatar depuis une photo de référence, avec un décor facultatif." data-tooltip="Créez un avatar depuis une photo de référence, avec un décor facultatif.">i</span></h2></div>
+        <div class="field"><label for="avatar-name">Nom de l’avatar</label><input id="avatar-name" name="name" required maxlength="80" placeholder="Ex. Artisan"></div>
+        <div class="field"><label for="avatar-voice">Voix <span class="info-tip" tabindex="0" role="note" aria-label="30 voix Gemini 3.1 Flash TTS disponibles." data-tooltip="30 voix Gemini 3.1 Flash TTS disponibles.">i</span></label><select id="avatar-voice" name="voiceKey" required></select></div>
+        <div class="field"><label for="avatar-personality">Personnalité vocale <small>facultatif</small></label><textarea id="avatar-personality" name="speechPersonality" rows="3" maxlength="300" placeholder="Ex. Chaleureuse, posée et encourageante."></textarea></div>
+        <div class="field"><label for="avatar-description">Description courte <small>facultative</small></label><textarea id="avatar-description" name="description" rows="3" maxlength="500" placeholder="Quelques mots pour retrouver cet avatar."></textarea></div>
+
+        <div class="source-heading"><h3>Images sources <span class="info-tip" tabindex="0" role="note" aria-label="La photo est requise ; le décor est facultatif." data-tooltip="La photo est requise ; le décor est facultatif.">i</span></h3></div>
+        <div class="source-grid">
+          <div class="source-row"><img id="image-photo" alt="Photo de référence" hidden><div><strong>Photo de référence</strong><small id="status-photo">À ajouter</small></div><label class="button button-tertiary">Importer<input id="upload-photo" data-field="photo" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
+          <div class="source-row source-preview"><img id="image-preview" alt="Image de sélection" hidden><div><strong>Image de sélection</strong><small id="status-preview">À ajouter</small></div><label class="button button-tertiary">Importer<input id="upload-preview" data-field="preview" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
+          <div class="source-row"><img id="image-decor" alt="Décor" hidden><div><strong>Décor</strong><small id="status-decor">Facultatif</small></div><label class="button button-tertiary">Importer<input id="upload-decor" data-field="decor" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
+        </div>
+        <button id="clear-decor" class="text-button" type="button" hidden>Retirer le décor</button>
+        <div id="creation-actions" class="creation-actions"><button id="generate-all" class="button button-primary" type="button" title="Génère l’aperçu, les trois portraits, les descriptions détaillées et une proposition de personnalité vocale.">Tout générer depuis les références</button><button id="manual-mode" class="button button-secondary" type="button" title="Ouvre l’atelier pour importer et décrire chaque portrait.">Importer les portraits manuellement</button></div>
+        <button id="save" class="button button-primary save-button" type="submit">Enregistrer l’avatar</button>
+      </form>
+    </aside>
   </main>
 </body>
 </html>

@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, normalizeSpeechPersonality} from './lib/catalog.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality} from './lib/catalog.js';
 import {generateBundle, describeBundle} from './lib/generation.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
@@ -66,7 +66,7 @@ function removeUnusedMedia(previous, remaining) {
   }
 }
 
-app.get('/api/voices', (_request, response) => response.json(voices.map(name => `gemini:${name}`)));
+app.get('/api/voices', (_request, response) => response.json(voices.map(name => ({key:`gemini:${name}`, name, gender:voiceGenders[name]}))));
 app.get('/api/avatars', (_request, response) => response.json(readCatalog(root)));
 app.get('/api/avatars/:id', (request, response) => {
   const avatar = readCatalog(root).find(item => item.id === request.params.id);
