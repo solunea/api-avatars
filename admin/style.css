@@ -35,10 +35,6 @@ button { cursor: pointer; }
 }
 .brand { text-decoration: none; color: #fafafa; font-size: 20px; font-weight: 800; letter-spacing: -.04em; white-space: nowrap; }
 .brand strong { color: var(--primary); }
-.topnav { display: flex; align-items: stretch; height: 64px; gap: 8px; }
-.topnav a { display: flex; align-items: center; padding: 0 14px; border-bottom: 2px solid transparent; color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; }
-.topnav a:hover, .topnav a.active { color: #c4a6ff; }
-.topnav a.active { border-color: var(--primary); }
 .top-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
 .button {
   min-height: 38px;
@@ -60,7 +56,7 @@ button { cursor: pointer; }
   transition: background .15s, border-color .15s, transform .15s;
 }
 .button:hover { background: #29292e; border-color: #55555d; }
-.button:focus-visible, .tone-tab:focus-visible, .catalog-item:focus-visible, .text-button:focus-visible, .topnav a:focus-visible { outline: 2px solid #bc9aff; outline-offset: 2px; }
+.button:focus-visible, .tone-tab:focus-visible, .catalog-item:focus-visible, .text-button:focus-visible { outline: 2px solid #bc9aff; outline-offset: 2px; }
 .button:disabled { opacity: .55; cursor: wait; }
 .button-primary { background: var(--primary); border-color: var(--primary); color: white; }
 .button-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
@@ -188,11 +184,9 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
   .portrait-frame { height: 280px; }
 }
 @media (max-width: 720px) {
-  .topbar { padding: 0 14px; flex-wrap: wrap; gap: 0 14px; }
+  .topbar { padding: 0 14px; }
   .brand { font-size: 18px; }
   .top-actions { margin-left: auto; }
-  .topnav { order: 3; width: 100%; height: 39px; overflow-x: auto; }
-  .topnav a { flex: 1; justify-content: center; min-width: 75px; padding: 0 8px; }
   .workspace { display: block; }
   .catalog-panel { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--border); padding: 14px; }
   .side-heading { flex-wrap: nowrap; }
