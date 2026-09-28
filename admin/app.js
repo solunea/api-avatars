@@ -393,7 +393,8 @@ $('#editor').addEventListener('submit', async event => {
   event.preventDefault();
   for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) current[key] = $(`[name="${key}"]`).value.trim();
   for (const tone of tones) current.tonePrompts[tone] = $(`#prompt-${tone}`).value.trim();
-  await run($('#save'), 'Enregistrement de l’avatar…', async () => {
+  const missingDescriptions = tones.some(tone => !current.tonePrompts[tone]);
+  await run($('#save'), missingDescriptions ? 'Description des portraits à partir des images…' : 'Enregistrement de l’avatar…', async () => {
     const saved = await api(current.id ? `/api/avatars/${encodeURIComponent(current.id)}` : '/api/avatars', {
       method: current.id ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(current)
     });

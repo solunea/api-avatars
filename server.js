@@ -9,7 +9,7 @@ import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality} from './lib/catalog.js';
-import {generateBundle, describeBundle} from './lib/generation.js';
+import {generateBundle, describeBundle, completeAvatarDescriptions} from './lib/generation.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -72,25 +72,36 @@ app.get('/api/avatars/:id', (request, response) => {
   const avatar = readCatalog(root).find(item => item.id === request.params.id);
   response.status(avatar ? 200 : 404).json(avatar || {error: 'Avatar introuvable'});
 });
-app.post('/api/avatars', (request, response) => {
+async function prepareAvatar(avatar) {
+  const errors = validateAvatar(avatar, root).filter(error => !/^description (neutral|success|failure) manquante$/.test(error));
+  if (errors.length) return errors;
+  if (Object.values(avatar.tonePrompts).some(prompt => !prompt)) {
+    if (!process.env.REPLICATE_API_TOKEN) return ['REPLICATE_API_TOKEN requis pour décrire automatiquement les portraits'];
+    const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
+    await completeAvatarDescriptions(root, avatar, (...args) => replicate.run(...args));
+  }
+  return validateAvatar(avatar, root);
+}
+
+app.post('/api/avatars', async (request, response) => {
   try {
     const avatars = readCatalog(root);
     const avatar = cleanAvatar(request.body);
     if (avatars.some(item => item.id === avatar.id)) return response.status(409).json({error: 'Cet identifiant existe déjà'});
-    const errors = validateAvatar(avatar, root);
+    const errors = await prepareAvatar(avatar);
     if (errors.length) return response.status(400).json({error: errors.join(', ')});
     saveCatalog(root, avatars.concat(avatar));
     response.status(201).json(avatar);
   } catch (error) { mediaResponse(response, error); }
 });
-app.put('/api/avatars/:id', (request, response) => {
+app.put('/api/avatars/:id', async (request, response) => {
   try {
     const avatars = readCatalog(root);
     const index = avatars.findIndex(item => item.id === request.params.id);
     if (index === -1) return response.status(404).json({error: 'Avatar introuvable'});
     const previous = avatars[index];
     const avatar = cleanAvatar(request.body, previous);
-    const errors = validateAvatar(avatar, root);
+    const errors = await prepareAvatar(avatar);
     if (errors.length) return response.status(400).json({error: errors.join(', ')});
     avatars[index] = avatar;
     saveCatalog(root, avatars);

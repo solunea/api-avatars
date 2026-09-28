@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {PNG} from 'pngjs';
 import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
-import {generateBundle, describeBundle, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
+import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
 
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
@@ -156,11 +156,43 @@ test('une description trop courte ne passe pas silencieusement dans le catalogue
   await assert.rejects(describePortrait(async () => ['Generic portrait.'], png), /trop courte/);
 });
 
-test('une réponse groupée incomplète demande une correction', async t => {
+test('une réponse groupée trop courte est réparée à partir des images', async t => {
   const root = fixture(t);
   const tones = avatar().tones;
   await assert.rejects(describeBundle(root, {tones}, async () => ['<html>Erreur</html>']), /format JSON/);
-  await assert.rejects(describeBundle(root, {tones}, async () => [JSON.stringify({...JSON.parse(detailedBundle), tonePrompts: {...JSON.parse(detailedBundle).tonePrompts, failure: 'Too short.'}})]), /trop courte/);
+  let calls = 0;
+  const short = JSON.stringify({...JSON.parse(detailedBundle), tonePrompts: {...JSON.parse(detailedBundle).tonePrompts, failure: 'Too short.'}});
+  const result = await describeBundle(root, {tones}, async () => [++calls === 1 ? short : detailedBundle]);
+  assert.equal(calls, 2);
+  assert.equal(result.tonePrompts.failure, detailedDescription);
+});
+
+test('un texte visuel court reste utilisable si son approfondissement échoue', async t => {
+  const root = fixture(t);
+  const short = JSON.stringify({...JSON.parse(detailedBundle), tonePrompts: {...JSON.parse(detailedBundle).tonePrompts, failure: 'A front-facing portrait with a sympathetic expression.'}});
+  let calls = 0;
+  const result = await describeBundle(root, {tones: avatar().tones}, async () => {
+    if (++calls === 1) return [short];
+    throw new Error('Service indisponible');
+  });
+  assert.equal(calls, 3);
+  assert.match(result.tonePrompts.failure, /sympathetic expression/);
+});
+
+test('enregistrer sans descriptions les retrouve depuis les portraits', async t => {
+  const root = fixture(t);
+  const item = avatar();
+  item.tonePrompts = {neutral: 'Texte renseigné manuellement', success: '', failure: ''};
+  item.description = '';
+  item.speechPersonality = '';
+  let calls = 0;
+  await completeAvatarDescriptions(root, item, async () => { calls++; return [detailedBundle]; });
+  assert.equal(calls, 1);
+  assert.equal(item.tonePrompts.neutral, 'Texte renseigné manuellement');
+  assert.equal(item.tonePrompts.success, detailedDescription);
+  assert.equal(item.description, 'Portrait de Ada.');
+  assert.equal(item.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
+  assert.deepEqual(validateAvatar(item, root), []);
 });
 
 test('le détourage retire un halo blanc inventé sans effacer une barbe blanche réelle', () => {
