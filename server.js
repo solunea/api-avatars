@@ -121,11 +121,24 @@ app.post('/api/upload', upload.single('image'), (request, response) => {
 });
 
 app.post('/api/generate', async (request, response) => {
+  const streaming = request.accepts(['application/x-ndjson', 'json']) === 'application/x-ndjson';
   try {
     if (!process.env.REPLICATE_API_TOKEN) return response.status(503).json({error: 'REPLICATE_API_TOKEN non configuré'});
     const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
-    response.json(await generateBundle(root, request.body, (...args) => replicate.run(...args)));
-  } catch (error) { response.status(502).json({error: error.message || String(error)}); }
+    if (streaming) {
+      response.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+      response.setHeader('Cache-Control', 'no-cache, no-transform');
+      response.flushHeaders();
+    }
+    const result = await generateBundle(root, request.body, (...args) => replicate.run(...args), event => {
+      if (streaming && !response.destroyed) response.write(`${JSON.stringify(event)}\n`);
+    });
+    if (streaming) response.end(`${JSON.stringify({type: 'complete'})}\n`);
+    else response.json(result);
+  } catch (error) {
+    if (streaming && response.headersSent) response.end(`${JSON.stringify({type: 'error', error: error.message || String(error)})}\n`);
+    else response.status(502).json({error: error.message || String(error)});
+  }
 });
 
 app.post('/api/describe', async (request, response) => {

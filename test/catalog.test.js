@@ -4,11 +4,15 @@ import {mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync}
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
+import {PNG} from 'pngjs';
 import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
 import {generateBundle, describeBundle, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
+import {removeWhiteFringe} from '../lib/matte.js';
 
-const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aLQAAAABJRU5ErkJggg==', 'base64');
-const detailedDescription = Array(9).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
+const png = PNG.sync.write(new PNG({width: 1, height: 1}));
+const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
+const detailedBundle = JSON.stringify({description: 'Portrait de Ada.', speechPersonality: 'Voix chaleureuse, débit posé et articulation nette.',
+  tonePrompts: {neutral: detailedDescription, success: detailedDescription, failure: detailedDescription}});
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'api-avatars-'));
   t.after(() => rmSync(root, {recursive: true, force: true}));
@@ -91,12 +95,19 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [options.input.prompt.includes('JSON object') ? '{"description":"Portrait de Ada.","speechPersonality":"Voix chaleureuse, débit posé et articulation nette."}' : detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
-  const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run);
+  const events = [];
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedBundle] : `data:image/png;base64,${png.toString('base64')}`;};
+  const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
-  assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 4);
-  assert.ok(calls.some(call => call.options.input.prompt?.includes('170 to 220 word')));
+  assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
+  assert.ok(calls.some(call => call.options.input.prompt?.includes('at least 170 words')));
+  assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 3);
+  const eventNames = events.map(event => `${event.type}:${event.tone || ''}`);
+  assert.deepEqual(eventNames.slice(0, 4), ['stage:neutral', 'portrait:neutral', 'stage:success', 'stage:failure']);
+  assert.deepEqual(eventNames.slice(4, 6).sort(), ['portrait:failure', 'portrait:success']);
+  assert.deepEqual(eventNames.slice(6), ['stage:descriptions', 'details:']);
+  for (const event of events.filter(item => item.type === 'portrait')) assert.ok(existsSync(join(root, event.path)));
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
@@ -115,26 +126,28 @@ test('génération avec décor transmet les deux références sans détourage', 
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [options.input.prompt.includes('JSON object') ? '{"description":"Portrait de Ada.","speechPersonality":"Voix chaleureuse, débit posé et articulation nette."}' : detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedBundle] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 7);
+  assert.equal(calls.length, 4);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
   assert.deepEqual(fluxCalls[1].options.input.input_images[1], png);
 });
 
-test('les descriptions peuvent être régénérées depuis les trois images sans recréer les portraits', async t => {
+test('les descriptions et métadonnées sont régénérées en un seul appel sans recréer les portraits', async t => {
   const root = fixture(t);
   const calls = [];
   const result = await describeBundle(root, {tones: avatar().tones}, async (model, options) => {
     calls.push({model, options});
-    return [detailedDescription];
+    return [detailedBundle];
   });
   assert.deepEqual(Object.keys(result.tonePrompts), ['neutral', 'success', 'failure']);
-  assert.equal(calls.length, 3);
+  assert.equal(result.description, 'Portrait de Ada.');
+  assert.equal(calls.length, 1);
   assert.ok(calls.every(call => call.model === 'google/gemini-2.5-flash'));
-  assert.ok(calls.every(call => call.options.input.images[0].equals(png)));
-  assert.ok(calls.every(call => call.options.input.prompt.includes('transparent background')));
+  assert.equal(calls[0].options.input.images.length, 3);
+  assert.ok(calls[0].options.input.images.every(image => image.equals(png)));
+  assert.ok(calls[0].options.input.prompt.includes('transparent backgrounds'));
 });
 
 test('une description trop courte ne passe pas silencieusement dans le catalogue', async () => {
@@ -143,10 +156,35 @@ test('une description trop courte ne passe pas silencieusement dans le catalogue
   await assert.rejects(describePortrait(async () => ['Generic portrait.'], png), /trop courte/);
 });
 
+test('une réponse groupée incomplète demande une correction', async t => {
+  const root = fixture(t);
+  const tones = avatar().tones;
+  await assert.rejects(describeBundle(root, {tones}, async () => ['<html>Erreur</html>']), /format JSON/);
+  await assert.rejects(describeBundle(root, {tones}, async () => [JSON.stringify({...JSON.parse(detailedBundle), tonePrompts: {...JSON.parse(detailedBundle).tonePrompts, failure: 'Too short.'}})]), /trop courte/);
+});
+
+test('le détourage retire un halo blanc inventé sans effacer une barbe blanche réelle', () => {
+  const source = new PNG({width: 7, height: 7});
+  const cutout = new PNG({width: 7, height: 7});
+  for (let pixel = 0; pixel < 49; pixel++) {
+    const at = pixel * 4;
+    source.data.set([90, 70, 55, 255], at);
+    cutout.data.set([90, 70, 55, 0], at);
+  }
+  const halo = (3 * 7 + 2) * 4;
+  const beard = (3 * 7 + 3) * 4;
+  cutout.data.set([248, 247, 242, 255], halo);
+  source.data.set([245, 243, 237, 255], beard);
+  cutout.data.set([245, 243, 237, 255], beard);
+  const cleaned = PNG.sync.read(removeWhiteFringe(PNG.sync.write(source), PNG.sync.write(cutout)));
+  assert.equal(cleaned.data[halo + 3], 0);
+  assert.equal(cleaned.data[beard + 3], 255);
+});
+
 test('administration locale accepte la création puis la suppression', async t => {
   const root = fixture(t);
   const port = 32000 + Math.floor(Math.random() * 20000);
-  const child = spawn(process.execPath, ['server.js'], {cwd:join(import.meta.dirname, '..'), env:{...process.env, API_AVATAR_ROOT:root, PORT:String(port)}, stdio:'ignore'});
+  const child = spawn(process.execPath, ['server.js'], {cwd:join(import.meta.dirname, '..'), env:{...process.env, API_AVATAR_ROOT:root, PORT:String(port), REPLICATE_API_TOKEN:'test-only-token'}, stdio:'ignore'});
   t.after(() => child.kill());
   const base = `http://127.0.0.1:${port}`;
   let ready = false;
@@ -161,6 +199,16 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.deepEqual(availableVoices.find(voice => voice.key === 'gemini:Kore'), {key:'gemini:Kore', name:'Kore', gender:'female'});
   const foreignOrigin = await fetch(`${base}/api/build`, {method:'POST',headers:{Origin:'https://example.org'}});
   assert.equal(foreignOrigin.status, 403);
+  const streamedError = await fetch(`${base}/api/generate`, {method:'POST', headers:{'Content-Type':'application/json', Accept:'application/x-ndjson'},
+    body:JSON.stringify({name:'Ada', photo:'images/absent.png'})});
+  assert.equal(streamedError.status, 200);
+  assert.match(streamedError.headers.get('content-type'), /application\/x-ndjson/);
+  assert.deepEqual(JSON.parse((await streamedError.text()).trim()), {type:'error', error:'Image introuvable : images/absent.png'});
+  const describedError = await fetch(`${base}/api/describe`, {method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tones:{neutral:'images/absent.png'}})});
+  assert.equal(describedError.status, 502);
+  assert.match(describedError.headers.get('content-type'), /application\/json/);
+  assert.match((await describedError.json()).error, /trois portraits sont requis/);
   const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();

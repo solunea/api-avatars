@@ -8,6 +8,7 @@ let activeTone = 'neutral';
 let newMode = true;
 let dirty = false;
 let busy = false;
+let generationState = null;
 let messageTimer;
 let voicePreviewRequest = 0;
 
@@ -16,20 +17,60 @@ function emptyAvatar() {
     tones: {neutral: '', success: '', failure: ''}, tonePrompts: {neutral: '', success: '', failure: ''}};
 }
 
-function message(value, ok = false) {
+function message(value, ok = false, persistent = false) {
   clearTimeout(messageTimer);
   const element = $('#message');
   element.textContent = value;
-  element.dataset.state = ok ? 'ok' : 'error';
+  element.dataset.state = ok ? (persistent ? 'progress' : 'ok') : 'error';
   element.hidden = !value;
-  if (ok && value) messageTimer = setTimeout(() => { element.hidden = true; }, 6500);
+  if (ok && value && !persistent) messageTimer = setTimeout(() => { element.hidden = true; }, 6500);
 }
 
 async function api(path, options = {}) {
   const response = await fetch(path, options);
-  const data = await response.json();
+  const body = await response.text();
+  let data;
+  try { data = JSON.parse(body); }
+  catch { throw new Error('Le serveur a renvoyé une page au lieu de l’API. Redémarrez api-avatars et réessayez.'); }
   if (!response.ok) throw new Error(data.error || `Erreur ${response.status}`);
   return data;
+}
+
+async function streamApi(path, options, onEvent) {
+  const response = await fetch(path, options);
+  if (!response.ok) {
+    const body = await response.text();
+    let data;
+    try { data = JSON.parse(body); } catch {}
+    throw new Error(data?.error || `Erreur ${response.status} lors de la génération`);
+  }
+  if (!response.headers.get('content-type')?.includes('application/x-ndjson') || !response.body) {
+    throw new Error('Le serveur api-avatars doit être redémarré pour afficher la génération en direct.');
+  }
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let pending = '';
+  let complete = false;
+  function readLine(line) {
+    if (!line.trim()) return;
+    const event = JSON.parse(line);
+    if (event.type === 'error') throw new Error(event.error || 'Génération interrompue');
+    if (event.type === 'complete') complete = true;
+    else onEvent(event);
+  }
+  while (true) {
+    const {done, value} = await reader.read();
+    if (done) break;
+    pending += decoder.decode(value, {stream: true});
+    let newline;
+    while ((newline = pending.indexOf('\n')) !== -1) {
+      readLine(pending.slice(0, newline));
+      pending = pending.slice(newline + 1);
+    }
+  }
+  pending += decoder.decode();
+  readLine(pending);
+  if (!complete) throw new Error('La connexion a été interrompue avant la fin de la génération.');
 }
 
 function media(field) { return tones.includes(field) ? current.tones[field] : current[field]; }
@@ -66,8 +107,17 @@ function renderMedia(field) {
   else image.removeAttribute('src');
   status.textContent = path ? (tones.includes(field) ? 'Prêt' : path.split('/').at(-1)) : (field === 'decor' ? 'Facultatif' : 'À ajouter');
   status.classList.toggle('ready', !!path && tones.includes(field));
+  const progress = generationState?.[field];
+  if (progress && progress !== 'ready') {
+    status.textContent = progress === 'running' ? 'Génération…' : 'En attente';
+    status.classList.remove('ready');
+  }
+  status.classList.toggle('working', progress === 'running');
   if (tones.includes(field)) {
     $(`#empty-${field}`).hidden = !!path;
+    $(`#empty-${field}`).textContent = progress === 'running' ? 'Portrait en cours de génération…'
+      : progress === 'pending' ? 'En attente du portrait neutre…' : `Aucun portrait ${field === 'neutral' ? 'neutre' : field === 'success' ? 'de succès' : 'd’échec'}`;
+    image.closest('.portrait-frame').classList.toggle('working', progress === 'running');
     $(`#details-${field}`).textContent = path ? path.split('/').at(-1) : 'PNG, JPEG ou WebP';
     if (path) image.onload = () => {
       if (media(field) === path) $(`#details-${field}`).textContent = `${image.naturalWidth} × ${image.naturalHeight} · ${path.split('.').at(-1).toUpperCase()}`;
@@ -86,6 +136,13 @@ function setMedia(field, path) {
   else current[field] = path;
   dirty = true;
   renderMedia(field);
+  renderRecordStatus();
+}
+
+function renderRecordStatus() {
+  const status = $('#record-status');
+  status.textContent = generationState ? 'Génération…' : current.id ? (dirty ? 'À enregistrer' : 'Enregistré') : 'Brouillon';
+  status.className = `status-badge ${current.id && !dirty && !generationState ? 'status-saved' : 'status-draft'}`;
 }
 
 function renderPrompts() {
@@ -152,8 +209,7 @@ function renderForm() {
   const title = current.name || 'Nouvel avatar';
   $('#current-name').textContent = title;
   $('#breadcrumb-name').textContent = title;
-  $('#record-status').textContent = current.id ? 'Enregistré' : 'Brouillon';
-  $('#record-status').className = `status-badge ${current.id ? 'status-saved' : 'status-draft'}`;
+  renderRecordStatus();
   $('#delete').hidden = !current.id;
   for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) $(`[name="${key}"]`).value = current[key] || '';
   stopVoicePreview();
@@ -175,7 +231,7 @@ async function run(button, progress, action) {
   if (busy) return;
   busy = true;
   button.disabled = true;
-  message(progress, true);
+  message(progress, true, true);
   try { await action(); }
   catch (error) { message(error.message || String(error)); }
   finally { button.disabled = false; busy = false; }
@@ -203,6 +259,7 @@ for (const tone of tones) {
     current.tonePrompts[tone] = event.target.value;
     $(`#words-${tone}`).textContent = `${wordCount(event.target.value)} mots`;
     dirty = true;
+    renderRecordStatus();
   });
 }
 
@@ -210,6 +267,7 @@ for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) {
   $(`[name="${key}"]`).addEventListener('input', event => {
     current[key] = event.target.value;
     dirty = true;
+    renderRecordStatus();
     if (key === 'name') {
       $('#current-name').textContent = current.name || 'Nouvel avatar';
       $('#breadcrumb-name').textContent = current.name || 'Nouvel avatar';
@@ -257,24 +315,65 @@ $('#manual-mode').addEventListener('click', () => {
   $('#upload-neutral').focus();
 });
 
+function setGenerationControls(disabled) {
+  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new')) {
+    element.disabled = disabled;
+  }
+}
+
+function applyGeneratedDetails(result) {
+  current.tonePrompts = {...current.tonePrompts, ...result.tonePrompts};
+  if (!current.description && result.description) current.description = result.description;
+  if (!current.speechPersonality && result.speechPersonality) current.speechPersonality = result.speechPersonality;
+  $('#avatar-description').value = current.description;
+  $('#avatar-personality').value = current.speechPersonality;
+  dirty = true;
+  renderRecordStatus();
+  renderPrompts();
+}
+
 async function generateFromReferences(button) {
+  if (busy) return;
   current.name = $('#avatar-name').value.trim();
   if (!current.name || !current.photo) return message('Indiquez un nom et chargez une photo de référence.');
-  const wasNew = newMode;
-  await run(button, 'Génération des portraits, descriptions et personnalité vocale…', async () => {
-    const result = await api('/api/generate', {method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({name: current.name, photo: current.photo, decor: current.decor, voiceKey: $('#avatar-voice').value})});
-    setMedia('preview', result.preview);
-    for (const tone of tones) {
-      setMedia(tone, result.tones[tone]);
-      current.tonePrompts[tone] = result.tonePrompts[tone];
-    }
-    if (wasNew || !current.description) current.description = result.description;
-    if (wasNew || !current.speechPersonality) current.speechPersonality = result.speechPersonality;
-    newMode = false;
-    renderForm();
-    message('Portraits, descriptions et personnalité vocale prêts à vérifier', true);
+  const request = {name: current.name, photo: current.photo, decor: current.decor, voiceKey: $('#avatar-voice').value};
+  generationState = {preview: 'running', neutral: 'running', success: 'pending', failure: 'pending'};
+  newMode = false;
+  renderForm();
+  setGenerationControls(true);
+  $('#prompts-progress').hidden = false;
+  $('#prompts-progress').textContent = 'En attente des portraits';
+  $('.studio-panel').scrollIntoView({block: 'start'});
+  await run(button, 'Génération du portrait neutre…', async () => {
+    await streamApi('/api/generate', {method: 'POST', headers: {'Content-Type': 'application/json', Accept: 'application/x-ndjson'},
+      body: JSON.stringify(request)}, event => {
+      if (event.type === 'stage' && event.tone === 'descriptions') {
+        $('#prompts-progress').textContent = 'Rédaction des descriptions…';
+        message('Rédaction des descriptions et de la personnalité vocale…', true, true);
+      } else if (event.type === 'stage' && tones.includes(event.tone)) {
+        generationState[event.tone] = 'running';
+        renderMedia(event.tone);
+        message(`Génération du portrait ${event.tone === 'neutral' ? 'neutre' : event.tone === 'success' ? 'de succès' : 'd’échec'}…`, true, true);
+      } else if (event.type === 'portrait' && tones.includes(event.tone)) {
+        generationState[event.tone] = 'ready';
+        if (event.tone === 'neutral') {
+          generationState.preview = 'ready';
+          setMedia('preview', event.path);
+        }
+        setMedia(event.tone, event.path);
+        if (event.tone === 'neutral') $('#prompts-progress').textContent = 'Deux expressions en cours de génération';
+      } else if (event.type === 'details') {
+        applyGeneratedDetails(event);
+        $('#prompts-progress').hidden = true;
+      }
+    });
+    message('Portraits et descriptions prêts à vérifier', true);
   });
+  generationState = null;
+  setGenerationControls(false);
+  renderRecordStatus();
+  $('#prompts-progress').hidden = true;
+  for (const field of ['preview', ...tones]) renderMedia(field);
 }
 $('#generate').addEventListener('click', () => generateFromReferences($('#generate')));
 $('#generate-all').addEventListener('click', () => generateFromReferences($('#generate-all')));
@@ -284,11 +383,9 @@ $('#describe').addEventListener('click', async () => {
   if (tones.some(tone => !paths[tone])) return message('Chargez les trois portraits avant de générer leurs descriptions.');
   await run($('#describe'), 'Description détaillée des trois portraits…', async () => {
     const result = await api('/api/describe', {method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({tones: paths, decor: current.decor})});
-    current.tonePrompts = result.tonePrompts;
-    dirty = true;
-    renderPrompts();
-    message('Descriptions prêtes à relire', true);
+      body: JSON.stringify({tones: paths, decor: current.decor, name: current.name, voiceKey: current.voiceKey})});
+    applyGeneratedDetails(result);
+    message('Descriptions et champs manquants prêts à relire', true);
   });
 });
 
