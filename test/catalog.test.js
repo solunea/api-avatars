@@ -283,6 +283,9 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal(availableVoices.length, 30);
   assert.ok(availableVoices.every(voice => voice.key === `gemini:${voice.name}` && ['male', 'female'].includes(voice.gender)));
   assert.deepEqual(availableVoices.find(voice => voice.key === 'gemini:Kore'), {key:'gemini:Kore', name:'Kore', gender:'female'});
+  for (const [name, gender] of Object.entries({Zephyr:'female', Achernar:'female', Algieba:'male', Gacrux:'female', Zubenelgenubi:'male'})) {
+    assert.equal(availableVoices.find(voice => voice.name === name)?.gender, gender, `genre de ${name}`);
+  }
   const foreignOrigin = await fetch(`${base}/api/build`, {method:'POST',headers:{Origin:'https://example.org'}});
   assert.equal(foreignOrigin.status, 403);
   const streamedError = await fetch(`${base}/api/generate`, {method:'POST', headers:{'Content-Type':'application/json', Accept:'application/x-ndjson'},

@@ -1,6 +1,5 @@
 const tones = ['neutral', 'success', 'failure'];
 const fields = ['photo', 'decor', 'preview', ...tones];
-const feminineVoices = new Set(['Kore', 'Leda', 'Aoede', 'Callirrhoe', 'Autonoe', 'Despina', 'Erinome', 'Laomedeia', 'Algieba', 'Pulcherrima', 'Zubenelgenubi', 'Vindemiatrix', 'Sulafat']);
 const $ = selector => document.querySelector(selector);
 let catalog = [];
 let current = emptyAvatar();
@@ -438,13 +437,14 @@ async function init() {
     const sortedVoices = voices.map(voice => {
       const key = typeof voice === 'string' ? voice : voice.key;
       const name = typeof voice === 'string' ? voice.replace(/^gemini:/, '') : voice.name;
-      const gender = typeof voice === 'string' ? (feminineVoices.has(name) ? 'female' : 'male') : voice.gender;
+      const gender = typeof voice === 'string' ? '' : voice.gender;
       return {key, name, gender};
     }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
     const options = sortedVoices.map(voice => {
       const option = document.createElement('option');
       option.value = voice.key;
-      option.textContent = `${voice.name} · ${voice.gender === 'female' ? 'féminine' : 'masculine'}`;
+      const genderLabel = voice.gender === 'female' ? 'féminine' : voice.gender === 'male' ? 'masculine' : '';
+      option.textContent = genderLabel ? `${voice.name} · ${genderLabel}` : voice.name;
       return option;
     });
     select.replaceChildren(...options);
