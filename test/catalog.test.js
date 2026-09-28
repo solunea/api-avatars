@@ -5,7 +5,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
-import {generateBundle, describeBundle, describePortrait, portraitDescriptionPrompt} from '../lib/generation.js';
+import {generateBundle, describeBundle, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
 
 const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aLQAAAABJRU5ErkJggg==', 'base64');
 const detailedDescription = Array(9).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
@@ -68,6 +68,23 @@ test('succès et échec doivent avoir chacun leur propre image', t => {
   const errors = validateAvatar(item, root);
   assert.ok(errors.includes('image success identique au ton neutral'));
   assert.ok(errors.includes('image failure identique à un autre ton'));
+});
+
+test('les tons demandent des expressions faciales visibles et distinctes du neutre', () => {
+  const neutral = portraitPrompt('Ada', 'neutral', false, true);
+  const success = portraitPrompt('Ada', 'success', false, false);
+  const failure = portraitPrompt('Ada', 'failure', false, false);
+  assert.match(neutral, /relaxed eyebrows/);
+  assert.doesNotMatch(neutral, /must visibly change/);
+  assert.match(success, /natural medium smile/);
+  assert.match(success, /lifted cheeks/);
+  assert.match(failure, /gentle furrow between the eyebrows/);
+  assert.match(failure, /downturned corners/);
+  for (const prompt of [success, failure]) {
+    assert.match(prompt, /unmistakable even in a small thumbnail/);
+    assert.match(prompt, /exact facial identity, hair and clothing/);
+    assert.match(prompt, /mouth unobstructed/);
+  }
 });
 
 test('génération IA prépare les trois tons et le détourage sans décor', async t => {
