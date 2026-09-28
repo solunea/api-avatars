@@ -5,9 +5,10 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
-import {generateBundle} from '../lib/generation.js';
+import {generateBundle, describeBundle, describePortrait, portraitDescriptionPrompt} from '../lib/generation.js';
 
 const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aLQAAAABJRU5ErkJggg==', 'base64');
+const detailedDescription = Array(9).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'api-avatars-'));
   t.after(() => rmSync(root, {recursive: true, force: true}));
@@ -73,11 +74,12 @@ test('génération IA prépare les trois tons et le détourage sans décor', asy
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['An empathetic front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run);
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
-  assert.equal(calls.filter(call => call.model === 'google/gemini-3.1-pro').length, 3);
+  assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 3);
+  assert.match(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.prompt, /170 to 220 word/);
   assert.equal(calls[0].options.input.input_images.length, 1);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
@@ -95,13 +97,33 @@ test('génération avec décor transmet les deux références sans détourage', 
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? ['A front-facing portrait of Ada.'] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedDescription] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
   assert.equal(calls.length, 6);
   assert.equal(calls[0].options.input.input_images.length, 2);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
   assert.deepEqual(fluxCalls[1].options.input.input_images[1], png);
+});
+
+test('les descriptions peuvent être régénérées depuis les trois images sans recréer les portraits', async t => {
+  const root = fixture(t);
+  const calls = [];
+  const result = await describeBundle(root, {tones: avatar().tones}, async (model, options) => {
+    calls.push({model, options});
+    return [detailedDescription];
+  });
+  assert.deepEqual(Object.keys(result.tonePrompts), ['neutral', 'success', 'failure']);
+  assert.equal(calls.length, 3);
+  assert.ok(calls.every(call => call.model === 'google/gemini-2.5-flash'));
+  assert.ok(calls.every(call => call.options.input.images[0].equals(png)));
+  assert.ok(calls.every(call => call.options.input.prompt.includes('transparent background')));
+});
+
+test('une description trop courte ne passe pas silencieusement dans le catalogue', async () => {
+  assert.match(portraitDescriptionPrompt(), /text-to-image/);
+  assert.match(portraitDescriptionPrompt(true), /visible setting/);
+  await assert.rejects(describePortrait(async () => ['Generic portrait.'], png), /trop courte/);
 });
 
 test('administration locale accepte la création puis la suppression', async t => {

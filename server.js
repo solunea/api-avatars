@@ -9,7 +9,7 @@ import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, normalizeSpeechPersonality} from './lib/catalog.js';
-import {generateBundle} from './lib/generation.js';
+import {generateBundle, describeBundle} from './lib/generation.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -125,6 +125,14 @@ app.post('/api/generate', async (request, response) => {
     if (!process.env.REPLICATE_API_TOKEN) return response.status(503).json({error: 'REPLICATE_API_TOKEN non configuré'});
     const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
     response.json(await generateBundle(root, request.body, (...args) => replicate.run(...args)));
+  } catch (error) { response.status(502).json({error: error.message || String(error)}); }
+});
+
+app.post('/api/describe', async (request, response) => {
+  try {
+    if (!process.env.REPLICATE_API_TOKEN) return response.status(503).json({error: 'REPLICATE_API_TOKEN non configuré'});
+    const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
+    response.json(await describeBundle(root, request.body, (...args) => replicate.run(...args)));
   } catch (error) { response.status(502).json({error: error.message || String(error)}); }
 });
 

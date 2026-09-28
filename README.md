@@ -14,6 +14,8 @@ L’administration est accessible sur `http://127.0.0.1:3005`. Renseigner `REPLI
 
 Une fiche requiert un nom, une voix Gemini intégrée à Cannelle, une photo de référence, une image de sélection, les trois tons (`neutral`, `success`, `failure`) et une description de chacun. Les images de succès et d’échec doivent être distinctes entre elles et du portrait neutre. Un décor et une `speechPersonality` facultative (300 caractères maximum) peuvent être ajoutés. L’administration accepte PNG, JPEG et WebP. La génération utilise FLUX.2 Pro et, sans décor, le détourage employé par Cannelle. Le portrait de sélection sert de référence au ton neutre, puis aux générations distinctes de succès et d’échec. Vérifiez les trois images avant d’enregistrer la fiche.
 
+Les descriptions des trois tons sont des prompts détaillés de 170 à 220 mots destinés à la génération text-to-image : traits distinctifs, vêtements, expression, cadrage, fond et lumière. Gemini 2.5 Flash les produit avec une consigne adaptée à la présence d’un décor ou à la transparence. Le bouton **Décrire les portraits** permet de les régénérer à partir des images déjà présentes sans relancer FLUX. Une description trop courte ou indisponible provoque une erreur à corriger avant l’enregistrement ; aucun texte générique n’est inséré automatiquement.
+
 ```bash
 npm run build
 npm test
