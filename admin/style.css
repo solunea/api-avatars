@@ -157,14 +157,14 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
 .save-button { width: 100%; }
 
 .new-mode .studio-panel { display: none; }
-.new-mode .inspector { position: static; grid-column: 2 / -1; height: auto; overflow: visible; min-height: calc(100vh - 64px); border-left: 0; background: #0a0a0b; padding: 28px clamp(24px, 5vw, 72px); }
-.new-mode .inspector form { max-width: 980px; margin: 0 auto; padding: clamp(24px, 4vw, 38px); display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 28px; }
+.new-mode .inspector { position: static; grid-column: 2 / -1; display: flex; align-items: center; justify-content: center; height: auto; overflow: visible; min-height: calc(100vh - 64px); border-left: 0; background: #0a0a0b; padding: 28px clamp(24px, 5vw, 72px); }
+.new-mode .inspector form { width: 100%; max-width: 980px; margin: 0; padding: clamp(24px, 4vw, 38px); display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 28px; }
 .new-mode .inspector-heading, .new-mode .source-heading, .new-mode .source-grid, .new-mode .text-button, .new-mode .creation-actions, .new-mode .inspector-note, .new-mode .save-button { grid-column: 1 / -1; }
 .new-mode .inspector-heading { padding-bottom: 4px; }
 .new-mode .inspector h2 { margin-bottom: 8px; font-size: 27px; letter-spacing: -.035em; }
 .new-mode .source-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 20px; }
 .new-mode .source-preview, .new-mode .save-button { display: none; }
-.new-mode .creation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+.new-mode .creation-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 22px; }
 .new-mode .inspector-note { margin-top: 23px; }
 .new-mode .save-button { max-width: 300px; }
 
@@ -208,7 +208,7 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
   .prompt-heading .button { margin-top: 12px; }
   .inspector { padding: 14px; }
   .inspector form { display: block; }
-  .new-mode .inspector { min-height: 0; padding: 16px 14px; }
+  .new-mode .inspector { display: block; min-height: 0; padding: 16px 14px; }
   .new-mode .inspector form { display: block; padding: 20px; }
   .new-mode .source-grid { display: block; }
 }
