@@ -13,10 +13,10 @@
     "id": "preset-sophia",
     "name": "Sophia",
     "description": "Femme aux longs cheveux bruns, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital.",
-    "preview": "images/3e7f8890-38e5-4df6-a6cf-9c69b7c18953.png",
-    "decor": "images/8fca5887-ea1a-42b3-8f6d-801a2fee2051.jpg",
+    "preview": "images/a7722083-7ba3-4c4e-906a-1327259b07c7.png",
+    "decor": "",
     "voiceKey": "gemini:Kore",
     "speechPersonality": "Une voix posée et claire, avec un rythme modéré et une articulation précise, reflétant le professionnalisme et la sérénité de l'avatar. La chaleur naturelle de la voix \"Kore\" s'accorde parfaitement à son expression bienveillante et son rôle éducatif.",
-    "updatedAt": "2026-09-28T14:57:42.569Z"
+    "updatedAt": "2026-09-28T21:12:22.370Z"
   }
 ]
