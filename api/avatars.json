@@ -8,5 +8,15 @@
     "voiceKey": "gemini:Kore",
     "speechPersonality": "Chaleureuse",
     "updatedAt": "2026-09-28T13:28:19.824Z"
+  },
+  {
+    "id": "preset-sophia",
+    "name": "Sophia",
+    "description": "Avatar féminin aux longs cheveux noirs, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital bien éclairé. Son expression est neutre.",
+    "preview": "images/33ab1fc5-e187-4826-9f13-e8264a69790b.png",
+    "decor": "images/ddbfa0b6-7c07-4f8f-9c4b-cb3751bf6b11.jpg",
+    "voiceKey": "gemini:Kore",
+    "speechPersonality": "Une voix posée et chaleureuse, au débit modéré et à l'articulation très claire, reflétant le professionnalisme et la bienveillance de l'avatar. Elle inspire confiance et calme, adaptée à des communications éducatives et informatives.",
+    "updatedAt": "2026-09-28T13:32:50.264Z"
   }
 ]
