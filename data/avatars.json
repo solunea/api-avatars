@@ -22,5 +22,29 @@
     "preset": true,
     "createdAt": "2026-09-28T13:27:29.491Z",
     "updatedAt": "2026-09-28T14:03:57.175Z"
+  },
+  {
+    "id": "preset-sophia",
+    "name": "Sophia",
+    "description": "Femme aux longs cheveux bruns, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital.",
+    "voiceKey": "gemini:Kore",
+    "speechPersonality": "Une voix posée et claire, avec un rythme modéré et une articulation précise, reflétant le professionnalisme et la sérénité de l'avatar. La chaleur naturelle de la voix \"Kore\" s'accorde parfaitement à son expression bienveillante et son rôle éducatif.",
+    "photo": "images/963e5f2f-0d6c-4051-a56d-73b0fa61b494.png",
+    "decor": "images/8fca5887-ea1a-42b3-8f6d-801a2fee2051.jpg",
+    "preview": "images/3e7f8890-38e5-4df6-a6cf-9c69b7c18953.png",
+    "styleId": "",
+    "tones": {
+      "neutral": "images/3e7f8890-38e5-4df6-a6cf-9c69b7c18953.png",
+      "success": "images/abf40e40-e4ad-48bb-9c54-6459d0e1dd55.png",
+      "failure": "images/0147a650-614d-4cab-9137-beaae9484706.png"
+    },
+    "tonePrompts": {
+      "neutral": "A medium close-up, frontal portrait captures a woman with a neutral and composed expression, her gaze directed straight at the viewer. Her face is distinctly oval with smooth, unblemished skin, and subtle contours along her cheekbones. Her dark brown eyes are calm and steady, framed by well-defined, dark, and slightly arched eyebrows. She has no visible facial hair. Her long, straight, dark brown hair is parted in the middle and cascades over her shoulders, framing her face elegantly. She is wearing a crisp white lab coat, its collar visible and two white buttons fastened on the right side of her chest. A black stethoscope is draped around her neck, with its silver earpieces resting on her shoulders and the silver chest piece hanging prominently in the foreground. The background reveals a brightly lit hospital or clinic corridor, characterized by light beige walls and a darker floor that recedes into the distance. Overhead fluorescent lighting illuminates the scene evenly. On the left side of the corridor, a white medical cart is partially visible, and on the right, a door frame adds to the institutional setting. The overall impression is one of professionalism and quiet confidence in a clean, functional environment.",
+      "success": "A medium close-up, frontal portrait captures the same woman, now radiating a bright and genuine smile, her gaze still directed at the viewer but filled with warmth. Her oval face, with its smooth skin, shows the delightful crinkling around her dark brown eyes, which sparkle with evident joy. Her well-defined, dark, and slightly arched eyebrows are subtly raised, enhancing her cheerful expression. Her lips are parted, revealing a full set of white, even teeth in a broad smile. There is no visible facial hair. Her long, straight, dark brown hair remains parted in the middle, flowing gracefully over her shoulders. She is dressed in a crisp white lab coat, its collar neatly visible, with two white buttons fastened on the right side of her chest. A black stethoscope is draped around her neck, its silver earpieces resting on her shoulders and the silver chest piece hanging prominently. The background is consistent with a brightly lit hospital or clinic corridor, featuring light beige walls and a darker floor that extends into the distance. Overhead fluorescent lighting provides even illumination. A white medical cart is partially visible on the left, and a door frame on the right, maintaining the clean and functional institutional setting. Her expression conveys a strong sense of accomplishment and happiness.",
+      "failure": "A medium close-up, frontal portrait captures the same woman, now displaying a deeply worried and concerned expression, her gaze fixed directly at the viewer. Her oval face, with its smooth skin, is marked by a deeply furrowed brow, creating prominent creases on her forehead. Her dark brown eyes are wide and convey a sense of distress or sadness, while her well-defined, dark eyebrows are drawn together intensely. Her mouth is downturned, indicating a clear feeling of disappointment or concern. There is no visible facial hair. Her long, straight, dark brown hair is parted in the middle and falls over her shoulders, framing her troubled face. She is wearing the same crisp white lab coat, its collar visible, with two white buttons fastened on the right side of her chest. A black stethoscope is draped around her neck, its silver earpieces resting on her shoulders and the silver chest piece hanging prominently. The background remains the brightly lit hospital or clinic corridor, characterized by light beige walls and a darker floor receding into the distance. Overhead fluorescent lighting provides consistent illumination. A white medical cart is partially visible on the left, and a door frame on the right, maintaining the clean and functional institutional setting. Her entire demeanor suggests a significant setback or a moment of profound worry."
+    },
+    "preset": true,
+    "createdAt": "2026-09-28T14:57:42.569Z",
+    "updatedAt": "2026-09-28T14:57:42.569Z"
   }
 ]
