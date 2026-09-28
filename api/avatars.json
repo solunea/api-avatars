@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "preset-rudy",
+    "name": "Rudy",
+    "description": "Rudy est un homme âgé au visage ridé, portant une casquette plate en velours côtelé marron, des lunettes rondes orange, une longue barbe blanche et une chemise beige avec un tablier marron.",
+    "preview": "images/2cd8fcaa-4d87-4817-ae91-f990a6c4cee6.png",
+    "decor": "",
+    "voiceKey": "gemini:Kore",
+    "speechPersonality": "Chaleureuse",
+    "updatedAt": "2026-09-28T13:27:29.491Z"
+  }
+]

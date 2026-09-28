@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "preset-rudy",
+    "name": "Rudy",
+    "description": "Rudy est un homme âgé au visage ridé, portant une casquette plate en velours côtelé marron, des lunettes rondes orange, une longue barbe blanche et une chemise beige avec un tablier marron.",
+    "voiceKey": "gemini:Kore",
+    "speechPersonality": "Chaleureuse",
+    "photo": "images/aa61c6c1-f8d0-4ae8-8431-d1f780c71d03.jpg",
+    "decor": "",
+    "preview": "images/2cd8fcaa-4d87-4817-ae91-f990a6c4cee6.png",
+    "styleId": "",
+    "tones": {
+      "neutral": "images/2cd8fcaa-4d87-4817-ae91-f990a6c4cee6.png",
+      "success": "images/53d33532-3629-40d4-aa1f-a5b60300ed5e.png",
+      "failure": "images/7f090e5d-7f70-42b5-8c23-1603c746567d.png"
+    },
+    "tonePrompts": {
+      "neutral": "A medium close-up portrait of an older man, presented as an isolated subject on a transparent background with no scenery or backdrop. He has an oval-shaped face with visible wrinkles, suggesting age and experience, and a slightly tanned complexion. His eyes are dark, calm, and gaze directly forward, conveying a sense of quiet contemplation. His thin, grey eyebrows are slightly furrowed, adding to his thoughtful expression. A long, thick, and well-groomed white beard dominates his lower face, extending down towards his chest, with grey hair visible at his temples and sideburns. He wears a textured, light brown corduroy flat cap, positioned slightly askew on his head. Distinctive round, thick-rimmed glasses in an orange-brown hue frame his eyes. His attire consists of a light beige collared shirt, buttoned up, layered with a dark brown apron that has two visible straps over his shoulders. The overall expression is neutral and serene. The frontal pose captures his head and upper torso, illuminated by soft, even, and slightly warm lighting that highlights his features without creating harsh shadows.",
+      "success": "A medium close-up portrait of the same older man, depicted as an isolated subject on a transparent background with no scenery or backdrop, radiating pure joy. His oval-shaped face, still showing visible wrinkles and a slightly tanned complexion, is animated with a broad, open-mouthed smile that reveals his teeth. His dark eyes are wide open, sparkling with delight and enthusiasm, conveying a sense of genuine happiness and success. His thin, grey eyebrows are noticeably raised and slightly arched, enhancing his cheerful expression. The long, thick, and well-groomed white beard remains prominent, extending down his chest, with grey hair visible at his temples and sideburns. He continues to wear the textured, light brown corduroy flat cap and the distinctive round, thick-rimmed orange-brown glasses, which now reflect a subtle gleam, adding to the vibrancy of the image. His attire is consistent: a light beige collared shirt, buttoned up, layered with a dark brown apron featuring two visible straps. The frontal pose captures his head and upper torso, bathed in soft, even, and slightly warm lighting that emphasizes his jubilant expression.",
+      "failure": "A medium close-up portrait of the same older man, presented as an isolated subject on a transparent background with no scenery or backdrop, displaying an expression of profound failure or confusion. His oval-shaped face, still marked by visible wrinkles and a slightly tanned complexion, is contorted into a deep frown. His thin, grey eyebrows are heavily furrowed and drawn together, creating prominent wrinkles across his forehead, indicative of worry or distress. His dark eyes are wide and appear slightly watery, conveying a sense of disappointment or bewilderment, gazing directly forward with a troubled look. The long, thick, and well-groomed white beard remains a consistent feature, extending down his chest, with grey hair visible at his temples and sideburns. He continues to wear the textured, light brown corduroy flat cap and the distinctive round, thick-rimmed orange-brown glasses. His mouth is downturned, completing the expression of concern. His attire is unchanged: a light beige collared shirt, buttoned up, layered with a dark brown apron featuring two visible straps. The frontal pose captures his head and upper torso, illuminated by soft, even lighting that has a slightly cooler tone, accentuating the somber mood."
+    },
+    "preset": true,
+    "createdAt": "2026-09-28T13:27:29.491Z",
+    "updatedAt": "2026-09-28T13:27:29.491Z"
+  }
+]
