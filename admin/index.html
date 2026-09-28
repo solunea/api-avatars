@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js?v=studio-5"></script>
+  <script type="module" src="app.js?v=studio-6"></script>
 </head>
 <body>
   <header class="topbar">
@@ -76,7 +76,7 @@
       <form id="editor">
         <div class="inspector-heading"><h2 id="inspector-title">Paramètres de l’avatar <span class="info-tip" tabindex="0" role="note" aria-label="Créez un avatar depuis une photo de référence, avec un décor facultatif." data-tooltip="Créez un avatar depuis une photo de référence, avec un décor facultatif.">i</span></h2></div>
         <div class="field"><label for="avatar-name">Nom de l’avatar</label><input id="avatar-name" name="name" required maxlength="80" placeholder="Ex. Artisan"></div>
-        <div class="field"><label for="avatar-voice">Voix <span class="info-tip" tabindex="0" role="note" aria-label="30 voix Gemini 3.1 Flash TTS disponibles." data-tooltip="30 voix Gemini 3.1 Flash TTS disponibles.">i</span></label><select id="avatar-voice" name="voiceKey" required></select></div>
+        <div class="field"><label for="avatar-voice">Voix <span class="info-tip" tabindex="0" role="note" aria-label="30 voix Gemini 3.1 Flash TTS disponibles." data-tooltip="30 voix Gemini 3.1 Flash TTS disponibles.">i</span></label><div class="voice-control"><select id="avatar-voice" name="voiceKey" required></select><button id="voice-preview" class="button voice-preview" type="button" aria-label="Écouter la voix sélectionnée" title="Écouter la voix sélectionnée" disabled><span id="voice-preview-icon" aria-hidden="true">▶</span></button></div><audio id="voice-preview-audio" preload="none"></audio></div>
         <div class="field"><label for="avatar-personality">Personnalité vocale <small>facultatif</small></label><textarea id="avatar-personality" name="speechPersonality" rows="3" maxlength="300" placeholder="Ex. Chaleureuse, posée et encourageante."></textarea></div>
         <div class="field"><label for="avatar-description">Description courte <small>facultative</small></label><textarea id="avatar-description" name="description" rows="3" maxlength="500" placeholder="Quelques mots pour retrouver cet avatar."></textarea></div>
 

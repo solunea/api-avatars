@@ -9,6 +9,7 @@ let newMode = true;
 let dirty = false;
 let busy = false;
 let messageTimer;
+let voicePreviewRequest = 0;
 
 function emptyAvatar() {
   return {id: '', name: '', description: '', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
@@ -34,6 +35,27 @@ async function api(path, options = {}) {
 function media(field) { return tones.includes(field) ? current.tones[field] : current[field]; }
 function mediaUrl(path) { return path ? `/${path}` : ''; }
 function wordCount(value) { return String(value || '').trim().split(/\s+/).filter(Boolean).length; }
+function selectedVoiceName() { return $('#avatar-voice').value.replace(/^gemini:/, ''); }
+function voicePreviewUrl(name) {
+  if (!/^[A-Za-z]+$/.test(name)) return '';
+  const slug = name === 'Aoede' ? 'aoeda' : name.toLowerCase();
+  return `https://docs.cloud.google.com/static/text-to-speech/docs/audio/chirp3-hd-${slug}.wav`;
+}
+function updateVoicePreviewButton(playing = false) {
+  const action = playing ? 'Mettre en pause' : 'Écouter';
+  const button = $('#voice-preview');
+  button.setAttribute('aria-label', `${action} l’échantillon de ${selectedVoiceName()}`);
+  button.title = `${action} l’échantillon de ${selectedVoiceName()}`;
+  $('#voice-preview-icon').textContent = playing ? 'Ⅱ' : '▶';
+}
+function stopVoicePreview() {
+  voicePreviewRequest += 1;
+  const audio = $('#voice-preview-audio');
+  audio.pause();
+  audio.removeAttribute('src');
+  audio.load();
+  updateVoicePreviewButton();
+}
 
 function renderMedia(field) {
   const path = media(field);
@@ -134,6 +156,7 @@ function renderForm() {
   $('#record-status').className = `status-badge ${current.id ? 'status-saved' : 'status-draft'}`;
   $('#delete').hidden = !current.id;
   for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) $(`[name="${key}"]`).value = current[key] || '';
+  stopVoicePreview();
   for (const field of fields) renderMedia(field);
   renderPrompts();
   renderList();
@@ -205,6 +228,28 @@ $('#new').addEventListener('click', () => {
   message('');
 });
 $('#search').addEventListener('input', renderList);
+$('#avatar-voice').addEventListener('change', stopVoicePreview);
+$('#voice-preview-audio').addEventListener('play', () => updateVoicePreviewButton(true));
+$('#voice-preview-audio').addEventListener('pause', () => updateVoicePreviewButton());
+$('#voice-preview-audio').addEventListener('ended', () => updateVoicePreviewButton());
+$('#voice-preview-audio').addEventListener('error', () => {
+  if ($('#voice-preview-audio').src) {
+    updateVoicePreviewButton();
+    message('Échantillon de voix indisponible. Réessayez plus tard.');
+  }
+});
+$('#voice-preview').addEventListener('click', async () => {
+  const audio = $('#voice-preview-audio');
+  if (!audio.paused) { audio.pause(); return; }
+  const url = voicePreviewUrl(selectedVoiceName());
+  if (!url) return message('Aucun échantillon disponible pour cette voix.');
+  const request = ++voicePreviewRequest;
+  if (audio.src !== url) audio.src = url;
+  try { await audio.play(); }
+  catch (error) {
+    if (request === voicePreviewRequest) message('Lecture de l’échantillon impossible. Réessayez plus tard.');
+  }
+});
 $('#clear-decor').addEventListener('click', () => setMedia('decor', ''));
 $('#manual-mode').addEventListener('click', () => {
   newMode = false;
@@ -305,6 +350,7 @@ async function init() {
       return option;
     });
     select.replaceChildren(...options);
+    $('#voice-preview').disabled = options.length === 0;
     renderForm();
   } catch (error) { message(error.message || String(error)); }
 }
