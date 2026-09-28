@@ -292,18 +292,19 @@ async function init() {
   try {
     const [voices] = await Promise.all([api('/api/voices'), refreshCatalog()]);
     const select = $('#avatar-voice');
-    const group = document.createElement('optgroup');
-    group.label = 'Gemini 3.1 Flash TTS';
-    for (const voice of voices) {
+    const sortedVoices = voices.map(voice => {
       const key = typeof voice === 'string' ? voice : voice.key;
       const name = typeof voice === 'string' ? voice.replace(/^gemini:/, '') : voice.name;
       const gender = typeof voice === 'string' ? (feminineVoices.has(name) ? 'female' : 'male') : voice.gender;
+      return {key, name, gender};
+    }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+    const options = sortedVoices.map(voice => {
       const option = document.createElement('option');
-      option.value = key;
-      option.textContent = `${name} · ${gender === 'female' ? 'féminine' : 'masculine'}`;
-      group.append(option);
-    }
-    select.replaceChildren(group);
+      option.value = voice.key;
+      option.textContent = `${voice.name} · ${voice.gender === 'female' ? 'féminine' : 'masculine'}`;
+      return option;
+    });
+    select.replaceChildren(...options);
     renderForm();
   } catch (error) { message(error.message || String(error)); }
 }
