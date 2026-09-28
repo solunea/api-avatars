@@ -8,6 +8,7 @@ import {PNG} from 'pngjs';
 import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
 import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
+import {pushPublishedHead} from '../lib/git-publish.js';
 
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
 const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
@@ -193,6 +194,36 @@ test('enregistrer sans descriptions les retrouve depuis les portraits', async t 
   assert.equal(item.description, 'Portrait de Ada.');
   assert.equal(item.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.deepEqual(validateAvatar(item, root), []);
+});
+
+test('publication simultanée déjà présente sur GitHub est un succès', async () => {
+  const calls = [];
+  await pushPublishedHead(async (_command, args) => {
+    calls.push(args[0]);
+    if (args[0] === 'push') throw new Error('cannot lock ref');
+    return {stdout: args[0] === 'rev-parse' ? 'abc\n' : 'abc\trefs/heads/main\n'};
+  }, {});
+  assert.deepEqual(calls, ['push', 'rev-parse', 'ls-remote']);
+});
+
+test('publication retente si le distant reste un ancêtre du commit local', async () => {
+  const calls = [];
+  await pushPublishedHead(async (_command, args) => {
+    calls.push(args[0]);
+    if (args[0] === 'push' && calls.filter(value => value === 'push').length === 1) throw new Error('cannot lock ref');
+    return {stdout: args[0] === 'rev-parse' ? 'new\n' : 'old\trefs/heads/main\n'};
+  }, {});
+  assert.deepEqual(calls, ['push', 'rev-parse', 'ls-remote', 'fetch', 'merge-base', 'push']);
+});
+
+test('publication refuse de remplacer un historique distant divergent', async () => {
+  const calls = [];
+  await assert.rejects(pushPublishedHead(async (_command, args) => {
+    calls.push(args[0]);
+    if (args[0] === 'push' || args[0] === 'merge-base') throw new Error('diverged');
+    return {stdout: args[0] === 'rev-parse' ? 'new\n' : 'other\trefs/heads/main\n'};
+  }, {}), /Synchronisez le catalogue/);
+  assert.equal(calls.filter(value => value === 'push').length, 1);
 });
 
 test('le détourage retire un halo blanc inventé sans effacer une barbe blanche réelle', () => {

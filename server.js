@@ -10,6 +10,7 @@ import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality} from './lib/catalog.js';
 import {generateBundle, describeBundle, completeAvatarDescriptions} from './lib/generation.js';
+import {pushPublishedHead} from './lib/git-publish.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -174,7 +175,7 @@ app.post('/api/push', async (_request, response) => {
     const status = (await runGit('git', ['diff', '--cached', '--name-only'], options)).stdout.trim();
     if (!status) return response.json({message: 'Aucun changement à publier'});
     await runGit('git', ['commit', '-m', `Update avatars ${new Date().toISOString()}`], options);
-    await runGit('git', ['push', 'origin', 'HEAD:main'], options);
+    await pushPublishedHead(runGit, options);
     response.json({message: 'Catalogue publié'});
   } catch (error) { response.status(500).json({error: error.stderr || error.message || String(error)}); }
 });
