@@ -15,6 +15,7 @@
     <form id="editor">
       <div class="form-header"><div><small id="record-id">Nouvel avatar</small><h2>Portrait et voix</h2></div><button id="delete" class="danger" type="button" hidden>Supprimer</button></div>
       <div class="fields"><label>Nom <input name="name" required maxlength="80"></label><label>Voix Cannelle <select name="voiceKey" required></select></label></div>
+      <label>Personnalité vocale <small>(facultatif, voix Gemini)</small><textarea name="speechPersonality" rows="2" maxlength="300" placeholder="Ex. Pédagogue chaleureux, débit posé, encourage sans exagération."></textarea></label>
       <label>Description <textarea name="description" rows="2" maxlength="500"></textarea></label>
       <div class="media-grid" id="media-fields"></div>
       <div class="generate"><div><strong>Créer les expressions avec l’IA</strong><p>Une photo est nécessaire. Le décor est facultatif. Les portraits générés peuvent ensuite être remplacés.</p></div><button id="generate" type="button">Générer aperçu et tons</button></div>

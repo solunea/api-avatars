@@ -17,7 +17,7 @@ function fixture(t) {
   return root;
 }
 function avatar() {
-  return {id:'preset-ada', name:'Ada', description:'Guide', voiceKey:'gemini:Kore', photo:'images/photo.png', decor:'', preview:'images/preview.png',
+  return {id:'preset-ada', name:'Ada', description:'Guide', voiceKey:'gemini:Kore', speechPersonality:'Chaleureuse et posée', photo:'images/photo.png', decor:'', preview:'images/preview.png',
     tones:{neutral:'images/neutral.png', success:'images/success.png', failure:'images/failure.png'},
     tonePrompts:{neutral:'Ada looks attentive', success:'Ada looks pleased', failure:'Ada looks sympathetic'}, preset:true};
 }
@@ -30,10 +30,21 @@ test('catalogue vide et fiche importée produisent les endpoints statiques', t =
   const index = JSON.parse(readFileSync(join(root, 'api', 'avatars.json')));
   assert.equal(index[0].id, item.id);
   assert.equal(index[0].preview, item.preview);
+  assert.equal(index[0].speechPersonality, item.speechPersonality);
   const detail = JSON.parse(readFileSync(join(root, 'api', 'avatars', `${item.id}.json`)));
   assert.deepEqual(detail.tones, item.tones);
+  assert.equal(detail.speechPersonality, item.speechPersonality);
   saveCatalog(root, []);
   assert.equal(existsSync(join(root, 'api', 'avatars', `${item.id}.json`)), false);
+});
+
+test('la personnalité vocale reste facultative et limitée à 300 caractères', t => {
+  const root = fixture(t);
+  const item = avatar();
+  delete item.speechPersonality;
+  assert.deepEqual(validateAvatar(item, root), []);
+  item.speechPersonality = 'a'.repeat(301);
+  assert.ok(validateAvatar(item, root).includes('personnalité vocale invalide'));
 });
 
 test('validation bloque les médias absents, chemins dangereux et voix non partagées', t => {
@@ -86,12 +97,16 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.ok(ready, 'serveur local démarré');
   const foreignOrigin = await fetch(`${base}/api/build`, {method:'POST',headers:{Origin:'https://example.org'}});
   assert.equal(foreignOrigin.status, 403);
-  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(avatar())});
+  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
-  assert.equal((await (await fetch(`${base}/api/avatars/preset-ada`)).json()).name, 'Ada');
-  assert.equal((await (await fetch(`${base}/api/avatars.json`)).json()).length, 1);
-  const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée'})});
-  assert.equal((await updated.json()).id, 'preset-ada');
+  const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
+  assert.equal(detail.speechPersonality, 'Calme et posée');
+  const index = await (await fetch(`${base}/api/avatars.json`)).json();
+  assert.equal(index[0].speechPersonality, 'Calme et posée');
+  const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée',speechPersonality:'  Rassurante  '})});
+  const updatedAvatar = await updated.json();
+  assert.equal(updatedAvatar.id, 'preset-ada');
+  assert.equal(updatedAvatar.speechPersonality, 'Rassurante');
   assert.equal((await fetch(`${base}/api/avatars/preset-ada`, {method:'DELETE'})).status, 200);
   assert.deepEqual(await (await fetch(`${base}/api/avatars`)).json(), []);
   assert.equal(existsSync(join(root, 'images', 'photo.png')), false);

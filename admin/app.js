@@ -5,7 +5,7 @@ const $ = selector => document.querySelector(selector);
 let catalog = [];
 let current = emptyAvatar();
 
-function emptyAvatar(){return {id:'',name:'',description:'',voiceKey:'gemini:Kore',photo:'',decor:'',preview:'',tones:{neutral:'',success:'',failure:''},tonePrompts:{neutral:'',success:'',failure:''}};}
+function emptyAvatar(){return {id:'',name:'',description:'',voiceKey:'gemini:Kore',speechPersonality:'',photo:'',decor:'',preview:'',tones:{neutral:'',success:'',failure:''},tonePrompts:{neutral:'',success:'',failure:''}};}
 function message(value, ok=false){$('#message').textContent=value;$('#message').classList.toggle('ok',ok);}
 async function api(path, options={}){const response=await fetch(path,options);const data=await response.json();if(!response.ok)throw new Error(data.error||`Erreur ${response.status}`);return data;}
 function image(path){return path ? `/${path}` : '';}
@@ -13,7 +13,7 @@ function setMedia(field,path){if(tones.includes(field))current.tones[field]=path
 function media(field){return tones.includes(field)?current.tones[field]:current[field];}
 function renderForm(){
   $('#record-id').textContent=current.id||'Nouvel avatar';$('#delete').hidden=!current.id;
-  for(const key of ['name','description','voiceKey'])$(`[name="${key}"]`).value=current[key]||'';
+  for(const key of ['name','description','voiceKey','speechPersonality'])$(`[name="${key}"]`).value=current[key]||'';
   for(const field of fields)setMedia(field,media(field));
   for(const tone of tones)$(`[name="prompt-${tone}"]`).value=current.tonePrompts[tone]||'';
 }
@@ -47,7 +47,7 @@ $('#generate').onclick=async()=>{const button=$('#generate');try{
   setMedia('preview',result.preview);for(const tone of tones){setMedia(tone,result.tones[tone]);$(`[name="prompt-${tone}"]`).value=result.tonePrompts[tone];}message('Portraits prêts à vérifier',true);
 }catch(error){message(error.message);}finally{button.disabled=false;}};
 $('#editor').onsubmit=async event=>{event.preventDefault();try{
-  current.name=$('[name="name"]').value.trim();current.description=$('[name="description"]').value.trim();current.voiceKey=$('[name="voiceKey"]').value;
+  current.name=$('[name="name"]').value.trim();current.description=$('[name="description"]').value.trim();current.voiceKey=$('[name="voiceKey"]').value;current.speechPersonality=$('[name="speechPersonality"]').value;
   for(const tone of tones)current.tonePrompts[tone]=$(`[name="prompt-${tone}"]`).value.trim();
   const saved=await api(current.id?`/api/avatars/${current.id}`:'/api/avatars',{method:current.id?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(current)});
   current=saved;await load();renderForm();message('Avatar enregistré',true);

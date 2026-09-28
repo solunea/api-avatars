@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices} from './lib/catalog.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, normalizeSpeechPersonality} from './lib/catalog.js';
 import {generateBundle} from './lib/generation.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
@@ -46,7 +46,8 @@ function cleanAvatar(input, previous) {
   const id = previous?.id || `preset-${String(input.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
   return {
     id, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
-    voiceKey: String(input.voiceKey || ''), photo: String(input.photo || ''), decor: String(input.decor || ''),
+    voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
+    photo: String(input.photo || ''), decor: String(input.decor || ''),
     preview: String(input.preview || ''), styleId: String(input.styleId || ''),
     tones: Object.fromEntries(['neutral', 'success', 'failure'].map(tone => [tone, String(input.tones?.[tone] || '')])),
     tonePrompts: Object.fromEntries(['neutral', 'success', 'failure'].map(tone => [tone, String(input.tonePrompts?.[tone] || '').trim()])),
