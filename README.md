@@ -1,6 +1,6 @@
 # API Avatars
 
-Catalogue public d’avatars prédéfinis pour Cannelle, diffusé par les fichiers de `api/` et `images/`. Le catalogue initial est vide.
+Catalogue public d’avatars prédéfinis pour Cannelle, diffusé par les fichiers de `api/` et `images/`.
 
 ## Développement
 
@@ -12,11 +12,13 @@ npm run dev
 
 L’administration est accessible sur `http://127.0.0.1:3005`. Renseigner `REPLICATE_API_TOKEN` dans `.env` pour générer des portraits à partir d’une photo. L’import manuel fonctionne sans jeton. L’administration écoute uniquement sur l’interface locale.
 
-Une fiche requiert un nom, une des 30 voix Gemini 3.1 Flash TTS, une photo de référence, une image de sélection, les trois tons (`neutral`, `success`, `failure`) et une description de chacun. Le sélecteur indique si chaque voix est masculine ou féminine, selon le catalogue vocal de l’éditeur Thaleia. Les images de succès et d’échec doivent être distinctes entre elles et du portrait neutre. Un décor et une `speechPersonality` facultative (300 caractères maximum) peuvent être ajoutés. L’administration accepte PNG, JPEG et WebP. La génération utilise FLUX.2 Pro et, sans décor, le détourage employé par Cannelle. Le portrait de sélection sert de référence au ton neutre, puis aux générations distinctes de succès et d’échec. L’action **Tout générer depuis les références** ouvre aussitôt la fiche, affiche chaque portrait dès sa disponibilité, puis remplit les descriptions, la description courte et la personnalité vocale. Les champs déjà renseignés manuellement restent intacts. Vérifiez les résultats avant d’enregistrer la fiche.
+Une nouvelle fiche v2 requiert un nom, une voix Gemini, une photo de référence, une image de sélection, un portrait neutre et une planche de personnage. La planche contient uniquement trois vues complètes (face, profil, dos), sans rangée de détails. Deux séparateurs coulissants définissent leurs découpes directement sur l’image. Les zones `sheetRegions` sont des rectangles normalisés `x`, `y`, `width`, `height` entre 0 et 1 pour les trois vues. Après import ou génération, faites glisser les deux séparateurs sur la planche ou déplacez-les avec les flèches du clavier. Les anciennes planches à cinq zones conservent leurs poignées de correction. Un décor et une personnalité vocale facultatifs peuvent être ajoutés. L’administration accepte PNG, JPEG et WebP. Le sélecteur indique le genre de l’échantillon de voix. L’action **Tout générer depuis les références** produit le neutre, puis génère les vues séparément avant de les assembler ; la fiche affiche les étapes au fur et à mesure. Vérifiez l’identité, la tenue et le corps entier avant d’enregistrer.
 
-Avec un décor, la première génération garde l’avatar au premier plan dans un cadrage portrait et recompose le fond selon cette caméra : perspective, objets visibles, lumière et profondeur de champ cohérents. Les tons succès et échec repartent ensuite du portrait intégré seul afin de conserver le même cadrage. Régénérez les portraits existants pour appliquer ce traitement du décor.
+Avec un décor, le portrait neutre recompose le fond autour de la personne. La planche conserve un fond blanc uniforme pour permettre ses découpes. Une photo source qui ne montre pas tout le corps exige une vérification humaine des parties proposées par l’IA.
 
-Les descriptions des trois tons sont des prompts détaillés destinés à la génération text-to-image : traits distinctifs, vêtements, expression, cadrage, fond et lumière. Un seul appel Gemini 2.5 Flash examine normalement les trois portraits et propose aussi la description courte et la personnalité vocale. Le bouton **Décrire les portraits** refait cet appel à partir des images déjà présentes, sans relancer FLUX. Si un texte est trop court, le serveur tente de l’approfondir d’abord en groupe puis, si nécessaire, depuis le seul portrait concerné. Un texte court mais exploitable est conservé si ces tentatives échouent. À l’enregistrement, les descriptions laissées vides sont retrouvées automatiquement depuis les trois images, sans écraser les textes saisis. Sans décor, le parcours complet utilise trois appels FLUX, trois détourages et normalement un appel Gemini ; les expressions succès et échec sont lancées en parallèle après le neutre. Le serveur compare les détourages aux images brutes et retire les pixels de halo clair inventés au bord, en préservant les cheveux et la barbe clairs réellement présents. Les portraits déjà générés doivent être régénérés pour bénéficier de cette correction.
+Si un neutre est déjà présent sans planche, le bouton **Générer la planche** utilise ce neutre et évite de le recréer. Si Replicate renvoie une erreur temporaire pendant la génération, relancez le même bouton sans changer la photo ni le décor : l’administration reprend les étapes terminées au lieu de recréer leurs images. Les vues partielles sont conservées temporairement dans `uploads/` et retirées après une génération complète. Une erreur de passerelle est affichée sous forme d’un message court, sans page HTML.
+
+Un appel Gemini analyse le neutre et la planche pour proposer une description courte, une personnalité vocale, une description de la planche et des descriptions text-to-image détaillées pour le buste et le plein pied. Le bouton **Décrire les images** fonctionne également après un import manuel sans description. Les champs vides sont complétés à l’enregistrement ; les textes déjà saisis sont conservés. Le parcours utilise quatre appels FLUX (neutre et trois vues), un détourage pour le neutre sans décor et normalement un appel Gemini. Les anciennes fiches à trois tons restent lisibles. Leur prochaine modification demande de générer ou importer une planche avant de sauvegarder en v2.
 
 ```bash
 npm run build
@@ -24,6 +26,7 @@ npm test
 ```
 
 Le build valide les fiches et leurs médias, puis produit `api/avatars.json` et `api/avatars/{id}.json`. L’action **Publier** de l’administration valide, crée un commit et pousse `data/`, `api/` et `images/` vers `origin` configuré sur `solunea/api-avatars`.
+Tant que Cannelle compatible v2 n’est pas déployé, les fiches v2 peuvent être enregistrées localement mais leur publication est bloquée. Après ce déploiement, définir `ALLOW_V2_PUBLISH=true` dans l’environnement de l’administration et la redémarrer.
 
 ## API publique
 

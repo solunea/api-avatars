@@ -25,6 +25,7 @@
   },
   {
     "id": "preset-sophia",
+    "schemaVersion": 2,
     "name": "Sophia",
     "description": "Femme aux longs cheveux bruns, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital.",
     "voiceKey": "gemini:Kore",
@@ -34,17 +35,86 @@
     "preview": "images/a7722083-7ba3-4c4e-906a-1327259b07c7.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/a7722083-7ba3-4c4e-906a-1327259b07c7.png",
-      "success": "images/3322c1c1-e170-47b6-8a33-a8cf0b2e033b.png",
-      "failure": "images/93ca4310-34a9-4deb-adda-2bb5c87e1e4c.png"
+      "neutral": "images/a7722083-7ba3-4c4e-906a-1327259b07c7.png"
     },
     "tonePrompts": {
-      "neutral": "A detailed, high-resolution portrait of a young adult woman, isolated on a transparent background with no scenery or backdrop. She has an oval-shaped face with smooth, clear skin and subtle, natural-looking makeup. Her long, straight dark brown hair is parted in the middle and cascades over her shoulders, framing her face. Her dark brown eyes are wide open, gazing directly forward with a serious, contemplative expression. Her eyebrows are naturally arched and slightly furrowed, conveying a sense of deep thought or mild concern. Her lips are full, with the corners subtly downturned, contributing to her neutral yet slightly pensive demeanor. She wears a crisp white lab coat with a high, structured collar, fastened with two visible white snaps or buttons near the neckline. A black stethoscope with silver earpieces and a white diaphragm rests around her neck, draped over the lab coat. The woman is posed frontally, with her head held straight, capturing her upper chest and shoulders. The lighting is soft, even, and diffused, illuminating her face without harsh shadows, emphasizing her professional and thoughtful appearance. The focus is sharp on her features, ensuring every detail of her attire and expression is clear and precise.",
-      "success": "A detailed, high-resolution portrait of the same young adult woman, isolated on a transparent background with no scenery or backdrop. She maintains her oval-shaped face with smooth, clear skin and natural-looking makeup. Her long, straight dark brown hair is still parted in the middle and flows over her shoulders, framing her face beautifully. Her dark brown eyes are bright and sparkling, conveying genuine warmth and engagement, looking directly forward. Her naturally arched eyebrows are relaxed and slightly raised, enhancing her joyful expression. Her lips are curved into a wide, radiant smile, revealing a full set of perfectly white, even teeth, indicating clear success and happiness. She is wearing the identical crisp white lab coat with its high, structured collar and visible white snaps, and the same black stethoscope with silver earpieces and a white diaphragm draped around her neck. The woman is posed frontally, with her head held straight, capturing her upper chest and shoulders. The lighting is soft, even, and diffused, brightly illuminating her face and highlighting her positive, successful demeanor without any harsh shadows. The focus is sharp on her features, ensuring every detail of her attire and triumphant expression is clear and precise.",
-      "failure": "A detailed, high-resolution portrait of the same young adult woman, isolated on a transparent background with no scenery or backdrop. She retains her oval-shaped face with smooth, clear skin and natural-looking makeup. Her long, straight dark brown hair is parted in the middle and cascades over her shoulders, framing her face. Her dark brown eyes are looking directly forward, slightly narrowed, conveying a sense of disappointment or frustration. Her naturally arched eyebrows are deeply furrowed and drawn together in the center, creating prominent lines on her forehead, indicative of significant concern or distress. Her lips are distinctly downturned, forming a pronounced frown that clearly communicates a feeling of failure or sadness. She is wearing the identical crisp white lab coat with its high, structured collar and visible white snaps, and the same black stethoscope with silver earpieces and a white diaphragm draped around her neck. The woman is posed frontally, with her head held straight, capturing her upper chest and shoulders. The lighting is soft, even, and diffused, illuminating her face without harsh shadows, emphasizing her somber and disheartened appearance. The focus is sharp on her features, ensuring every detail of her attire and distressed expression is clear and precise."
+      "neutral": "A detailed, high-resolution portrait of a young adult woman, isolated on a transparent background with no scenery or backdrop. She has an oval-shaped face with smooth, clear skin and subtle, natural-looking makeup. Her long, straight dark brown hair is parted in the middle and cascades over her shoulders, framing her face. Her dark brown eyes are wide open, gazing directly forward with a serious, contemplative expression. Her eyebrows are naturally arched and slightly furrowed, conveying a sense of deep thought or mild concern. Her lips are full, with the corners subtly downturned, contributing to her neutral yet slightly pensive demeanor. She wears a crisp white lab coat with a high, structured collar, fastened with two visible white snaps or buttons near the neckline. A black stethoscope with silver earpieces and a white diaphragm rests around her neck, draped over the lab coat. The woman is posed frontally, with her head held straight, capturing her upper chest and shoulders. The lighting is soft, even, and diffused, illuminating her face without harsh shadows, emphasizing her professional and thoughtful appearance. The focus is sharp on her features, ensuring every detail of her attire and expression is clear and precise."
+    },
+    "characterSheet": "images/6bf40c6f-b034-46a5-90b5-89c1a78f3972.png",
+    "characterSheetPrompt": "A comprehensive character reference sheet for Sophia, featuring three full-body views: front, profile, and back, all presented against a pure white studio background with bright, even lighting. In the front view, Sophia stands upright, facing forward, with her arms relaxed at her sides and her hands visible. She wears a crisp, white, long-sleeved lab coat made of a cotton-blend, extending to just above her knees. The coat features a stand-up collar, a full button-front closure, a small chest pocket on the left, and two large patch pockets on the lower front. A silver and black stethoscope is draped around her neck. Her long, dark brown hair falls over her shoulders. The profile view shows her right side, revealing the full length of the lab coat, the stethoscope, and her long hair pulled back slightly. The back view clearly displays the full back of the white lab coat, including a horizontal back belt detail with two visible buttons, and the smooth flow of her long, dark brown hair down her back. All three views show her standing barefoot, with her feet clearly visible.",
+    "sheetRegions": {
+      "front": {
+        "x": 0,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "profile": {
+        "x": 0.3333333333333333,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "back": {
+        "x": 0.6666666666666666,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      }
+    },
+    "framingPrompts": {
+      "bust": "Generate a bust portrait of Sophia, a young adult woman, framed from the chest up, looking directly at the viewer. Her expression is neutral and professional, with a hint of seriousness. Her oval face features prominent cheekbones and a defined jawline. Her dark brown, almond-shaped eyes are direct and clear, complemented by well-defined, dark, slightly arched eyebrows. Her nose is straight and of medium size. Her lips are medium full with a natural pink hue, ensuring they are large and completely unobstructed for talking video. Her long, straight, dark brown hair is parted slightly off-center and cascades smoothly over her shoulders. She is dressed in a crisp, white, long-sleeved lab coat made from a cotton-blend fabric, featuring a stand-up collar and visible white buttons. A silver and black stethoscope is draped around her neck, with the earpieces resting on her shoulders. The lighting should be soft, even, and frontal, creating minimal shadows. The background should be a plain, light grey, allowing her face and upper body to be the central focus.",
+      "fullBody": "Generate a full-body image of Sophia, a young adult woman, standing upright and facing forward, with her arms relaxed at her sides. The image must show one complete person, with both shoes visible, generous headroom, and no cropping. Her expression is neutral and professional. Her long, straight, dark brown hair is parted slightly off-center and falls over her shoulders. She is wearing a crisp, white, long-sleeved lab coat made of a cotton-blend fabric, which extends to just above her knees. The coat features a stand-up collar, a full button-front closure, a small chest pocket on the left, and two large patch pockets on the lower front. A silver and black stethoscope is draped around her neck, with the earpieces resting on her shoulders and the chest piece hanging centrally. She is wearing simple, professional white or black closed-toe shoes. The lighting should be bright and even, casting soft shadows. The background should be a plain, light grey, ensuring the focus remains entirely on Sophia and her attire."
     },
     "preset": true,
     "createdAt": "2026-09-28T14:57:42.569Z",
-    "updatedAt": "2026-09-28T21:12:22.370Z"
+    "updatedAt": "2026-09-29T13:18:40.054Z"
+  },
+  {
+    "id": "preset-jude",
+    "schemaVersion": 2,
+    "name": "Jude",
+    "description": "Jude est un homme à la peau foncée, portant un chapeau de paille à ruban bleu marine, un costume beige clair, une chemise blanche et un gilet noir. Il a une barbe courte et soignée.",
+    "voiceKey": "gemini:Kore",
+    "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
+    "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
+    "decor": "",
+    "preview": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png",
+    "styleId": "",
+    "tones": {
+      "neutral": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png"
+    },
+    "tonePrompts": {
+      "neutral": "A bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition is a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting is soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background is a plain, light grey, providing a clean and uncluttered setting for the portrait."
+    },
+    "characterSheet": "images/f77eac5e-1979-4d02-9e76-a24c07430340.png",
+    "characterSheetPrompt": "A comprehensive character reference sheet featuring three distinct, full-body views of the same man, presented side-by-side on a plain white background. The man has dark skin, a neatly trimmed short beard, and dark, short hair visible beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, accented by a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top, and a black V-neck knitted vest. The trousers are straight-legged and well-fitted. He completes his ensemble with dark brown leather lace-up dress shoes. The first view is a full-front shot, showing him standing squarely, looking directly forward, with both arms relaxed at his sides. The second view is a precise profile shot from his right side, capturing the depth of his suit jacket and the cut of his trousers, with his head turned to the right. The third view is a full-back shot, detailing the rear construction of the suit jacket, the drape of the trousers, and the back of his hat. All three figures are standing upright, with both shoes clearly visible, generous headroom, and no cropping, ensuring a complete and detailed visual reference.",
+    "sheetRegions": {
+      "front": {
+        "x": 0,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "profile": {
+        "x": 0.3333333333333333,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "back": {
+        "x": 0.6666666666666666,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      }
+    },
+    "framingPrompts": {
+      "bust": "Generate a bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition must be a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting should be soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background should be a plain, light grey, providing a clean and uncluttered setting for the portrait.",
+      "fullBody": "Generate a full-body image of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching straight-legged trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck, and a black V-neck knitted vest. He completes his ensemble with dark brown leather lace-up dress shoes. The man is standing upright, facing directly forward, with both arms relaxed at his sides. The composition must show one complete person, with both shoes clearly visible, generous headroom above his hat, and absolutely no cropping of any part of his body. The lighting should be even and bright, typical of a studio setting, highlighting the details of his attire. The background should be plain white."
+    },
+    "preset": true,
+    "createdAt": "2026-09-29T13:15:16.414Z",
+    "updatedAt": "2026-09-29T13:15:16.414Z"
   }
 ]

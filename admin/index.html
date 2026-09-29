@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js?v=studio-8"></script>
+  <script type="module" src="app.js?v=sheet-1"></script>
 </head>
 <body>
   <header class="topbar">
@@ -35,40 +35,35 @@
           <div class="breadcrumb">Studio <span>›</span> <span id="breadcrumb-name">Nouvel avatar</span></div>
           <div class="title-row"><h1 id="current-name">Nouvel avatar</h1><span id="record-status" class="status-badge status-draft">Brouillon</span></div>
         </div>
-        <div class="studio-actions"><button id="generate" class="button button-primary" type="button">Générer les portraits</button><button id="delete" class="button button-danger" type="button" hidden>Supprimer</button></div>
+        <div class="studio-actions"><button id="generate" class="button button-primary" type="button">Générer le neutre et la planche</button><button id="delete" class="button button-danger" type="button" hidden>Supprimer</button></div>
       </div>
 
-      <div class="portrait-grid" aria-label="Portraits par tonalité">
+      <div class="portrait-grid" aria-label="Portrait et planche de personnage">
         <article class="portrait-card" data-tone="neutral">
           <div class="portrait-card-heading"><div><h2>Neutre</h2><small>Portrait de référence</small></div><span id="status-neutral" class="media-status">À ajouter</span></div>
           <div class="portrait-frame"><img id="image-neutral" alt="Portrait neutre" hidden><span id="empty-neutral" class="portrait-empty">Aucun portrait neutre</span></div>
           <div id="details-neutral" class="portrait-details">PNG, JPEG ou WebP</div>
           <label class="button button-secondary portrait-upload">Importer une image<input id="upload-neutral" data-field="neutral" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
         </article>
-        <article class="portrait-card" data-tone="success">
-          <div class="portrait-card-heading"><div><h2>Succès</h2><small>Expression encourageante</small></div><span id="status-success" class="media-status">À ajouter</span></div>
-          <div class="portrait-frame"><img id="image-success" alt="Portrait de succès" hidden><span id="empty-success" class="portrait-empty">Aucun portrait de succès</span></div>
-          <div id="details-success" class="portrait-details">PNG, JPEG ou WebP</div>
-          <label class="button button-secondary portrait-upload">Importer une image<input id="upload-success" data-field="success" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
-        </article>
-        <article class="portrait-card" data-tone="failure">
-          <div class="portrait-card-heading"><div><h2>Échec</h2><small>Expression rassurante</small></div><span id="status-failure" class="media-status">À ajouter</span></div>
-          <div class="portrait-frame"><img id="image-failure" alt="Portrait d’échec" hidden><span id="empty-failure" class="portrait-empty">Aucun portrait d’échec</span></div>
-          <div id="details-failure" class="portrait-details">PNG, JPEG ou WebP</div>
-          <label class="button button-secondary portrait-upload">Importer une image<input id="upload-failure" data-field="failure" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
+        <article class="portrait-card" data-tone="characterSheet">
+          <div class="portrait-card-heading"><div><h2>Planche de personnage</h2><small>Face · profil · dos</small></div><span id="status-characterSheet" class="media-status">À ajouter</span></div>
+          <div class="portrait-frame sheet-frame"><img id="image-characterSheet" alt="Planche de personnage" hidden><div id="sheet-overlay" role="group" aria-label="Zones ajustables de la planche"></div><span id="empty-characterSheet" class="portrait-empty">Aucune planche</span></div>
+          <div id="details-characterSheet" class="portrait-details">PNG, JPEG ou WebP</div>
+          <label class="button button-secondary portrait-upload">Importer une planche<input id="upload-characterSheet" data-field="characterSheet" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>
         </article>
       </div>
-
       <section class="prompt-panel" aria-labelledby="prompts-title">
-        <div class="prompt-heading"><div><h2 id="prompts-title">Descriptions text-to-image <span class="info-tip" tabindex="0" role="note" aria-label="Une description détaillée par expression, modifiable avant publication." data-tooltip="Une description détaillée par expression, modifiable avant publication.">i</span></h2><small id="prompts-progress" class="prompts-progress" role="status" hidden></small></div><button id="describe" class="button button-secondary" type="button">Décrire les portraits</button></div>
+        <div class="prompt-heading"><div><h2 id="prompts-title">Descriptions text-to-image</h2><small id="prompts-progress" class="prompts-progress" role="status" hidden></small></div><button id="describe" class="button button-secondary" type="button">Décrire les images</button></div>
         <div class="tone-tabs" role="tablist" aria-label="Description par tonalité">
           <button class="tone-tab active" id="tab-neutral" type="button" role="tab" aria-selected="true" aria-controls="panel-neutral" data-tone="neutral">Neutre</button>
-          <button class="tone-tab" id="tab-success" type="button" role="tab" aria-selected="false" aria-controls="panel-success" data-tone="success">Succès</button>
-          <button class="tone-tab" id="tab-failure" type="button" role="tab" aria-selected="false" aria-controls="panel-failure" data-tone="failure">Échec</button>
+          <button class="tone-tab" id="tab-sheet" type="button" role="tab" aria-selected="false" aria-controls="panel-sheet">Planche</button>
+          <button class="tone-tab" id="tab-bust" type="button" role="tab" aria-selected="false" aria-controls="panel-bust">Buste</button>
+          <button class="tone-tab" id="tab-fullBody" type="button" role="tab" aria-selected="false" aria-controls="panel-fullBody">Plein pied</button>
         </div>
         <div class="tone-panel" id="panel-neutral" role="tabpanel" aria-labelledby="tab-neutral"><label for="prompt-neutral">Description du portrait neutre <span id="words-neutral">0 mot</span></label><textarea id="prompt-neutral" name="prompt-neutral" rows="7" placeholder="Décrivez précisément le visage, les vêtements, le cadrage, le fond et la lumière…"></textarea></div>
-        <div class="tone-panel" id="panel-success" role="tabpanel" aria-labelledby="tab-success" hidden><label for="prompt-success">Description du portrait de succès <span id="words-success">0 mot</span></label><textarea id="prompt-success" name="prompt-success" rows="7" placeholder="Décrivez le même personnage avec son expression de succès…"></textarea></div>
-        <div class="tone-panel" id="panel-failure" role="tabpanel" aria-labelledby="tab-failure" hidden><label for="prompt-failure">Description du portrait d’échec <span id="words-failure">0 mot</span></label><textarea id="prompt-failure" name="prompt-failure" rows="7" placeholder="Décrivez le même personnage avec son expression d’échec…"></textarea></div>
+        <div class="tone-panel" id="panel-sheet" role="tabpanel" aria-labelledby="tab-sheet" hidden><label for="prompt-sheet">Description de la planche <span id="words-sheet">0 mot</span></label><textarea id="prompt-sheet" rows="7"></textarea></div>
+        <div class="tone-panel" id="panel-bust" role="tabpanel" aria-labelledby="tab-bust" hidden><label for="prompt-bust">Description du buste <span id="words-bust">0 mot</span></label><textarea id="prompt-bust" rows="7"></textarea></div>
+        <div class="tone-panel" id="panel-fullBody" role="tabpanel" aria-labelledby="tab-fullBody" hidden><label for="prompt-fullBody">Description du plein pied <span id="words-fullBody">0 mot</span></label><textarea id="prompt-fullBody" rows="7"></textarea></div>
       </section>
     </section>
 
@@ -87,7 +82,7 @@
           <div class="source-row"><img id="image-decor" alt="Décor" hidden><div><strong>Décor</strong><small id="status-decor">Facultatif</small></div><label class="button button-tertiary">Importer<input id="upload-decor" data-field="decor" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
         </div>
         <button id="clear-decor" class="text-button" type="button" hidden>Retirer le décor</button>
-        <div id="creation-actions" class="creation-actions"><button id="manual-mode" class="button button-secondary" type="button" title="Ouvre l’atelier pour importer et décrire chaque portrait.">Importer les portraits manuellement</button><button id="generate-all" class="button button-primary" type="button" title="Génère l’aperçu, les trois portraits, les descriptions détaillées et une proposition de personnalité vocale.">Tout générer depuis les références</button></div>
+        <div id="creation-actions" class="creation-actions"><button id="manual-mode" class="button button-secondary" type="button">Importer les images manuellement</button><button id="generate-all" class="button button-primary" type="button">Tout générer depuis les références</button></div>
         <button id="save" class="button button-primary save-button" type="submit">Enregistrer l’avatar</button>
       </form>
     </aside>

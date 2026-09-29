@@ -5,21 +5,26 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {PNG} from 'pngjs';
-import {buildCatalog, saveCatalog, validateAvatar} from '../lib/catalog.js';
+import sharp from 'sharp';
+import {buildCatalog, saveCatalog, validateAvatar, defaultSheetRegions} from '../lib/catalog.js';
 import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
+import {providerErrorMessage} from '../lib/provider-error.js';
 
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
 const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
 const detailedBundle = JSON.stringify({description: 'Portrait de Ada.', speechPersonality: 'Voix chaleureuse, débit posé et articulation nette.',
   tonePrompts: {neutral: detailedDescription, success: detailedDescription, failure: detailedDescription}});
+const detailedSheetBundle = JSON.stringify({description:'Portrait de Ada.', speechPersonality:'Voix chaleureuse, débit posé et articulation nette.',
+  tonePrompts:{neutral:detailedDescription}, characterSheetPrompt:detailedDescription,
+  framingPrompts:{bust:detailedDescription,fullBody:detailedDescription}});
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'api-avatars-'));
   t.after(() => rmSync(root, {recursive: true, force: true}));
   for (const dir of ['data', 'images']) mkdirSync(join(root, dir));
   writeFileSync(join(root, 'data', 'avatars.json'), '[]\n');
-  for (const name of ['photo', 'preview', 'neutral', 'success', 'failure', 'decor']) writeFileSync(join(root, 'images', `${name}.png`), png);
+  for (const name of ['photo', 'preview', 'neutral', 'success', 'failure', 'decor', 'sheet']) writeFileSync(join(root, 'images', `${name}.png`), png);
   return root;
 }
 function avatar() {
@@ -27,6 +32,64 @@ function avatar() {
     tones:{neutral:'images/neutral.png', success:'images/success.png', failure:'images/failure.png'},
     tonePrompts:{neutral:'Ada looks attentive', success:'Ada looks pleased', failure:'Ada looks sympathetic'}, preset:true};
 }
+function avatarV2() {
+  return {...avatar(), schemaVersion:2, characterSheet:'images/sheet.png', characterSheetPrompt:detailedDescription,
+    sheetRegions:structuredClone(defaultSheetRegions), framingPrompts:{bust:detailedDescription,fullBody:detailedDescription},
+    tones:{neutral:'images/neutral.png'}, tonePrompts:{neutral:detailedDescription}};
+}
+
+test('fiche v2 valide le neutre, la planche et les zones sans succès ni échec', t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  assert.deepEqual(validateAvatar(item,root),[]);
+  saveCatalog(root,[item]);
+  const detail = JSON.parse(readFileSync(join(root,'api','avatars',`${item.id}.json`)));
+  assert.equal(detail.schemaVersion,2);
+  assert.equal(detail.characterSheet,item.characterSheet);
+  assert.deepEqual(Object.keys(detail.tones),['neutral']);
+  item.sheetRegions.front.width = 2;
+  assert.ok(validateAvatar(item,root).includes('zone front invalide'));
+  item.sheetRegions.front.width = 1/3;
+  item.characterSheet = 'images/missing.png';
+  assert.ok(validateAvatar(item,root).includes('planche manquante'));
+});
+
+test('les trois zones de la nouvelle planche couvrent toute la hauteur', t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  assert.deepEqual(Object.keys(item.sheetRegions), ['front', 'profile', 'back']);
+  assert.ok(Object.values(item.sheetRegions).every(region => region.y === 0 && region.height === 1));
+  assert.deepEqual(validateAvatar(item, root), []);
+  item.sheetRegions.profile.width = 0;
+  assert.ok(validateAvatar(item, root).includes('zone profile invalide'));
+});
+
+test('une planche v2 existante à cinq zones reste lisible', t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  item.sheetRegions = {
+    front:{x:0,y:0,width:1/3,height:.75}, profile:{x:1/3,y:0,width:1/3,height:.75},
+    back:{x:2/3,y:0,width:1/3,height:.75}, face:{x:0,y:.75,width:.5,height:.25},
+    outfit:{x:.5,y:.75,width:.5,height:.25}
+  };
+  assert.deepEqual(validateAvatar(item, root), []);
+});
+
+test('import v2 sans descriptions les retrouve depuis le neutre et la planche', async t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  item.description = ''; item.speechPersonality = ''; item.tonePrompts.neutral = '';
+  item.characterSheetPrompt = ''; item.framingPrompts = {bust:'',fullBody:''};
+  let calls = 0;
+  await completeAvatarDescriptions(root,item,async (model, options) => {
+    calls += 1;
+    assert.equal(model,'google/gemini-2.5-flash');
+    assert.equal(options.input.images.length,2);
+    return [detailedSheetBundle];
+  });
+  assert.equal(calls,1);
+  assert.deepEqual(validateAvatar(item,root),[]);
+});
 
 test('catalogue vide et fiche importée produisent les endpoints statiques', t => {
   const root = fixture(t);
@@ -111,51 +174,136 @@ test('avec décor, la scène est reconstruite autour du cadrage du portrait', ()
   assert.doesNotMatch(success, /Reference image 2/);
 });
 
-test('génération IA prépare les trois tons et le détourage sans décor', async t => {
+test('génération IA prépare le neutre et une planche assemblée sans décor', async t => {
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
   const events = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedBundle] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
-  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 3);
+  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 4);
+  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
-  assert.ok(calls.some(call => call.options.input.prompt?.includes('at least 170 words')));
-  assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 3);
+  assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 2);
   const eventNames = events.map(event => `${event.type}:${event.tone || ''}`);
-  assert.deepEqual(eventNames.slice(0, 4), ['stage:neutral', 'portrait:neutral', 'stage:success', 'stage:failure']);
-  assert.deepEqual(eventNames.slice(4, 6).sort(), ['portrait:failure', 'portrait:success']);
-  assert.deepEqual(eventNames.slice(6), ['stage:descriptions', 'details:']);
+  assert.deepEqual(eventNames.slice(0, 3), ['stage:neutral', 'portrait:neutral', 'stage:characterSheet']);
+  assert.ok(eventNames.includes('portrait:characterSheet'));
+  assert.deepEqual(eventNames.slice(-2), ['stage:descriptions', 'details:']);
   for (const event of events.filter(item => item.type === 'portrait')) assert.ok(existsSync(join(root, event.path)));
+  for (const event of events.filter(item => item.type === 'sheetView')) {
+    assert.match(event.path, /^uploads\/view-/);
+    assert.equal(existsSync(join(root, event.path)), false);
+  }
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
-  assert.deepEqual(fluxCalls[2].options.input.input_images[0], png);
   assert.equal(result.tones.neutral, result.preview);
-  assert.notEqual(result.tones.success, result.tones.neutral);
-  assert.notEqual(result.tones.failure, result.tones.success);
-  assert.ok(result.tonePrompts.failure.includes('empathetic'));
+  assert.equal(result.schemaVersion,2);
+  assert.ok(result.characterSheet);
+  const sheet = await sharp(join(root, result.characterSheet)).metadata();
+  assert.equal(sheet.width, 2048);
+  assert.equal(sheet.height, 1536);
+  assert.deepEqual(Object.keys(result.tones),['neutral']);
+  assert.ok(result.framingPrompts.fullBody.includes('empathetic'));
+  assert.deepEqual(result.sheetRegions,defaultSheetRegions);
   for (const path of Object.values(result.tones)) assert.ok(existsSync(join(root, path)));
-  saveCatalog(root, [{...avatar(), preview:result.preview, tones:result.tones, tonePrompts:result.tonePrompts}]);
+  saveCatalog(root, [{...avatarV2(), preview:result.preview, characterSheet:result.characterSheet,
+    tones:result.tones, tonePrompts:result.tonePrompts, characterSheetPrompt:result.characterSheetPrompt,
+    framingPrompts:result.framingPrompts}]);
 });
 
-test('génération avec décor transmet les deux références sans détourage', async t => {
+test('génération avec décor transmet les deux références au neutre puis les vues séparées', async t => {
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedBundle] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 4);
+  assert.equal(calls.length, 5);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images, [Buffer.from('source photo'), png]);
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
-  assert.equal(fluxCalls[1].options.input.input_images.length, 1);
-  assert.equal(fluxCalls[2].options.input.input_images.length, 1);
-  assert.match(fluxCalls[1].options.input.prompt, /horizontal person position, approximate scale/);
-  assert.match(fluxCalls[2].options.input.prompt, /highest point of the complete head, crown, hairstyle or headwear at least 10%/);
+  assert.equal(fluxCalls[1].options.input.input_images.length, 2);
+  assert.match(fluxCalls[1].options.input.prompt, /head-to-toe/);
+  assert.match(fluxCalls[2].options.input.prompt, /side profile/);
+  assert.match(fluxCalls[3].options.input.prompt, /rear view/);
+});
+
+test('un neutre existant déclenche automatiquement la génération de la planche seule', async t => {
+  const root = fixture(t);
+  const calls = [];
+  const events = [];
+  const run = async (model, options) => {
+    calls.push({model, options});
+    return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;
+  };
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral:'images/neutral.png'}}, run,
+    event => events.push(event));
+  assert.equal(result.tones.neutral, 'images/neutral.png');
+  assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
+  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
+  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 0);
+  assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral', 'characterSheet']);
+});
+
+test('une erreur 502 reprend seulement la vue manquante et réutilise les images terminées', async t => {
+  const root = fixture(t);
+  let failProfile = true;
+  const calls = [];
+  const events = [];
+  const run = async (model, options) => {
+    calls.push({model, options});
+    if (model.startsWith('google/')) return [detailedSheetBundle];
+    if (model === 'black-forest-labs/flux-2-pro' && options.input.prompt.includes('left side profile') && failProfile) {
+      failProfile = false;
+      throw new Error('status 502 Bad Gateway');
+    }
+    return `data:image/png;base64,${png.toString('base64')}`;
+  };
+  await assert.rejects(generateBundle(root, {name:'Ada',photo:'images/photo.png'}, run, event => events.push(event)), /502/);
+  const neutral = events.find(event => event.type === 'portrait' && event.tone === 'neutral')?.path;
+  const sheetViews = Object.fromEntries(events.filter(event => event.type === 'sheetView').map(event => [event.view, event.path]));
+  assert.ok(neutral && existsSync(join(root, neutral)));
+  assert.deepEqual(Object.keys(sheetViews).sort(), ['back', 'front']);
+  assert.ok(Object.values(sheetViews).every(path => existsSync(join(root, path))));
+  const callsBeforeResume = calls.length;
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,sheetViews}}, run);
+  assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
+  assert.ok(Object.values(sheetViews).every(path => !existsSync(join(root, path))));
+  assert.deepEqual(calls.slice(callsBeforeResume).map(call => call.model),
+    ['black-forest-labs/flux-2-pro', 'google/gemini-2.5-flash']);
+});
+
+test('après une erreur de description, la reprise ne relance aucune image', async t => {
+  const root = fixture(t);
+  let failuresRemaining = 2;
+  const calls = [];
+  const events = [];
+  const run = async (model) => {
+    calls.push(model);
+    if (model.startsWith('google/')) {
+      if (failuresRemaining > 0) { failuresRemaining--; throw new Error('status 502 Bad Gateway'); }
+      return [detailedSheetBundle];
+    }
+    return `data:image/png;base64,${png.toString('base64')}`;
+  };
+  await assert.rejects(generateBundle(root, {name:'Ada',photo:'images/photo.png'}, run, event => events.push(event)), /502/);
+  const neutral = events.find(event => event.type === 'portrait' && event.tone === 'neutral').path;
+  const characterSheet = events.find(event => event.type === 'portrait' && event.tone === 'characterSheet').path;
+  const resumedEvents = [];
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,characterSheet}}, run,
+    event => resumedEvents.push(event));
+  assert.equal(result.characterSheet, characterSheet);
+  assert.equal(calls.filter(model => model === 'black-forest-labs/flux-2-pro').length, 4);
+  assert.equal(resumedEvents.find(event => event.tone === 'characterSheet').reused, true);
+});
+
+test('une page HTML 502 de Replicate devient un message court sans HTML', () => {
+  const error = new Error('Request failed with status 502 Bad Gateway: <!DOCTYPE html><html>...</html>');
+  const message = providerErrorMessage(error);
+  assert.match(message, /temporairement indisponible \(502\)/);
+  assert.doesNotMatch(message, /DOCTYPE|<html>/);
 });
 
 test('les descriptions et métadonnées sont régénérées en un seul appel sans recréer les portraits', async t => {

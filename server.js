@@ -8,9 +8,10 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality} from './lib/catalog.js';
-import {generateBundle, describeBundle, completeAvatarDescriptions} from './lib/generation.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, defaultSheetRegions} from './lib/catalog.js';
+import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions} from './lib/generation.js';
 import {pushPublishedHead} from './lib/git-publish.js';
+import {providerErrorMessage} from './lib/provider-error.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -40,23 +41,30 @@ app.use('/images', express.static(imagesDir));
 app.use('/api', express.static(join(root, 'api')));
 
 function mediaResponse(response, error) {
-  response.status(400).json({error: error.message || String(error)});
+  response.status(400).json({error: providerErrorMessage(error)});
 }
 
 function cleanAvatar(input, previous) {
   const id = previous?.id || `preset-${String(input.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+  const schemaVersion = Number(input.schemaVersion || (input.characterSheet ? 2 : previous?.schemaVersion || 1));
+  const toneNames = schemaVersion === 2 ? ['neutral'] : ['neutral', 'success', 'failure'];
   return {
-    id, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
+    id, schemaVersion, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
     voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
     photo: String(input.photo || ''), decor: String(input.decor || ''),
     preview: String(input.preview || ''), styleId: String(input.styleId || ''),
-    tones: Object.fromEntries(['neutral', 'success', 'failure'].map(tone => [tone, String(input.tones?.[tone] || '')])),
-    tonePrompts: Object.fromEntries(['neutral', 'success', 'failure'].map(tone => [tone, String(input.tonePrompts?.[tone] || '').trim()])),
+    tones: Object.fromEntries(toneNames.map(tone => [tone, String(input.tones?.[tone] || '')])),
+    tonePrompts: Object.fromEntries(toneNames.map(tone => [tone, String(input.tonePrompts?.[tone] || '').trim()])),
+    ...(schemaVersion === 2 ? {
+      characterSheet: String(input.characterSheet || ''), characterSheetPrompt: String(input.characterSheetPrompt || '').trim(),
+      sheetRegions: input.sheetRegions || defaultSheetRegions,
+      framingPrompts: {bust: String(input.framingPrompts?.bust || '').trim(), fullBody: String(input.framingPrompts?.fullBody || '').trim()}
+    } : {}),
     preset: true, createdAt: previous?.createdAt || new Date().toISOString(), updatedAt: new Date().toISOString()
   };
 }
 function avatarMedia(avatar) {
-  return [avatar.photo, avatar.decor, avatar.preview, ...Object.values(avatar.tones || {})].filter(Boolean);
+  return [avatar.photo, avatar.decor, avatar.preview, avatar.characterSheet, ...Object.values(avatar.tones || {})].filter(Boolean);
 }
 function removeUnusedMedia(previous, remaining) {
   const used = new Set(remaining.flatMap(avatarMedia));
@@ -74,9 +82,10 @@ app.get('/api/avatars/:id', (request, response) => {
   response.status(avatar ? 200 : 404).json(avatar || {error: 'Avatar introuvable'});
 });
 async function prepareAvatar(avatar) {
-  const errors = validateAvatar(avatar, root).filter(error => !/^description (neutral|success|failure) manquante$/.test(error));
+  const errors = validateAvatar(avatar, root).filter(error => !/^description (neutral|success|failure|bust|fullBody|de planche) manquante$/.test(error));
   if (errors.length) return errors;
-  if (Object.values(avatar.tonePrompts).some(prompt => !prompt)) {
+  if (Object.values(avatar.tonePrompts).some(prompt => !prompt) || (avatar.schemaVersion === 2 &&
+    (!avatar.characterSheetPrompt || !avatar.framingPrompts.bust || !avatar.framingPrompts.fullBody || !avatar.description || !avatar.speechPersonality))) {
     if (!process.env.REPLICATE_API_TOKEN) return ['REPLICATE_API_TOKEN requis pour décrire automatiquement les portraits'];
     const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
     await completeAvatarDescriptions(root, avatar, (...args) => replicate.run(...args));
@@ -148,8 +157,8 @@ app.post('/api/generate', async (request, response) => {
     if (streaming) response.end(`${JSON.stringify({type: 'complete'})}\n`);
     else response.json(result);
   } catch (error) {
-    if (streaming && response.headersSent) response.end(`${JSON.stringify({type: 'error', error: error.message || String(error)})}\n`);
-    else response.status(502).json({error: error.message || String(error)});
+    if (streaming && response.headersSent) response.end(`${JSON.stringify({type: 'error', error: providerErrorMessage(error)})}\n`);
+    else response.status(502).json({error: providerErrorMessage(error)});
   }
 });
 
@@ -157,8 +166,9 @@ app.post('/api/describe', async (request, response) => {
   try {
     if (!process.env.REPLICATE_API_TOKEN) return response.status(503).json({error: 'REPLICATE_API_TOKEN non configuré'});
     const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
-    response.json(await describeBundle(root, request.body, (...args) => replicate.run(...args)));
-  } catch (error) { response.status(502).json({error: error.message || String(error)}); }
+    response.json(await (Number(request.body.schemaVersion) === 2 || request.body.characterSheet ? describeSheetBundle : describeBundle)
+      (root, request.body, (...args) => replicate.run(...args)));
+  } catch (error) { response.status(502).json({error: providerErrorMessage(error)}); }
 });
 
 app.post('/api/build', (_request, response) => {
@@ -168,10 +178,17 @@ app.post('/api/build', (_request, response) => {
 app.post('/api/push', async (_request, response) => {
   try {
     buildCatalog(root);
+    if (readCatalog(root).some(avatar => Number(avatar.schemaVersion) === 2)
+        && process.env.ALLOW_V2_PUBLISH !== 'true') {
+      throw new Error('Publication v2 en attente du déploiement de Cannelle. Définissez ALLOW_V2_PUBLISH=true après ce déploiement.');
+    }
     const options = {cwd: root, timeout: 120000, env: {...process.env, GIT_TERMINAL_PROMPT: '0'}};
     const remote = (await runGit('git', ['remote', 'get-url', 'origin'], options)).stdout.trim();
     if (!/github\.com[:/]solunea\/api-avatars(?:\.git)?$/i.test(remote)) throw new Error('Configurez origin vers solunea/api-avatars avant de publier');
-    await runGit('git', ['add', 'data', 'api', 'images'], options);
+    const publishedMedia = [...new Set(readCatalog(root).flatMap(avatarMedia))];
+    await runGit('git', ['add', 'data', 'api'], options);
+    await runGit('git', ['add', '-u', 'images'], options);
+    if (publishedMedia.length) await runGit('git', ['add', '--', ...publishedMedia], options);
     const status = (await runGit('git', ['diff', '--cached', '--name-only'], options)).stdout.trim();
     if (!status) return response.json({message: 'Aucun changement à publier'});
     await runGit('git', ['commit', '-m', `Update avatars ${new Date().toISOString()}`], options);

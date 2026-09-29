@@ -104,7 +104,7 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
 .status-draft { color: #fbbf24; background: #3b2c12; }
 .status-saved { color: #86efac; background: #12351f; }
 
-.portrait-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.portrait-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
 .portrait-card { min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 12px; }
 .portrait-card-heading { min-height: 44px; display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
 .portrait-card-heading h2 { margin: 0 0 3px; font-size: 15px; font-weight: 700; }
@@ -118,6 +118,27 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
 @keyframes portrait-progress { to { background-position-x: -250%; } }
 @media (prefers-reduced-motion: reduce) { .portrait-frame.working::after { animation: none; } }
 .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.portrait-grid .portrait-frame { height: auto; aspect-ratio: 1; }
+.portrait-grid .sheet-frame { height: auto; aspect-ratio: 4 / 3; }
+.portrait-grid .sheet-frame.legacy { aspect-ratio: 1; }
+.sheet-frame img { object-fit: contain; }
+#sheet-overlay { position: absolute; inset: 0; pointer-events: none; }
+.sheet-panel { position: absolute; top: 0; bottom: 0; background: rgba(143,83,255,.045); border-right: 1px solid rgba(143,83,255,.24); }
+.sheet-divider { position: absolute; top: 0; bottom: 0; width: 24px; transform: translateX(-50%); cursor: ew-resize; touch-action: none; pointer-events: auto; z-index: 3; }
+.sheet-divider::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: #9259ee; box-shadow: 0 0 0 1px #fff8; }
+.sheet-divider-grip { position: absolute; top: 50%; left: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 42px; transform: translate(-50%,-50%); border: 2px solid #fff; border-radius: 9px; background: #9259ee; color: #fff; font-size: 14px; letter-spacing: -4px; padding-right: 4px; box-shadow: 0 2px 12px #0008; }
+.sheet-divider:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.sheet-region { position: absolute; border: 2px solid #9259ee; background: rgba(143,83,255,.08); color: #2e1248; font-size: 10px; font-weight: 700; cursor: move; touch-action: none; user-select: none; pointer-events: auto; }
+.sheet-region:hover, .sheet-region.selected { z-index: 2; }
+.sheet-region.selected { border-color: #6f32e5; background: rgba(143,83,255,.14); }
+.sheet-region:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+.sheet-region-label { position: absolute; top: 3px; left: 3px; padding: 1px 4px; border-radius: 3px; background: #ede3ff; }
+.sheet-handle { display: none; position: absolute; width: 13px; height: 13px; border: 2px solid #fff; border-radius: 3px; background: #9259ee; box-shadow: 0 0 0 1px #6732bf; touch-action: none; }
+.sheet-region.selected .sheet-handle { display: block; }
+.sheet-handle-nw { top: 0; left: 0; cursor: nwse-resize; }
+.sheet-handle-ne { top: 0; right: 0; cursor: nesw-resize; }
+.sheet-handle-sw { bottom: 0; left: 0; cursor: nesw-resize; }
+.sheet-handle-se { bottom: 0; right: 0; cursor: nwse-resize; }
 .portrait-empty { width: 80%; padding: 14px; border: 1px dashed #3f3f46; border-radius: 8px; color: #777780; font-size: 12px; text-align: center; }
 .portrait-details { height: 34px; display: flex; align-items: center; color: var(--subtle); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .portrait-upload { width: 100%; cursor: pointer; }
