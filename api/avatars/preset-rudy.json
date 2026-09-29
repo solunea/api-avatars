@@ -1,5 +1,6 @@
 {
   "id": "preset-rudy",
+  "schemaVersion": 2,
   "name": "Rudy",
   "description": "Rudy est un homme âgé au visage ridé, portant une casquette plate en velours côtelé marron, des lunettes rondes orange, une longue barbe blanche et une chemise beige avec un tablier marron.",
   "voiceKey": "gemini:Schedar",
@@ -9,16 +10,38 @@
   "preview": "images/f7c5f6ca-639b-430f-b370-886ef0ff5671.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/f7c5f6ca-639b-430f-b370-886ef0ff5671.png",
-    "success": "images/e3341774-c4f2-4a18-b977-c28b505b9396.png",
-    "failure": "images/1dfaac21-7e68-4a21-b07e-3193c3813066.png"
+    "neutral": "images/f7c5f6ca-639b-430f-b370-886ef0ff5671.png"
   },
   "tonePrompts": {
-    "neutral": "A medium close-up portrait of an older man, presented as an isolated subject on a transparent background with no scenery or backdrop. He has an oval-shaped face with visible wrinkles, suggesting age and experience, and a slightly tanned complexion. His eyes are dark, calm, and gaze directly forward, conveying a sense of quiet contemplation. His thin, grey eyebrows are slightly furrowed, adding to his thoughtful expression. A long, thick, and well-groomed white beard dominates his lower face, extending down towards his chest, with grey hair visible at his temples and sideburns. He wears a textured, light brown corduroy flat cap, positioned slightly askew on his head. Distinctive round, thick-rimmed glasses in an orange-brown hue frame his eyes. His attire consists of a light beige collared shirt, buttoned up, layered with a dark brown apron that has two visible straps over his shoulders. The overall expression is neutral and serene. The frontal pose captures his head and upper torso, illuminated by soft, even, and slightly warm lighting that highlights his features without creating harsh shadows.",
-    "success": "A medium close-up portrait of the same older man, depicted as an isolated subject on a transparent background with no scenery or backdrop, radiating pure joy. His oval-shaped face, still showing visible wrinkles and a slightly tanned complexion, is animated with a broad, open-mouthed smile that reveals his teeth. His dark eyes are wide open, sparkling with delight and enthusiasm, conveying a sense of genuine happiness and success. His thin, grey eyebrows are noticeably raised and slightly arched, enhancing his cheerful expression. The long, thick, and well-groomed white beard remains prominent, extending down his chest, with grey hair visible at his temples and sideburns. He continues to wear the textured, light brown corduroy flat cap and the distinctive round, thick-rimmed orange-brown glasses, which now reflect a subtle gleam, adding to the vibrancy of the image. His attire is consistent: a light beige collared shirt, buttoned up, layered with a dark brown apron featuring two visible straps. The frontal pose captures his head and upper torso, bathed in soft, even, and slightly warm lighting that emphasizes his jubilant expression.",
-    "failure": "A medium close-up portrait of the same older man, presented as an isolated subject on a transparent background with no scenery or backdrop, displaying an expression of profound failure or confusion. His oval-shaped face, still marked by visible wrinkles and a slightly tanned complexion, is contorted into a deep frown. His thin, grey eyebrows are heavily furrowed and drawn together, creating prominent wrinkles across his forehead, indicative of worry or distress. His dark eyes are wide and appear slightly watery, conveying a sense of disappointment or bewilderment, gazing directly forward with a troubled look. The long, thick, and well-groomed white beard remains a consistent feature, extending down his chest, with grey hair visible at his temples and sideburns. He continues to wear the textured, light brown corduroy flat cap and the distinctive round, thick-rimmed orange-brown glasses. His mouth is downturned, completing the expression of concern. His attire is unchanged: a light beige collared shirt, buttoned up, layered with a dark brown apron featuring two visible straps. The frontal pose captures his head and upper torso, illuminated by soft, even lighting that has a slightly cooler tone, accentuating the somber mood."
+    "neutral": "A medium close-up studio portrait features an elderly East Asian man, approximately 60-70 years old, with a neutral, calm, and slightly serious expression, looking directly forward at the viewer. His face displays deep wrinkles on his forehead and around his eyes, indicative of age. He sports a very long, thick, and full white beard and mustache, extending significantly past his chin, creating a striking contrast against his warm medium skin tone. He wears round-framed glasses with thick, translucent reddish-brown frames. His head is adorned with a rich, warm brown corduroy newsboy cap, featuring visible ribbing. He is dressed in a light beige collared long-sleeved shirt with small, round, light-colored buttons, partially covered by a dark chocolate brown canvas apron with simple shoulder straps. The pose is still and direct, with his shoulders slightly relaxed. Soft, even studio lighting subtly illuminates him, creating gentle shadows under his nose and chin, against a smooth, solid medium grey background. The framing is a bust shot, capturing his entire cap and extending just below his upper chest, showcasing the top portion of the apron, with his head and shoulders perfectly centered."
+  },
+  "characterSheet": "images/e8c4f1eb-caef-43e3-b780-77420188aaf1.png",
+  "characterSheetPrompt": "A full character reference sheet featuring an older man with a long white beard, round reddish-brown glasses, and a brown corduroy newsboy cap. He wears a light tan collared shirt, a dark brown apron, dark trousers, and brown leather shoes. The sheet presents three distinct, full-body views against a clean white background. The front view shows the man standing facing forward, hands relaxed at his sides, with his long white beard prominent over the apron. The profile view (right side) showcases his side profile, including the cap, glasses, beard, rolled-up shirt sleeves, and the apron with its ties visible at the back. The back view reveals the back of his cap, the full length of his white beard from the side, the back of his light tan shirt, and the apron ties neatly tied at the waist. In all views, the dark trousers and polished brown leather lace-up shoes are clearly visible. The composition consists of three distinct, full-body images arranged horizontally, each with generous headroom and no cropping, ensuring all parts of the character and his attire are fully visible.",
+  "sheetRegions": {
+    "front": {
+      "x": 0,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    },
+    "profile": {
+      "x": 0.3333333333333333,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    },
+    "back": {
+      "x": 0.6666666666666666,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    }
+  },
+  "framingPrompts": {
+    "bust": "A captivating bust shot captures a distinguished older Asian man with a direct, neutral gaze. His face features a warm, medium skin tone with visible wrinkles around his eyes, forehead, and mouth, hinting at his age. A prominent, long, thick, and perfectly white beard and mustache cascade down past his chin, exhibiting a slightly wispy texture. He wears stylish, round-rimmed glasses with a distinct reddish-brown frame, subtly obscuring his dark eyes. Crowning his head is a classic corduroy newsboy cap in a rich, warm brown shade, its textured fabric clearly visible. He is dressed in a collared, light tan button-up shirt, with the top few buttons visible. Over the shirt, a plain, dark brown apron is worn, its straps visible over his shoulders and the upper bib fully in frame. The man is posed front-on, facing the camera with his shoulders slightly relaxed and head held straight. The lighting is soft and even, originating from slightly above and to the right, casting gentle shadows that define his features and the texture of his beard and cap. The background is a clean, solid muted gray, providing a calm contrast. The framing precisely captures him from the top of his brown cap down to the middle of his chest, encompassing the full apron bib, perfectly centered.",
+    "fullBody": "A full-body portrait of an older man, possibly East Asian or South Asian, standing with a serious and contemplative expression. His face is oval with prominent cheekbones, and his dark eyes gaze directly forward, slightly narrowed, conveying wisdom. He has thin, dark eyebrows partially obscured by his round, thick-rimmed reddish-brown glasses. A very long, full, and thick white beard extends down to his chest, meticulously groomed. He wears a textured, ribbed brown corduroy newsboy cap. His attire includes a light tan collared button-up shirt with sleeves rolled up to the forearms, and a plain, dark brown apron made of sturdy fabric, covering his front from chest to just above the knees. He wears dark, straight-leg trousers and polished brown leather lace-up shoes. The man stands upright, hands relaxed at his sides. The composition is a full-body shot, ensuring one complete person is visible, both shoes are clearly seen, with generous headroom and no cropping. Soft, even studio lighting illuminates the subject against a plain, solid white backdrop."
   },
   "preset": true,
   "createdAt": "2026-09-28T13:27:29.491Z",
-  "updatedAt": "2026-09-28T14:03:57.175Z"
+  "updatedAt": "2026-09-29T13:23:13.203Z"
 }
