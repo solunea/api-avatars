@@ -1,17 +1,18 @@
 const tones = ['neutral'];
 const fields = ['photo', 'decor', 'preview', 'neutral', 'characterSheet'];
-const promptKeys = ['neutral', 'sheet', 'bust', 'fullBody'];
+const promptKeys = ['bust', 'fullBody'];
 const defaultRegions = {front:{x:0,y:0,width:1/3,height:1}, profile:{x:1/3,y:0,width:1/3,height:1},
   back:{x:2/3,y:0,width:1/3,height:1}};
 const $ = selector => document.querySelector(selector);
 let catalog = [];
 let current = emptyAvatar();
-let activeTone = 'neutral';
+let activeTone = 'bust';
 let newMode = true;
 let dirty = false;
 let busy = false;
 let generationState = null;
 let generationResume = null;
+let descriptionsOutdated = false;
 let activeRegion = 'front';
 let messageTimer;
 let voicePreviewRequest = 0;
@@ -129,6 +130,7 @@ function renderMedia(field) {
   }
   status.classList.toggle('working', progress === 'running');
   if (tones.includes(field) || field === 'characterSheet') {
+    $(`#regenerate-${field}`).textContent = path ? 'Régénérer' : 'Générer';
     if (field === 'characterSheet' && !path) image.closest('.sheet-frame').style.removeProperty('aspect-ratio');
     $(`#empty-${field}`).hidden = !!path;
     $(`#empty-${field}`).textContent = progress === 'running' ? 'Portrait en cours de génération…'
@@ -183,6 +185,14 @@ function renderPrompts() {
     $(`#words-${key}`).textContent = `${wordCount(value)} mots`;
   }
   selectTone(activeTone);
+  renderDescriptionNotice();
+}
+
+function renderDescriptionNotice() {
+  if (generationState) return;
+  const notice = $('#prompts-progress');
+  notice.hidden = !descriptionsOutdated;
+  if (descriptionsOutdated) notice.textContent = 'Image modifiée : vérifiez les descriptions ou utilisez « Décrire les images ».';
 }
 
 function selectTone(tone) {
@@ -225,6 +235,7 @@ function renderList() {
       if (busy || !canLeave()) return;
       current = structuredClone(avatar);
       generationResume = null;
+      descriptionsOutdated = false;
       newMode = false;
       dirty = false;
       renderForm();
@@ -283,6 +294,13 @@ for (const input of document.querySelectorAll('input[type="file"][data-field]'))
       const result = await api('/api/upload', {method: 'POST', body});
       generationResume = null;
       setMedia(field, result.path);
+      if (field === 'characterSheet') {
+        message('Détourage de la planche…', true, true);
+        const cutout = await api('/api/remove-sheet-background', {method:'POST',
+          headers:{'Content-Type':'application/json'}, body:JSON.stringify({characterSheet:result.path})});
+        setMedia(field, cutout.path);
+      }
+      if (field === 'neutral' || field === 'characterSheet') { descriptionsOutdated = true; renderDescriptionNotice(); }
       message('Image chargée', true);
     });
     input.value = '';
@@ -290,12 +308,11 @@ for (const input of document.querySelectorAll('input[type="file"][data-field]'))
 }
 
 function promptValue(key) {
-  return key === 'neutral' ? current.tonePrompts?.neutral || '' : key === 'sheet' ? current.characterSheetPrompt || '' : current.framingPrompts?.[key] || '';
+  return current.framingPrompts?.[key] || (key === 'bust' ? current.tonePrompts?.neutral : current.characterSheetPrompt) || '';
 }
 function setPrompt(key, value) {
-  if (key === 'neutral') current.tonePrompts.neutral = value;
-  else if (key === 'sheet') current.characterSheetPrompt = value;
-  else { current.framingPrompts ||= {}; current.framingPrompts[key] = value; }
+  current.framingPrompts ||= {};
+  current.framingPrompts[key] = value;
 }
 function renderRegions() {
   const overlay = $('#sheet-overlay');
@@ -489,8 +506,9 @@ $('#new').addEventListener('click', () => {
   if (busy || !canLeave()) return;
   current = emptyAvatar();
   generationResume = null;
+  descriptionsOutdated = false;
   newMode = true;
-  activeTone = 'neutral';
+  activeTone = 'bust';
   dirty = false;
   renderForm();
   $('#avatar-name').focus();
@@ -527,7 +545,7 @@ $('#manual-mode').addEventListener('click', () => {
 });
 
 function setGenerationControls(disabled) {
-  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new')) {
+  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new, #regenerate-neutral, #regenerate-characterSheet, #upload-neutral, #upload-characterSheet')) {
     element.disabled = disabled;
   }
 }
@@ -542,6 +560,7 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
   if (!current.speechPersonality && result.speechPersonality) current.speechPersonality = result.speechPersonality;
   $('#avatar-description').value = current.description;
   $('#avatar-personality').value = current.speechPersonality;
+  descriptionsOutdated = false;
   dirty = true;
   renderRecordStatus();
   renderPrompts();
@@ -605,6 +624,72 @@ async function generateFromReferences(button) {
 $('#generate').addEventListener('click', () => generateFromReferences($('#generate')));
 $('#generate-all').addEventListener('click', () => generateFromReferences($('#generate-all')));
 
+async function regenerateOne(field) {
+  if (busy) return;
+  const button = $(`#regenerate-${field}`);
+  const name = $('#avatar-name').value.trim();
+  if (!name || !current.photo) return message('Indiquez un nom et chargez une photo de référence.');
+  const neutral = current.tones?.neutral || '';
+  if (field === 'characterSheet' && !neutral) return message('Générez ou importez le portrait neutre avant la planche.');
+  const key = JSON.stringify(['single', field, name, current.photo, current.decor, field === 'characterSheet' ? neutral : '']);
+  if (generationResume?.key !== key) generationResume = {key, neutral: field === 'characterSheet' ? neutral : '', sheetViews: {}};
+  const previousNeutral = neutral;
+  const previewFollowedNeutral = !current.preview || current.preview === previousNeutral;
+  const request = {name, photo:current.photo, decor:current.decor, voiceKey:$('#avatar-voice').value,
+    only:field, describe:false, resume:{neutral:generationResume.neutral, sheetViews:generationResume.sheetViews}};
+  current.name = name;
+  generationState = {[field]:'running'};
+  newMode = false;
+  renderForm();
+  setGenerationControls(true);
+  const label = field === 'neutral' ? 'du portrait neutre' : 'de la planche';
+  const completed = await run(button, `Régénération ${label}…`, async () => {
+    await streamApi('/api/generate', {method:'POST', headers:{'Content-Type':'application/json', Accept:'application/x-ndjson'},
+      body:JSON.stringify(request)}, event => {
+      if (event.type === 'sheetView') generationResume.sheetViews[event.view] = event.path;
+      if (event.type === 'portrait' && event.tone === field) {
+        descriptionsOutdated = true;
+        if (field === 'neutral') {
+          generationResume.neutral = event.path;
+          setMedia('neutral', event.path);
+          if (previewFollowedNeutral) setMedia('preview', event.path);
+        } else {
+          setMedia('characterSheet', event.path);
+          current.sheetRegions = structuredClone(event.sheetRegions || defaultRegions);
+          renderRegions();
+        }
+        generationState[field] = 'ready';
+        renderMedia(field);
+      }
+    });
+    descriptionsOutdated = true;
+    message(field === 'neutral'
+      ? 'Neutre régénéré. Vérifiez sa cohérence avec la planche et les descriptions avant d’enregistrer.'
+      : 'Planche régénérée. Vérifiez les découpes et les descriptions avant d’enregistrer.', true);
+  });
+  if (completed) generationResume = null;
+  generationState = null;
+  setGenerationControls(false);
+  renderRecordStatus();
+  renderMedia(field);
+  renderDescriptionNotice();
+}
+$('#regenerate-neutral').addEventListener('click', () => regenerateOne('neutral'));
+$('#regenerate-characterSheet').addEventListener('click', () => regenerateOne('characterSheet'));
+$('#remove-sheet-background').addEventListener('click', () => {
+  if (!current.characterSheet) return message('Importez ou générez une planche avant de retirer son fond.');
+  run($('#remove-sheet-background'), 'Détourage de la planche…', async () => {
+    const result = await api('/api/remove-sheet-background', {method:'POST',
+      headers:{'Content-Type':'application/json'}, body:JSON.stringify({characterSheet:current.characterSheet})});
+    if (result.path !== current.characterSheet) {
+      setMedia('characterSheet', result.path);
+      descriptionsOutdated = true;
+      renderDescriptionNotice();
+    }
+    message('Fond retiré. Vérifiez la planche avant d’enregistrer.', true);
+  });
+});
+
 $('#describe').addEventListener('click', async () => {
   const paths = {neutral: current.tones.neutral || current.preview};
   if (!paths.neutral || !current.characterSheet) return message('Chargez le neutre et la planche avant de générer leurs descriptions.');
@@ -623,7 +708,7 @@ $('#editor').addEventListener('submit', async event => {
   if (!current.characterSheet) return message('Générez ou importez la planche avant d’enregistrer cette fiche.');
   current.schemaVersion = 2;
   current.tones = {neutral: current.tones.neutral || current.preview};
-  const missingDescriptions = promptKeys.some(key => !promptValue(key));
+  const missingDescriptions = promptKeys.some(key => !promptValue(key)) || !current.tonePrompts?.neutral || !current.characterSheetPrompt;
   await run($('#save'), missingDescriptions ? 'Description des portraits à partir des images…' : 'Enregistrement de l’avatar…', async () => {
     const saved = await api(current.id ? `/api/avatars/${encodeURIComponent(current.id)}` : '/api/avatars', {
       method: current.id ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(current)

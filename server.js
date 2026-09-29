@@ -2,14 +2,15 @@ import 'dotenv/config';
 import express from 'express';
 import multer from 'multer';
 import Replicate from 'replicate';
-import {mkdirSync, copyFileSync, rmSync} from 'node:fs';
+import sharp from 'sharp';
+import {mkdirSync, copyFileSync, rmSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, defaultSheetRegions} from './lib/catalog.js';
-import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions} from './lib/generation.js';
+import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, removeCharacterSheetBackground} from './lib/generation.js';
 import {pushPublishedHead} from './lib/git-publish.js';
 import {providerErrorMessage} from './lib/provider-error.js';
 
@@ -139,6 +140,24 @@ app.post('/api/upload', upload.single('image'), (request, response) => {
   copyFileSync(request.file.path, join(root, path));
   rmSync(request.file.path);
   response.json({path});
+});
+
+app.post('/api/remove-sheet-background', async (request, response) => {
+  try {
+    const source = mediaPath(root, request.body?.characterSheet);
+    if (!source) return response.status(400).json({error: 'Planche invalide'});
+    const original = readFileSync(source);
+    const alpha = (await sharp(original).ensureAlpha().stats()).channels[3];
+    if (alpha.min === 0 && alpha.mean < 250) {
+      return response.json({path: request.body.characterSheet});
+    }
+    if (!process.env.REPLICATE_API_TOKEN) return response.status(503).json({error: 'REPLICATE_API_TOKEN non configuré'});
+    const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
+    const buffer = await removeCharacterSheetBackground(original, (...args) => replicate.run(...args));
+    const path = `images/${randomUUID()}.png`;
+    writeFileSync(join(root, path), buffer);
+    response.json({path});
+  } catch (error) { mediaResponse(response, error); }
 });
 
 app.post('/api/generate', async (request, response) => {

@@ -7,7 +7,7 @@ import {spawn} from 'node:child_process';
 import {PNG} from 'pngjs';
 import sharp from 'sharp';
 import {buildCatalog, saveCatalog, validateAvatar, defaultSheetRegions} from '../lib/catalog.js';
-import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt} from '../lib/generation.js';
+import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt, removeCharacterSheetBackground} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
 import {providerErrorMessage} from '../lib/provider-error.js';
@@ -182,7 +182,7 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 4);
-  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
+  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 2);
   assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
   assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 2);
   const eventNames = events.map(event => `${event.type}:${event.tone || ''}`);
@@ -205,6 +205,7 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   const sheet = await sharp(join(root, result.characterSheet)).metadata();
   assert.equal(sheet.width, 2048);
   assert.equal(sheet.height, 1536);
+  assert.equal((await sharp(join(root, result.characterSheet)).stats()).channels[3].min, 0);
   assert.deepEqual(Object.keys(result.tones),['neutral']);
   assert.ok(result.framingPrompts.fullBody.includes('empathetic'));
   assert.deepEqual(result.sheetRegions,defaultSheetRegions);
@@ -214,13 +215,54 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
     framingPrompts:result.framingPrompts}]);
 });
 
+test('une planche déjà transparente ne consomme aucun appel de détourage', async () => {
+  let calls = 0;
+  const result = await removeCharacterSheetBackground(png, async () => { calls++; });
+  assert.equal(calls, 0);
+  assert.equal((await sharp(result).stats()).channels[3].min, 0);
+});
+
+test('régénérer le neutre ne relance ni la planche ni les descriptions', async t => {
+  const root = fixture(t);
+  const calls = [];
+  const events = [];
+  const run = async (model, options) => {
+    calls.push({model, options});
+    return `data:image/png;base64,${png.toString('base64')}`;
+  };
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'neutral',describe:false}, run,
+    event => events.push(event));
+  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 1);
+  assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
+  assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral']);
+  assert.equal(result.tones.neutral, result.preview);
+  assert.equal(result.characterSheet, undefined);
+});
+
+test('régénérer la planche réutilise le neutre sans analyser les descriptions', async t => {
+  const root = fixture(t);
+  const calls = [];
+  const run = async (model, options) => {
+    calls.push({model, options});
+    return `data:image/png;base64,${png.toString('base64')}`;
+  };
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'characterSheet',describe:false,
+    resume:{neutral:'images/neutral.png'}}, run);
+  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
+  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
+  assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
+  assert.equal(result.tones.neutral, 'images/neutral.png');
+  assert.ok(existsSync(join(root,result.characterSheet)));
+  assert.deepEqual(result.sheetRegions, defaultSheetRegions);
+});
+
 test('génération avec décor transmet les deux références au neutre puis les vues séparées', async t => {
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
   const calls = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 5);
+  assert.equal(calls.length, 6);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images, [Buffer.from('source photo'), png]);
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
@@ -243,7 +285,7 @@ test('un neutre existant déclenche automatiquement la génération de la planch
   assert.equal(result.tones.neutral, 'images/neutral.png');
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
   assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
-  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 0);
+  assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral', 'characterSheet']);
 });
 
@@ -272,7 +314,7 @@ test('une erreur 502 reprend seulement la vue manquante et réutilise les images
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
   assert.ok(Object.values(sheetViews).every(path => !existsSync(join(root, path))));
   assert.deepEqual(calls.slice(callsBeforeResume).map(call => call.model),
-    ['black-forest-labs/flux-2-pro', 'google/gemini-2.5-flash']);
+    ['black-forest-labs/flux-2-pro', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
 });
 
 test('après une erreur de description, la reprise ne relance aucune image', async t => {
