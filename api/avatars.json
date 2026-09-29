@@ -7,7 +7,9 @@
     "decor": "",
     "voiceKey": "gemini:Schedar",
     "speechPersonality": "Chaleureuse",
-    "updatedAt": "2026-09-29T14:13:22.722Z"
+    "updatedAt": "2026-09-29T14:13:22.722Z",
+    "schemaVersion": 2,
+    "hasCharacterSheet": true
   },
   {
     "id": "preset-sophia",
@@ -17,7 +19,9 @@
     "decor": "",
     "voiceKey": "gemini:Kore",
     "speechPersonality": "Une voix posée et claire, avec un rythme modéré et une articulation précise, reflétant le professionnalisme et la sérénité de l'avatar. La chaleur naturelle de la voix \"Kore\" s'accorde parfaitement à son expression bienveillante et son rôle éducatif.",
-    "updatedAt": "2026-09-29T14:12:59.557Z"
+    "updatedAt": "2026-09-29T14:12:59.557Z",
+    "schemaVersion": 2,
+    "hasCharacterSheet": true
   },
   {
     "id": "preset-jude",
@@ -27,6 +31,8 @@
     "decor": "",
     "voiceKey": "gemini:Kore",
     "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
-    "updatedAt": "2026-09-29T14:13:11.466Z"
+    "updatedAt": "2026-09-29T14:13:11.466Z",
+    "schemaVersion": 2,
+    "hasCharacterSheet": true
   }
 ]

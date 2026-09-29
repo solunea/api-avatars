@@ -43,6 +43,9 @@ test('fiche v2 valide le neutre, la planche et les zones sans succès ni échec'
   const item = avatarV2();
   assert.deepEqual(validateAvatar(item,root),[]);
   saveCatalog(root,[item]);
+  const index = JSON.parse(readFileSync(join(root,'api','avatars.json')));
+  assert.equal(index[0].hasCharacterSheet,true);
+  assert.equal(index[0].schemaVersion,2);
   const detail = JSON.parse(readFileSync(join(root,'api','avatars',`${item.id}.json`)));
   assert.equal(detail.schemaVersion,2);
   assert.equal(detail.characterSheet,item.characterSheet);
