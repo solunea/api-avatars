@@ -18,7 +18,7 @@ let messageTimer;
 let voicePreviewRequest = 0;
 
 function emptyAvatar() {
-  return {id: '', schemaVersion: 2, name: '', description: '', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
+  return {id: '', schemaVersion: 2, name: '', description: '', tags: [], voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
     characterSheet: '', characterSheetPrompt: '', sheetRegions: structuredClone(defaultRegions), framingPrompts: {bust:'', fullBody:''},
     tones: {neutral: ''}, tonePrompts: {neutral: ''}};
 }
@@ -153,6 +153,8 @@ function renderMedia(field) {
 
 function setMedia(field, path) {
   const replacingSheet = field === 'characterSheet' && path && path !== current.characterSheet;
+  if (['photo', 'decor', 'neutral', 'characterSheet'].includes(field)
+    && path !== (tones.includes(field) ? current.tones[field] : current[field])) current.tags = [];
   if (tones.includes(field)) current.tones[field] = path;
   else current[field] = path;
   if (field === 'neutral' && path && !current.preview) { current.preview = path; renderMedia('preview'); }
@@ -558,6 +560,7 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
   current.framingPrompts = {...current.framingPrompts, ...result.framingPrompts};
   if (!current.description && result.description) current.description = result.description;
   if (!current.speechPersonality && result.speechPersonality) current.speechPersonality = result.speechPersonality;
+  if (Array.isArray(result.tags)) current.tags = result.tags;
   $('#avatar-description').value = current.description;
   $('#avatar-personality').value = current.speechPersonality;
   descriptionsOutdated = false;

@@ -3,6 +3,14 @@
     "id": "preset-rudy",
     "name": "Rudy",
     "description": "Rudy est un homme âgé au visage ridé, portant une casquette plate en velours côtelé marron, des lunettes rondes orange, une longue barbe blanche et une chemise beige avec un tablier marron.",
+    "tags": [
+      "homme age",
+      "barbe blanche",
+      "casquette",
+      "lunettes",
+      "tablier",
+      "chemise beige"
+    ],
     "preview": "images/f7c5f6ca-639b-430f-b370-886ef0ff5671.png",
     "decor": "",
     "voiceKey": "gemini:Schedar",
@@ -15,6 +23,14 @@
     "id": "preset-sophia",
     "name": "Sophia",
     "description": "Femme aux longs cheveux bruns, vêtue d'une blouse blanche et d'un stéthoscope, posant frontalement dans un couloir d'hôpital.",
+    "tags": [
+      "femme",
+      "cheveux bruns",
+      "blouse blanche",
+      "stethoscope",
+      "hopital",
+      "sante"
+    ],
     "preview": "images/a7722083-7ba3-4c4e-906a-1327259b07c7.png",
     "decor": "",
     "voiceKey": "gemini:Kore",
@@ -27,6 +43,13 @@
     "id": "preset-jude",
     "name": "Jude",
     "description": "Jude est un homme à la peau foncée, portant un chapeau de paille à ruban bleu marine, un costume beige clair, une chemise blanche et un gilet noir. Il a une barbe courte et soignée.",
+    "tags": [
+      "homme",
+      "chapeau de paille",
+      "costume beige",
+      "gilet",
+      "barbe courte"
+    ],
     "preview": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png",
     "decor": "",
     "voiceKey": "gemini:Kore",

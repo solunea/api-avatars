@@ -9,8 +9,8 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, defaultSheetRegions} from './lib/catalog.js';
-import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, removeCharacterSheetBackground} from './lib/generation.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, normalizeAvatarTags, defaultSheetRegions} from './lib/catalog.js';
+import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, describeAvatarTags, removeCharacterSheetBackground} from './lib/generation.js';
 import {pushPublishedHead} from './lib/git-publish.js';
 import {providerErrorMessage} from './lib/provider-error.js';
 
@@ -51,6 +51,7 @@ function cleanAvatar(input, previous) {
   const toneNames = schemaVersion === 2 ? ['neutral'] : ['neutral', 'success', 'failure'];
   return {
     id, schemaVersion, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
+    tags: normalizeAvatarTags(input.tags === undefined ? previous?.tags : input.tags),
     voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
     photo: String(input.photo || ''), decor: String(input.decor || ''),
     preview: String(input.preview || ''), styleId: String(input.styleId || ''),
@@ -85,11 +86,14 @@ app.get('/api/avatars/:id', (request, response) => {
 async function prepareAvatar(avatar) {
   const errors = validateAvatar(avatar, root).filter(error => !/^description (neutral|success|failure|bust|fullBody|de planche) manquante$/.test(error));
   if (errors.length) return errors;
-  if (Object.values(avatar.tonePrompts).some(prompt => !prompt) || (avatar.schemaVersion === 2 &&
-    (!avatar.characterSheetPrompt || !avatar.framingPrompts.bust || !avatar.framingPrompts.fullBody || !avatar.description || !avatar.speechPersonality))) {
-    if (!process.env.REPLICATE_API_TOKEN) return ['REPLICATE_API_TOKEN requis pour décrire automatiquement les portraits'];
+  const missingDescriptions = Object.values(avatar.tonePrompts).some(prompt => !prompt) || (avatar.schemaVersion === 2 &&
+    (!avatar.characterSheetPrompt || !avatar.framingPrompts.bust || !avatar.framingPrompts.fullBody || !avatar.description || !avatar.speechPersonality));
+  if (missingDescriptions || !avatar.tags.length) {
+    if (!process.env.REPLICATE_API_TOKEN) return ['REPLICATE_API_TOKEN requis pour décrire les portraits et générer leurs tags'];
     const replicate = new Replicate({auth: process.env.REPLICATE_API_TOKEN});
-    await completeAvatarDescriptions(root, avatar, (...args) => replicate.run(...args));
+    const run = (...args) => replicate.run(...args);
+    if (missingDescriptions) await completeAvatarDescriptions(root, avatar, run);
+    if (!avatar.tags.length) avatar.tags = await describeAvatarTags(root, avatar, run);
   }
   return validateAvatar(avatar, root);
 }

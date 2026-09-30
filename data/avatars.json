@@ -44,7 +44,15 @@
     },
     "preset": true,
     "createdAt": "2026-09-28T13:27:29.491Z",
-    "updatedAt": "2026-09-29T14:13:22.722Z"
+    "updatedAt": "2026-09-29T14:13:22.722Z",
+    "tags": [
+      "homme age",
+      "barbe blanche",
+      "casquette",
+      "lunettes",
+      "tablier",
+      "chemise beige"
+    ]
   },
   {
     "id": "preset-sophia",
@@ -91,7 +99,15 @@
     },
     "preset": true,
     "createdAt": "2026-09-28T14:57:42.569Z",
-    "updatedAt": "2026-09-29T14:12:59.557Z"
+    "updatedAt": "2026-09-29T14:12:59.557Z",
+    "tags": [
+      "femme",
+      "cheveux bruns",
+      "blouse blanche",
+      "stethoscope",
+      "hopital",
+      "sante"
+    ]
   },
   {
     "id": "preset-jude",
@@ -138,6 +154,13 @@
     },
     "preset": true,
     "createdAt": "2026-09-29T13:15:16.414Z",
-    "updatedAt": "2026-09-29T14:13:11.466Z"
+    "updatedAt": "2026-09-29T14:13:11.466Z",
+    "tags": [
+      "homme",
+      "chapeau de paille",
+      "costume beige",
+      "gilet",
+      "barbe courte"
+    ]
   }
 ]

@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {PNG} from 'pngjs';
 import sharp from 'sharp';
-import {buildCatalog, saveCatalog, validateAvatar, defaultSheetRegions} from '../lib/catalog.js';
+import {buildCatalog, saveCatalog, validateAvatar, normalizeAvatarTags, defaultSheetRegions} from '../lib/catalog.js';
 import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt, removeCharacterSheetBackground} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
@@ -16,7 +16,7 @@ const png = PNG.sync.write(new PNG({width: 1, height: 1}));
 const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
 const detailedBundle = JSON.stringify({description: 'Portrait de Ada.', speechPersonality: 'Voix chaleureuse, débit posé et articulation nette.',
   tonePrompts: {neutral: detailedDescription, success: detailedDescription, failure: detailedDescription}});
-const detailedSheetBundle = JSON.stringify({description:'Portrait de Ada.', speechPersonality:'Voix chaleureuse, débit posé et articulation nette.',
+const detailedSheetBundle = JSON.stringify({description:'Portrait de Ada.', tags:['École', 'Veste bleue'], speechPersonality:'Voix chaleureuse, débit posé et articulation nette.',
   tonePrompts:{neutral:detailedDescription}, characterSheetPrompt:detailedDescription,
   framingPrompts:{bust:detailedDescription,fullBody:detailedDescription}});
 function fixture(t) {
@@ -28,7 +28,7 @@ function fixture(t) {
   return root;
 }
 function avatar() {
-  return {id:'preset-ada', name:'Ada', description:'Guide', voiceKey:'gemini:Kore', speechPersonality:'Chaleureuse et posée', photo:'images/photo.png', decor:'', preview:'images/preview.png',
+  return {id:'preset-ada', name:'Ada', description:'Guide', tags:['veste bleue'], voiceKey:'gemini:Kore', speechPersonality:'Chaleureuse et posée', photo:'images/photo.png', decor:'', preview:'images/preview.png',
     tones:{neutral:'images/neutral.png', success:'images/success.png', failure:'images/failure.png'},
     tonePrompts:{neutral:'Ada looks attentive', success:'Ada looks pleased', failure:'Ada looks sympathetic'}, preset:true};
 }
@@ -41,11 +41,13 @@ function avatarV2() {
 test('fiche v2 valide le neutre, la planche et les zones sans succès ni échec', t => {
   const root = fixture(t);
   const item = avatarV2();
+  item.tags = ['ecole', 'veste bleue'];
   assert.deepEqual(validateAvatar(item,root),[]);
   saveCatalog(root,[item]);
   const index = JSON.parse(readFileSync(join(root,'api','avatars.json')));
   assert.equal(index[0].hasCharacterSheet,true);
   assert.equal(index[0].schemaVersion,2);
+  assert.deepEqual(index[0].tags, item.tags);
   const detail = JSON.parse(readFileSync(join(root,'api','avatars',`${item.id}.json`)));
   assert.equal(detail.schemaVersion,2);
   assert.equal(detail.characterSheet,item.characterSheet);
@@ -55,6 +57,15 @@ test('fiche v2 valide le neutre, la planche et les zones sans succès ni échec'
   item.sheetRegions.front.width = 1/3;
   item.characterSheet = 'images/missing.png';
   assert.ok(validateAvatar(item,root).includes('planche manquante'));
+});
+
+test('les tags générés sont normalisés et publiés dans l’index', t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  item.tags = normalizeAvatarTags(['École', 'ecole', 'Blouse blanche', '', 'stéthoscope']);
+  saveCatalog(root, [item]);
+  const index = JSON.parse(readFileSync(join(root, 'api', 'avatars.json')));
+  assert.deepEqual(index[0].tags, ['ecole', 'blouse blanche', 'stethoscope']);
 });
 
 test('les trois zones de la nouvelle planche couvrent toute la hauteur', t => {
