@@ -9,7 +9,7 @@ import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, normalizeAvatarTags, defaultSheetRegions} from './lib/catalog.js';
+import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voices, voiceGenders, normalizeSpeechPersonality, normalizeAvatarTags, normalizeAvatarPosePrompts, defaultSheetRegions} from './lib/catalog.js';
 import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, describeAvatarTags, removeCharacterSheetBackground} from './lib/generation.js';
 import {pushPublishedHead} from './lib/git-publish.js';
 import {providerErrorMessage} from './lib/provider-error.js';
@@ -53,6 +53,8 @@ function cleanAvatar(input, previous) {
     id, schemaVersion, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
     tags: normalizeAvatarTags(input.tags === undefined ? previous?.tags : input.tags),
     voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
+    posePrompts: input.posePrompts || previous?.posePrompts
+      ? normalizeAvatarPosePrompts(input.posePrompts || previous.posePrompts) : undefined,
     photo: String(input.photo || ''), decor: String(input.decor || ''),
     preview: String(input.preview || ''), styleId: String(input.styleId || ''),
     tones: Object.fromEntries(toneNames.map(tone => [tone, String(input.tones?.[tone] || '')])),
@@ -95,6 +97,9 @@ async function prepareAvatar(avatar) {
     if (missingDescriptions) await completeAvatarDescriptions(root, avatar, run);
     if (!avatar.tags.length) avatar.tags = await describeAvatarTags(root, avatar, run);
   }
+  // Un import entièrement décrit reste possible sans jeton ; les créations IA
+  // fournissent leurs poses personnalisées, les anciens fichiers un repli.
+  avatar.posePrompts = normalizeAvatarPosePrompts(avatar.posePrompts);
   return validateAvatar(avatar, root);
 }
 

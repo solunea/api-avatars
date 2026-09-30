@@ -4,6 +4,8 @@ Catalogue public d’avatars prédéfinis pour Cannelle, diffusé par les fichie
 
 ## Développement
 
+Les fiches détaillées enregistrent des `posePrompts` cachés (`neutral`, `success`, `failure`), au même format que les avatars créés dans Cannelle. Le même appel Gemini que les descriptions propose ces poses selon la personnalité éditoriale, sans générer de nouvelles images. Le bilan iaCreate les exploite ensuite pour ses deux photos de résultat (gestes et expressions). Les anciens fichiers et les imports entièrement décrits sans jeton utilisent des poses de repli. **Décrire les images** permet de générer ou actualiser les poses personnalisées sans régénérer les visuels.
+
 ```bash
 npm install
 cp .env.example .env

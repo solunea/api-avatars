@@ -558,6 +558,7 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
   if (neutralPrompt) current.tonePrompts.neutral = neutralPrompt;
   current.characterSheetPrompt = result.characterSheetPrompt || current.characterSheetPrompt;
   current.framingPrompts = {...current.framingPrompts, ...result.framingPrompts};
+  if (result.posePrompts) current.posePrompts = {...result.posePrompts};
   if (!current.description && result.description) current.description = result.description;
   if (!current.speechPersonality && result.speechPersonality) current.speechPersonality = result.speechPersonality;
   if (Array.isArray(result.tags)) current.tags = result.tags;
@@ -577,6 +578,7 @@ async function generateFromReferences(button) {
   if (generationResume?.key !== key) generationResume = {key,
     neutral: current.tones?.neutral && !current.characterSheet ? current.tones.neutral : '', characterSheet: '', sheetViews: {}};
   const request = {name: current.name, photo: current.photo, decor: current.decor, voiceKey: $('#avatar-voice').value,
+    speechPersonality: $('#avatar-personality').value.trim(),
     resume: {neutral: generationResume.neutral, characterSheet: generationResume.characterSheet, sheetViews: generationResume.sheetViews}};
   generationState = {preview: generationResume.neutral ? 'ready' : 'running', neutral: generationResume.neutral ? 'ready' : 'running',
     characterSheet: generationResume.characterSheet ? 'ready' : 'pending'};
@@ -698,7 +700,8 @@ $('#describe').addEventListener('click', async () => {
   if (!paths.neutral || !current.characterSheet) return message('Chargez le neutre et la planche avant de générer leurs descriptions.');
   await run($('#describe'), 'Description détaillée des images…', async () => {
     const result = await api('/api/describe', {method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({schemaVersion: 2, tones: paths, characterSheet: current.characterSheet, decor: current.decor, name: current.name, voiceKey: current.voiceKey})});
+      body: JSON.stringify({schemaVersion: 2, tones: paths, characterSheet: current.characterSheet, decor: current.decor, name: current.name,
+        voiceKey: current.voiceKey, speechPersonality: $('#avatar-personality').value.trim()})});
     applyGeneratedDetails(result);
     message('Descriptions et champs manquants prêts à relire', true);
   });

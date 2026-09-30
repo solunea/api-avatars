@@ -6,19 +6,20 @@ import {join} from 'node:path';
 import {spawn} from 'node:child_process';
 import {PNG} from 'pngjs';
 import sharp from 'sharp';
-import {buildCatalog, saveCatalog, validateAvatar, normalizeAvatarTags, defaultSheetRegions} from '../lib/catalog.js';
-import {generateBundle, describeBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt, removeCharacterSheetBackground} from '../lib/generation.js';
+import {buildCatalog, saveCatalog, validateAvatar, normalizeAvatarTags, normalizeAvatarPosePrompts, defaultSheetRegions} from '../lib/catalog.js';
+import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, describePortrait, portraitDescriptionPrompt, portraitPrompt, removeCharacterSheetBackground} from '../lib/generation.js';
 import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
 import {providerErrorMessage} from '../lib/provider-error.js';
 
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
 const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
+const posePrompts = {neutral:'Relaxed attentive stance.',success:'A discreet thumbs-up and a pleased smile.',failure:'A gentle open palm inviting another attempt.'};
 const detailedBundle = JSON.stringify({description: 'Portrait de Ada.', speechPersonality: 'Voix chaleureuse, débit posé et articulation nette.',
-  tonePrompts: {neutral: detailedDescription, success: detailedDescription, failure: detailedDescription}});
+  tonePrompts: {neutral: detailedDescription, success: detailedDescription, failure: detailedDescription},posePrompts});
 const detailedSheetBundle = JSON.stringify({description:'Portrait de Ada.', tags:['École', 'Veste bleue'], speechPersonality:'Voix chaleureuse, débit posé et articulation nette.',
   tonePrompts:{neutral:detailedDescription}, characterSheetPrompt:detailedDescription,
-  framingPrompts:{bust:detailedDescription,fullBody:detailedDescription}});
+  framingPrompts:{bust:detailedDescription,fullBody:detailedDescription},posePrompts});
 function fixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'api-avatars-'));
   t.after(() => rmSync(root, {recursive: true, force: true}));
@@ -66,6 +67,40 @@ test('les tags générés sont normalisés et publiés dans l’index', t => {
   saveCatalog(root, [item]);
   const index = JSON.parse(readFileSync(join(root, 'api', 'avatars.json')));
   assert.deepEqual(index[0].tags, ['ecole', 'blouse blanche', 'stethoscope']);
+});
+
+test('les poses restent cachées dans les fiches détaillées et les anciens fichiers restent valides', t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  assert.deepEqual(validateAvatar(item,root),[]);
+  item.posePrompts = normalizeAvatarPosePrompts({...posePrompts,success:'  A discreet \n thumbs-up.  '});
+  saveCatalog(root,[item]);
+  const detail = JSON.parse(readFileSync(join(root,'api','avatars',`${item.id}.json`)));
+  assert.equal(detail.posePrompts.success,'A discreet thumbs-up.');
+  assert.equal(JSON.parse(readFileSync(join(root,'api','avatars.json')))[0].posePrompts,undefined);
+  item.posePrompts.failure = 'a'.repeat(801);
+  assert.ok(validateAvatar(item,root).includes('prompts de pose invalides'));
+});
+
+test('la description v2 propose les poses en un appel et conserve les textes existants lors de la complétion', async t => {
+  const root = fixture(t);
+  const item = avatarV2();
+  const calls = [];
+  const run = async (model,options) => { calls.push({model,options}); return [detailedSheetBundle]; };
+  const details = await describeSheetBundle(root,item,run);
+  assert.equal(calls.length,1);
+  assert.deepEqual(details.posePrompts,posePrompts);
+  assert.match(calls[0].options.input.prompt,/Chaleureuse et posée/);
+  assert.match(calls[0].options.input.prompt,/Do not always assign the same gesture/);
+  const previous = structuredClone(item);
+  await completeAvatarDescriptions(root,item,run);
+  assert.equal(calls.length,2);
+  assert.deepEqual(item.posePrompts,posePrompts);
+  assert.deepEqual(item.framingPrompts,previous.framingPrompts);
+  assert.deepEqual(item.tones,previous.tones);
+  assert.equal(item.speechPersonality,previous.speechPersonality);
+  await completeAvatarDescriptions(root,item,run);
+  assert.equal(calls.length,2);
 });
 
 test('les trois zones de la nouvelle planche couvrent toute la hauteur', t => {
@@ -210,6 +245,7 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   }
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
+  assert.deepEqual(result.posePrompts,posePrompts);
   const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
   assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
   assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
@@ -502,16 +538,18 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal(describedError.status, 502);
   assert.match(describedError.headers.get('content-type'), /application\/json/);
   assert.match((await describedError.json()).error, /trois portraits sont requis/);
-  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),speechPersonality:'  Calme \n et   posée  '})});
+  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),posePrompts,speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
   assert.equal(detail.speechPersonality, 'Calme et posée');
+  assert.deepEqual(detail.posePrompts,posePrompts);
   const index = await (await fetch(`${base}/api/avatars.json`)).json();
   assert.equal(index[0].speechPersonality, 'Calme et posée');
   const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée',speechPersonality:'  Rassurante  '})});
   const updatedAvatar = await updated.json();
   assert.equal(updatedAvatar.id, 'preset-ada');
   assert.equal(updatedAvatar.speechPersonality, 'Rassurante');
+  assert.deepEqual(updatedAvatar.posePrompts,posePrompts);
   assert.equal((await fetch(`${base}/api/avatars/preset-ada`, {method:'DELETE'})).status, 200);
   assert.deepEqual(await (await fetch(`${base}/api/avatars`)).json(), []);
   assert.equal(existsSync(join(root, 'images', 'photo.png')), false);
