@@ -30,6 +30,18 @@ npm test
 Le build valide les fiches et leurs médias, puis produit `api/avatars.json` et `api/avatars/{id}.json`. L’action **Publier** de l’administration valide, crée un commit et pousse `data/`, `api/` et `images/` vers `origin` configuré sur `solunea/api-avatars`.
 Tant que Cannelle compatible v2 n’est pas déployé, les fiches v2 peuvent être enregistrées localement mais leur publication est bloquée. Après ce déploiement, définir `ALLOW_V2_PUBLISH=true` dans l’environnement de l’administration et la redémarrer.
 
+## Index visuel caché
+
+À chaque enregistrement, le portrait neutre est indexé par `andreasjansson/clip-features` sur Replicate. Le champ interne `clip` contient la version du modèle, l’empreinte SHA-256 de l’image et son vecteur normalisé de 768 valeurs. Il est conservé dans les fiches détaillées et le catalogue pour IA Create, sans champ dans l’administration. Un portrait inchangé réutilise son index ; un nouveau portrait le remplace. Une indisponibilité de CLIP ne bloque pas l’enregistrement : les tags restent utilisables.
+
+Pour indexer les avatars existants avec `REPLICATE_API_TOKEN` configuré :
+
+```bash
+npm run index:clip
+```
+
+La commande sauvegarde chaque avatar terminé et réutilise les index valides à la reprise. Les fichiers `data/` et `api/` doivent ensuite être publiés pour que Cannelle reçoive les nouveaux index du catalogue distant.
+
 ## API publique
 
 | Ressource | URL |

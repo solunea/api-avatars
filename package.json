@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node server.js",
     "build": "node scripts/build.js",
-    "test": "node --test test/catalog.test.js"
+    "index:clip": "node scripts/index-clip.js",
+    "test": "node --test test/catalog.test.js test/clip-features.test.js"
   },
   "dependencies": {
     "dotenv": "^17.2.4",

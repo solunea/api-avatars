@@ -13,6 +13,7 @@ import {buildCatalog, readCatalog, saveCatalog, validateAvatar, mediaPath, voice
 import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescriptions, describeAvatarTags, removeCharacterSheetBackground} from './lib/generation.js';
 import {pushPublishedHead} from './lib/git-publish.js';
 import {providerErrorMessage} from './lib/provider-error.js';
+import {normalizeClipFeature, indexAvatarFeatures} from './lib/clip-features.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -52,6 +53,7 @@ function cleanAvatar(input, previous) {
   return {
     id, schemaVersion, name: String(input.name || '').trim(), description: String(input.description || '').trim(),
     tags: normalizeAvatarTags(input.tags === undefined ? previous?.tags : input.tags),
+    clip:normalizeClipFeature(input.clip === undefined ? previous?.clip : input.clip),
     voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
     posePrompts: input.posePrompts || previous?.posePrompts
       ? normalizeAvatarPosePrompts(input.posePrompts || previous.posePrompts) : undefined,
@@ -100,6 +102,13 @@ async function prepareAvatar(avatar) {
   // Un import entièrement décrit reste possible sans jeton ; les créations IA
   // fournissent leurs poses personnalisées, les anciens fichiers un repli.
   avatar.posePrompts = normalizeAvatarPosePrompts(avatar.posePrompts);
+  try {
+    const replicate = process.env.REPLICATE_API_TOKEN ? new Replicate({auth:process.env.REPLICATE_API_TOKEN}) : null;
+    avatar.clip = await indexAvatarFeatures(root, avatar, replicate);
+  } catch (error) {
+    avatar.clip = undefined;
+    console.warn('Index CLIP indisponible ; les tags restent utilisables.', providerErrorMessage(error));
+  }
   return validateAvatar(avatar, root);
 }
 

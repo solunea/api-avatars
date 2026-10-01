@@ -4,6 +4,8 @@ import {mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync}
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {CLIP_MODEL} from '../lib/clip-features.js';
 import {PNG} from 'pngjs';
 import sharp from 'sharp';
 import {buildCatalog, saveCatalog, validateAvatar, normalizeAvatarTags, normalizeAvatarPosePrompts, defaultSheetRegions} from '../lib/catalog.js';
@@ -30,6 +32,7 @@ function fixture(t) {
 }
 function avatar() {
   return {id:'preset-ada', name:'Ada', description:'Guide', tags:['veste bleue'], voiceKey:'gemini:Kore', speechPersonality:'Chaleureuse et posée', photo:'images/photo.png', decor:'', preview:'images/preview.png',
+    clip:{model:CLIP_MODEL, imageHash:createHash('sha256').update(png).digest('hex'), embedding:[1, ...Array(767).fill(0)]},
     tones:{neutral:'images/neutral.png', success:'images/success.png', failure:'images/failure.png'},
     tonePrompts:{neutral:'Ada looks attentive', success:'Ada looks pleased', failure:'Ada looks sympathetic'}, preset:true};
 }
@@ -543,8 +546,10 @@ test('administration locale accepte la création puis la suppression', async t =
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
   assert.equal(detail.speechPersonality, 'Calme et posée');
   assert.deepEqual(detail.posePrompts,posePrompts);
+  assert.equal(detail.clip.model, CLIP_MODEL);
   const index = await (await fetch(`${base}/api/avatars.json`)).json();
   assert.equal(index[0].speechPersonality, 'Calme et posée');
+  assert.deepEqual(index[0].clip, detail.clip);
   const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée',speechPersonality:'  Rassurante  '})});
   const updatedAvatar = await updated.json();
   assert.equal(updatedAvatar.id, 'preset-ada');
