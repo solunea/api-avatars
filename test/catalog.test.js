@@ -14,6 +14,11 @@ import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
 import {providerErrorMessage} from '../lib/provider-error.js';
 
+function imageResult(model, options) {
+  const bytes = model === 'ideogram-ai/ideogram-4-5' ? options.input.images[0] : png;
+  return `data:image/png;base64,${bytes.toString('base64')}`;
+}
+
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
 const detailedDescription = Array(13).fill('An empathetic front-facing portrait with detailed facial features, clothing, lighting, and a transparent background.').join(' ');
 const posePrompts = {neutral:'Relaxed attentive stance.',success:'A discreet thumbs-up and a pleased smile.',failure:'A gentle open palm inviting another attempt.'};
@@ -228,12 +233,12 @@ test('avec décor, la scène est reconstruite autour du cadrage du portrait', ()
 
 test('génération IA prépare le neutre et une planche assemblée sans décor', async t => {
   const root = fixture(t);
-  writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
+  writeFileSync(join(root, 'images', 'photo.png'), png);
   const calls = [];
   const events = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 4);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 4);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 2);
   assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
   assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 2);
@@ -249,9 +254,11 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
   assert.deepEqual(result.posePrompts,posePrompts);
-  const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
-  assert.deepEqual(fluxCalls[0].options.input.input_images[0], Buffer.from('source photo'));
-  assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
+  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  assert.equal(generationCalls[0].options.input.images.length, 1);
+  assert.equal(generationCalls[0].options.input.quality, 'very_low');
+  assert.equal(generationCalls[1].options.input.images.length, 2);
+  assert.deepEqual(generationCalls[1].options.input.images[1], png);
   assert.equal(result.tones.neutral, result.preview);
   assert.equal(result.schemaVersion,2);
   assert.ok(result.characterSheet);
@@ -281,11 +288,11 @@ test('régénérer le neutre ne relance ni la planche ni les descriptions', asyn
   const events = [];
   const run = async (model, options) => {
     calls.push({model, options});
-    return `data:image/png;base64,${png.toString('base64')}`;
+    return imageResult(model, options);
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'neutral',describe:false}, run,
     event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 1);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral']);
   assert.equal(result.tones.neutral, result.preview);
@@ -297,11 +304,11 @@ test('régénérer la planche réutilise le neutre sans analyser les description
   const calls = [];
   const run = async (model, options) => {
     calls.push({model, options});
-    return `data:image/png;base64,${png.toString('base64')}`;
+    return imageResult(model, options);
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'characterSheet',describe:false,
     resume:{neutral:'images/neutral.png'}}, run);
-  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
   assert.equal(result.tones.neutral, 'images/neutral.png');
@@ -311,18 +318,20 @@ test('régénérer la planche réutilise le neutre sans analyser les description
 
 test('génération avec décor transmet les deux références au neutre puis les vues séparées', async t => {
   const root = fixture(t);
-  writeFileSync(join(root, 'images', 'photo.png'), Buffer.from('source photo'));
+  writeFileSync(join(root, 'images', 'photo.png'), png);
   const calls = [];
-  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;};
+  const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
   assert.equal(calls.length, 6);
-  const fluxCalls = calls.filter(call => call.model === 'black-forest-labs/flux-2-pro');
-  assert.deepEqual(fluxCalls[0].options.input.input_images, [Buffer.from('source photo'), png]);
-  assert.deepEqual(fluxCalls[1].options.input.input_images[0], png);
-  assert.equal(fluxCalls[1].options.input.input_images.length, 2);
-  assert.match(fluxCalls[1].options.input.prompt, /head-to-toe/);
-  assert.match(fluxCalls[2].options.input.prompt, /side profile/);
-  assert.match(fluxCalls[3].options.input.prompt, /rear view/);
+  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  assert.equal(generationCalls[0].options.input.images.length, 2);
+  assert.deepEqual(generationCalls[0].options.input.images[1], png);
+  assert.equal(generationCalls[1].options.input.images.length, 2);
+  assert.deepEqual(generationCalls[1].options.input.images[1], png);
+  assert.equal(generationCalls[1].options.input.images.length, 2);
+  assert.match(generationCalls[1].options.input.prompt, /head-to-toe/);
+  assert.match(generationCalls[2].options.input.prompt, /side profile/);
+  assert.match(generationCalls[3].options.input.prompt, /rear view/);
 });
 
 test('un neutre existant déclenche automatiquement la génération de la planche seule', async t => {
@@ -331,13 +340,13 @@ test('un neutre existant déclenche automatiquement la génération de la planch
   const events = [];
   const run = async (model, options) => {
     calls.push({model, options});
-    return model.startsWith('google/') ? [detailedSheetBundle] : `data:image/png;base64,${png.toString('base64')}`;
+    return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral:'images/neutral.png'}}, run,
     event => events.push(event));
   assert.equal(result.tones.neutral, 'images/neutral.png');
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
-  assert.equal(calls.filter(call => call.model === 'black-forest-labs/flux-2-pro').length, 3);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 3);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral', 'characterSheet']);
 });
@@ -350,13 +359,13 @@ test('une erreur 502 reprend seulement la vue manquante et réutilise les images
   const run = async (model, options) => {
     calls.push({model, options});
     if (model.startsWith('google/')) return [detailedSheetBundle];
-    if (model === 'black-forest-labs/flux-2-pro' && options.input.prompt.includes('left side profile') && failProfile) {
-      failProfile = false;
+    if (['ideogram-ai/ideogram-4-5', 'black-forest-labs/flux-2-pro'].includes(model) && options.input.prompt.includes('left side profile') && failProfile) {
       throw new Error('status 502 Bad Gateway');
     }
-    return `data:image/png;base64,${png.toString('base64')}`;
+    return imageResult(model, options);
   };
   await assert.rejects(generateBundle(root, {name:'Ada',photo:'images/photo.png'}, run, event => events.push(event)), /502/);
+  failProfile = false;
   const neutral = events.find(event => event.type === 'portrait' && event.tone === 'neutral')?.path;
   const sheetViews = Object.fromEntries(events.filter(event => event.type === 'sheetView').map(event => [event.view, event.path]));
   assert.ok(neutral && existsSync(join(root, neutral)));
@@ -367,7 +376,7 @@ test('une erreur 502 reprend seulement la vue manquante et réutilise les images
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
   assert.ok(Object.values(sheetViews).every(path => !existsSync(join(root, path))));
   assert.deepEqual(calls.slice(callsBeforeResume).map(call => call.model),
-    ['black-forest-labs/flux-2-pro', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
+    ['ideogram-ai/ideogram-4-5', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
 });
 
 test('après une erreur de description, la reprise ne relance aucune image', async t => {
@@ -375,13 +384,13 @@ test('après une erreur de description, la reprise ne relance aucune image', asy
   let failuresRemaining = 2;
   const calls = [];
   const events = [];
-  const run = async (model) => {
+  const run = async (model, options) => {
     calls.push(model);
     if (model.startsWith('google/')) {
       if (failuresRemaining > 0) { failuresRemaining--; throw new Error('status 502 Bad Gateway'); }
       return [detailedSheetBundle];
     }
-    return `data:image/png;base64,${png.toString('base64')}`;
+    return imageResult(model, options);
   };
   await assert.rejects(generateBundle(root, {name:'Ada',photo:'images/photo.png'}, run, event => events.push(event)), /502/);
   const neutral = events.find(event => event.type === 'portrait' && event.tone === 'neutral').path;
@@ -390,7 +399,7 @@ test('après une erreur de description, la reprise ne relance aucune image', asy
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,characterSheet}}, run,
     event => resumedEvents.push(event));
   assert.equal(result.characterSheet, characterSheet);
-  assert.equal(calls.filter(model => model === 'black-forest-labs/flux-2-pro').length, 4);
+  assert.equal(calls.filter(model => model === 'ideogram-ai/ideogram-4-5').length, 4);
   assert.equal(resumedEvents.find(event => event.tone === 'characterSheet').reused, true);
 });
 

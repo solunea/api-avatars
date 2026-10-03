@@ -20,7 +20,7 @@ Avec un décor, le portrait neutre recompose le fond autour de la personne. Les 
 
 Si un neutre est déjà présent sans planche, le bouton **Générer la planche** utilise ce neutre et évite de le recréer. Si Replicate renvoie une erreur temporaire pendant la génération, relancez le même bouton sans changer la photo ni le décor : l’administration reprend les étapes terminées au lieu de recréer leurs images. Les vues partielles sont conservées temporairement dans `uploads/` et retirées après une génération complète. Une erreur de passerelle est affichée sous forme d’un message court, sans page HTML.
 
-Un appel Gemini analyse le neutre et la planche pour proposer une description courte, une personnalité vocale et des descriptions text-to-image détaillées. L’administration expose seulement Buste et Plein pied ; les descriptions du neutre et de la planche restent dans la fiche API pour compatibilité. Chaque visuel peut être régénéré séparément sans relancer l’autre ni remplacer les descriptions corrigées. Après une régénération isolée, relisez ces textes ou utilisez Décrire les images pour les actualiser. Le bouton **Décrire les images** fonctionne également après un import manuel sans description. Les champs vides sont complétés à l’enregistrement ; les textes déjà saisis sont conservés. Le parcours utilise quatre appels FLUX (neutre et trois vues), un détourage pour la planche entière, un détourage pour le neutre sans décor et normalement un appel Gemini. Les anciennes fiches à trois tons restent lisibles. Leur prochaine modification demande de générer ou importer une planche avant de sauvegarder en v2.
+Un appel Gemini analyse le neutre et la planche pour proposer une description courte, une personnalité vocale et des descriptions text-to-image détaillées. L’administration expose seulement Buste et Plein pied ; les descriptions du neutre et de la planche restent dans la fiche API pour compatibilité. Chaque visuel peut être régénéré séparément sans relancer l’autre ni remplacer les descriptions corrigées. Après une régénération isolée, relisez ces textes ou utilisez Décrire les images pour les actualiser. Le bouton **Décrire les images** fonctionne également après un import manuel sans description. Les champs vides sont complétés à l’enregistrement ; les textes déjà saisis sont conservés. Le parcours utilise quatre appels Ideogram 4.5 en `very_low` (neutre et trois vues, 0,008 $ par sortie), avec Flux 2 Pro en secours, un détourage pour la planche entière, un détourage pour le neutre sans décor et normalement un appel Gemini. Les anciennes fiches à trois tons restent lisibles. Leur prochaine modification demande de générer ou importer une planche avant de sauvegarder en v2.
 
 ```bash
 npm run build
@@ -29,6 +29,8 @@ npm test
 
 Le build valide les fiches et leurs médias, puis produit `api/avatars.json` et `api/avatars/{id}.json`. L’action **Publier** de l’administration valide, crée un commit et pousse `data/`, `api/` et `images/` vers `origin` configuré sur `solunea/api-avatars`.
 Tant que Cannelle compatible v2 n’est pas déployé, les fiches v2 peuvent être enregistrées localement mais leur publication est bloquée. Après ce déploiement, définir `ALLOW_V2_PUBLISH=true` dans l’environnement de l’administration et la redémarrer.
+
+Les événements `portrait` et `sheetView` incluent les métadonnées `generation` (modèle effectif, coût estimé et tentatives). Le secours conserve les images et paramètres d’origine. Les erreurs avant génération ne supposent aucun coût facturé.
 
 ## Index visuel caché
 
