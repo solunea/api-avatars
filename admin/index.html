@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=sheet-2">
-  <script type="module" src="app.js?v=sheet-2"></script>
+  <link rel="stylesheet" href="style.css?v=source-blocks-2">
+  <script type="module" src="app.js?v=source-blocks-2"></script>
 </head>
 <body>
   <header class="topbar">
@@ -65,19 +65,27 @@
 
     <aside class="inspector" aria-labelledby="inspector-title">
       <form id="editor">
-        <div class="inspector-heading"><h2 id="inspector-title">Paramètres de l’avatar <span class="info-tip" tabindex="0" role="note" aria-label="Créez un avatar depuis une photo de référence, avec un décor facultatif." data-tooltip="Créez un avatar depuis une photo de référence, avec un décor facultatif.">i</span></h2></div>
+        <div class="inspector-heading"><h2 id="inspector-title">Paramètres de l’avatar <span class="info-tip" tabindex="0" role="note" aria-label="Créez un avatar depuis une photo ou un prompt, avec un décor facultatif." data-tooltip="Créez un avatar depuis une photo ou un prompt, avec un décor facultatif.">i</span></h2></div>
         <div class="field"><label for="avatar-name">Nom de l’avatar</label><input id="avatar-name" name="name" required maxlength="80" placeholder="Ex. Artisan"></div>
         <div class="field"><label for="avatar-voice">Voix <span class="info-tip" tabindex="0" role="note" aria-label="30 voix Gemini 3.1 Flash TTS disponibles." data-tooltip="30 voix Gemini 3.1 Flash TTS disponibles.">i</span></label><div class="voice-control"><select id="avatar-voice" name="voiceKey" required></select><button id="voice-preview" class="button voice-preview" type="button" aria-label="Écouter la voix sélectionnée" title="Écouter la voix sélectionnée" disabled><span id="voice-preview-icon" aria-hidden="true">▶</span></button></div><audio id="voice-preview-audio" preload="none"></audio></div>
         <div class="field"><label for="avatar-personality">Personnalité vocale <small>facultatif</small></label><textarea id="avatar-personality" name="speechPersonality" rows="3" maxlength="300" placeholder="Ex. Chaleureuse, posée et encourageante."></textarea></div>
         <div class="field"><label for="avatar-description">Description courte <small>facultative</small></label><textarea id="avatar-description" name="description" rows="3" maxlength="500" placeholder="Quelques mots pour retrouver cet avatar."></textarea></div>
 
-        <div class="source-heading"><h3>Images sources <span class="info-tip" tabindex="0" role="note" aria-label="La photo est requise ; le décor est facultatif." data-tooltip="La photo est requise ; le décor est facultatif.">i</span></h3></div>
         <div class="source-grid">
-          <div class="source-row"><img id="image-photo" alt="Photo de référence" hidden><div><strong>Photo de référence</strong><small id="status-photo">À ajouter</small></div><label class="button button-tertiary">Importer<input id="upload-photo" data-field="photo" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
+          <section class="source-block" aria-labelledby="photo-source-title">
+            <div class="source-block-heading"><strong id="photo-source-title">Personnage</strong><div class="source-mode-buttons" role="group" aria-label="Source du personnage"><button class="button button-tertiary" type="button" data-source-mode="photo">Image</button><button class="button button-tertiary" type="button" data-source-mode="prompt">Description</button></div></div>
+            <input id="avatar-source-mode" name="sourceMode" type="hidden" value="photo">
+            <div id="source-prompt-field" hidden><textarea id="avatar-source-prompt" name="sourcePrompt" rows="1" maxlength="4000" aria-label="Description du personnage" placeholder="Cheveux bouclés, lunettes rondes, veste bleue."></textarea></div>
+            <div id="photo-image-field" class="source-row"><img id="image-photo" alt="Photo de référence" hidden><small id="status-photo">À ajouter</small><label id="import-photo" class="button button-tertiary">Choisir une image<input id="upload-photo" data-field="photo" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
+          </section>
+          <section class="source-block" aria-labelledby="decor-source-title">
+            <div class="source-block-heading"><strong id="decor-source-title">Décor <small>facultatif</small></strong><div class="source-mode-buttons" role="group" aria-label="Source du décor"><button class="button button-tertiary" type="button" data-decor-mode="image">Image</button><button class="button button-tertiary" type="button" data-decor-mode="prompt">Description</button></div></div>
+            <input id="avatar-decor-mode" name="decorMode" type="hidden" value="image">
+            <div id="decor-prompt-field" hidden><textarea id="avatar-decor-prompt" name="decorPrompt" rows="1" maxlength="4000" aria-label="Description du décor" placeholder="Bibliothèque lumineuse, étagères en bois."></textarea></div>
+            <div id="decor-image-field" class="source-row"><img id="image-decor" alt="Décor" hidden><small id="status-decor">Facultatif</small><label id="import-decor" class="button button-tertiary">Choisir une image<input id="upload-decor" data-field="decor" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="clear-decor" class="text-button" type="button" hidden>Retirer</button></div>
+          </section>
           <div class="source-row source-preview"><img id="image-preview" alt="Image de sélection" hidden><div><strong>Image de sélection</strong><small id="status-preview">À ajouter</small></div><label class="button button-tertiary">Importer<input id="upload-preview" data-field="preview" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
-          <div class="source-row"><img id="image-decor" alt="Décor" hidden><div><strong>Décor</strong><small id="status-decor">Facultatif</small></div><label class="button button-tertiary">Importer<input id="upload-decor" data-field="decor" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></div>
         </div>
-        <button id="clear-decor" class="text-button" type="button" hidden>Retirer le décor</button>
         <div id="creation-actions" class="creation-actions"><button id="manual-mode" class="button button-secondary" type="button">Importer les images manuellement</button><button id="generate-all" class="button button-primary" type="button">Tout générer depuis les références</button></div>
         <button id="save" class="button button-primary save-button" type="submit">Enregistrer l’avatar</button>
       </form>

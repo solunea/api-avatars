@@ -282,6 +282,105 @@ test('une planche déjà transparente ne consomme aucun appel de détourage', as
   assert.equal((await sharp(result).stats()).channels[3].min, 0);
 });
 
+test('un prompt crée une référence puis un avatar v2 valide sans photo importée', async t => {
+  const root = fixture(t);
+  const calls = [], events = [];
+  const sourcePrompt = 'Une guide aux cheveux bouclés, lunettes rondes et veste bleue';
+  const run = async (model, options) => {
+    calls.push({model, input:options.input});
+    return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);
+  };
+  const result = await generateBundle(root, {name:'Ada', sourceMode:'prompt', sourcePrompt}, run, event => events.push(event));
+  const images = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  assert.equal(images.length, 5);
+  assert.match(images[0].input.prompt, /Une guide aux cheveux bouclés/);
+  assert.match(images[0].input.prompt, /empty placeholder/);
+  assert.equal(images[1].input.images.length, 1);
+  assert.equal(images[1].input.prompt.includes(sourcePrompt), false);
+  assert.deepEqual(events.slice(0, 3).map(event => [event.type, event.tone]), [['stage','photo'],['portrait','photo'],['stage','neutral']]);
+  assert.ok(existsSync(join(root, result.photo)));
+  assert.notEqual(result.photo, result.tones.neutral);
+  const item = {...avatarV2(), ...result, sourceMode:'prompt', sourcePrompt};
+  assert.deepEqual(validateAvatar(item, root), []);
+  saveCatalog(root, [item]);
+  const detail = JSON.parse(readFileSync(join(root, 'api', 'avatars', `${item.id}.json`)));
+  assert.equal(detail.sourcePrompt, sourcePrompt);
+  assert.equal(detail.sourceMode, 'prompt');
+});
+
+test('une reprise depuis un prompt réutilise la photo après un échec du neutre', async t => {
+  const root = fixture(t), events = [];
+  let imageCalls = 0;
+  const draft = {name:'Ada', sourceMode:'prompt', sourcePrompt:'Une guide en veste bleue', only:'neutral', describe:false};
+  await assert.rejects(generateBundle(root, draft, async (model, options) => {
+    if (model === 'ideogram-ai/ideogram-4-5' && ++imageCalls === 1) return imageResult(model, options);
+    throw new Error('HTTP 502');
+  }, event => events.push(event)), /502/);
+  const photo = events.find(event => event.type === 'portrait' && event.tone === 'photo').path;
+  const requests = [];
+  const resumed = await generateBundle(root, {...draft, resume:{photo}}, async (model, options) => {
+    requests.push({model, input:options.input});
+    return imageResult(model, options);
+  });
+  assert.equal(resumed.photo, photo);
+  assert.equal(requests.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
+  assert.doesNotMatch(requests[0].input.prompt, /empty placeholder/);
+});
+
+test('les sources invalides échouent sans appel IA', async t => {
+  const root = fixture(t);
+  let calls = 0;
+  for (const draft of [{sourceMode:'invalid'}, {sourceMode:'prompt'}, {sourceMode:'prompt',sourcePrompt:'   '},
+    {sourceMode:'prompt',sourcePrompt:42}, {sourceMode:'prompt',sourcePrompt:'a'.repeat(4001)},
+    {sourceMode:'prompt',sourcePrompt:'Une guide',decor:'images/absent.png'},
+    {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'invalid'},
+    {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:' '},
+    {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:'a'.repeat(4001)}]) {
+    await assert.rejects(generateBundle(root, {name:'Ada', ...draft}, async () => { calls++; }));
+  }
+  assert.equal(calls, 0);
+  const item = {...avatarV2(), sourceMode:'prompt', sourcePrompt:'   '};
+  assert.ok(validateAvatar(item, root).includes('prompt source requis'));
+  item.sourcePrompt = 'a'.repeat(4001);
+  assert.ok(validateAvatar(item, root).includes('prompt source invalide'));
+});
+
+for (const sourceMode of ['photo','prompt']) for (const decorMode of ['image','prompt']) {
+  test(`le neutre utilise les références ${sourceMode} / ${decorMode}`, async t => {
+    const root = fixture(t), calls = [], events = [];
+    const result = await generateBundle(root, {name:'Ada',sourceMode,sourcePrompt:'Une guide en veste bleue',
+      decorMode,decorPrompt:'Un salon lumineux',photo:sourceMode === 'photo' ? 'images/photo.png' : '',
+      decor:decorMode === 'image' ? 'images/decor.png' : '',only:'neutral',describe:false},
+      async (model,options) => { calls.push({model,input:options.input}); return imageResult(model,options); },event => events.push(event));
+    const imageCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+    assert.equal(imageCalls.length,1 + Number(sourceMode === 'prompt') + Number(decorMode === 'prompt'));
+    assert.equal(imageCalls.at(-1).input.images.length,2);
+    assert.ok(existsSync(join(root,result.photo)));
+    assert.ok(existsSync(join(root,result.decor)));
+    assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone),
+      [...(sourceMode === 'prompt' ? ['photo'] : []),...(decorMode === 'prompt' ? ['decor'] : []),'neutral']);
+  });
+}
+
+test('une reprise conserve les deux références générées depuis des descriptions', async t => {
+  const root = fixture(t), events = [];
+  const draft = {name:'Ada',sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:'Un salon',only:'neutral',describe:false};
+  let successes = 0;
+  await assert.rejects(generateBundle(root,draft,async (model,options) => {
+    if (model === 'ideogram-ai/ideogram-4-5' && ++successes <= 2) return imageResult(model,options);
+    throw new Error('HTTP 502');
+  },event => events.push(event)),/502/);
+  const resume = Object.fromEntries(events.filter(event => event.type === 'portrait').map(event => [event.tone,event.path]));
+  const calls = [];
+  const result = await generateBundle(root,{...draft,resume},async (model,options) => {
+    calls.push({model,input:options.input}); return imageResult(model,options);
+  });
+  assert.equal(result.photo,resume.photo);
+  assert.equal(result.decor,resume.decor);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length,1);
+  assert.equal(calls[0].input.images.length,2);
+});
+
 test('régénérer le neutre ne relance ni la planche ni les descriptions', async t => {
   const root = fixture(t);
   const calls = [];
@@ -550,10 +649,14 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal(describedError.status, 502);
   assert.match(describedError.headers.get('content-type'), /application\/json/);
   assert.match((await describedError.json()).error, /trois portraits sont requis/);
-  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),posePrompts,speechPersonality:'  Calme \n et   posée  '})});
+  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),posePrompts,sourceMode:'prompt',sourcePrompt:'Une guide en veste bleue',decorMode:'prompt',decorPrompt:'Un salon lumineux',decor:'images/decor.png',speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
   assert.equal(detail.speechPersonality, 'Calme et posée');
+  assert.equal(detail.sourceMode, 'prompt');
+  assert.equal(detail.sourcePrompt, 'Une guide en veste bleue');
+  assert.equal(detail.decorMode, 'prompt');
+  assert.equal(detail.decorPrompt, 'Un salon lumineux');
   assert.deepEqual(detail.posePrompts,posePrompts);
   assert.equal(detail.clip.model, CLIP_MODEL);
   const index = await (await fetch(`${base}/api/avatars.json`)).json();
@@ -563,6 +666,9 @@ test('administration locale accepte la création puis la suppression', async t =
   const updatedAvatar = await updated.json();
   assert.equal(updatedAvatar.id, 'preset-ada');
   assert.equal(updatedAvatar.speechPersonality, 'Rassurante');
+  assert.equal(updatedAvatar.sourceMode, 'prompt');
+  assert.equal(updatedAvatar.decorMode, 'prompt');
+  assert.equal(updatedAvatar.decorPrompt, 'Un salon lumineux');
   assert.deepEqual(updatedAvatar.posePrompts,posePrompts);
   assert.equal((await fetch(`${base}/api/avatars/preset-ada`, {method:'DELETE'})).status, 200);
   assert.deepEqual(await (await fetch(`${base}/api/avatars`)).json(), []);

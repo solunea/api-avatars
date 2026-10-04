@@ -57,6 +57,10 @@ function cleanAvatar(input, previous) {
     voiceKey: String(input.voiceKey || ''), speechPersonality: normalizeSpeechPersonality(input.speechPersonality),
     posePrompts: input.posePrompts || previous?.posePrompts
       ? normalizeAvatarPosePrompts(input.posePrompts || previous.posePrompts) : undefined,
+    sourceMode: input.sourceMode ?? previous?.sourceMode ?? 'photo',
+    sourcePrompt: input.sourcePrompt ?? previous?.sourcePrompt ?? '',
+    decorMode: input.decorMode ?? previous?.decorMode ?? 'image',
+    decorPrompt: input.decorPrompt ?? previous?.decorPrompt ?? '',
     photo: String(input.photo || ''), decor: String(input.decor || ''),
     preview: String(input.preview || ''), styleId: String(input.styleId || ''),
     tones: Object.fromEntries(toneNames.map(tone => [tone, String(input.tones?.[tone] || '')])),

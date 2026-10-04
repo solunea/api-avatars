@@ -180,6 +180,16 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
 .inspector textarea { min-height: 70px; resize: vertical; line-height: 1.5; }
 .source-heading { margin-top: 22px; padding-top: 17px; border-top: 1px solid var(--border); }
 .source-heading h3 { margin: 0; font-size: 13px; }
+.source-block { min-width: 0; padding: 10px; margin-top: 12px; border: 1px solid var(--border-strong); border-radius: 9px; background: var(--surface-raised); }
+.source-block-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+.source-block-heading small { color: var(--muted); font-weight: 400; }
+.source-mode-buttons { display: flex; gap: 2px; }
+.source-mode-buttons .button { min-height: 30px; padding: 5px 9px; font-size: 12px; }
+.source-mode-buttons .active { color: #fff; background: var(--primary); }
+.source-block textarea { width: 100%; min-height: 42px; resize: vertical; }
+.source-block .source-row { min-width: 0; padding: 0; border: 0; min-height: 48px; }
+.source-block .source-row small { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.source-block .source-row img { width: 48px; height: 48px; }
 .source-heading p { margin: 5px 0 12px; color: var(--subtle); font-size: 11px; }
 .source-row { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-top: 1px solid #252529; }
 .source-row::before { content: ""; display: block; flex: none; width: 42px; height: 42px; border-radius: 6px; background: #202024; }

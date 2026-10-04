@@ -13,12 +13,14 @@ let busy = false;
 let generationState = null;
 let generationResume = null;
 let descriptionsOutdated = false;
+let sourceChanged = false;
+let decorChanged = false;
 let activeRegion = 'front';
 let messageTimer;
 let voicePreviewRequest = 0;
 
 function emptyAvatar() {
-  return {id: '', schemaVersion: 2, name: '', description: '', tags: [], voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
+  return {id: '', schemaVersion: 2, name: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
     characterSheet: '', characterSheetPrompt: '', sheetRegions: structuredClone(defaultRegions), framingPrompts: {bust:'', fullBody:''},
     tones: {neutral: ''}, tonePrompts: {neutral: ''}};
 }
@@ -121,7 +123,8 @@ function renderMedia(field) {
   image.hidden = !path;
   if (path) image.src = mediaUrl(path);
   else image.removeAttribute('src');
-  status.textContent = path ? (tones.includes(field) || field === 'characterSheet' ? 'Prêt' : path.split('/').at(-1)) : (field === 'decor' ? 'Facultatif' : 'À ajouter');
+  status.textContent = path ? (tones.includes(field) || field === 'characterSheet' ? 'Prêt' : path.split('/').at(-1))
+    : field === 'decor' ? current.decorMode === 'prompt' ? 'Sera généré depuis le prompt' : 'Facultatif' : field === 'photo' && current.sourceMode === 'prompt' ? 'Sera générée depuis le prompt' : 'À ajouter';
   status.classList.toggle('ready', !!path && (tones.includes(field) || field === 'characterSheet'));
   const progress = generationState?.[field];
   if (progress && progress !== 'ready') {
@@ -143,7 +146,7 @@ function renderMedia(field) {
       if (field === 'characterSheet') image.closest('.sheet-frame').style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
     };
   }
-  if (field === 'decor') $('#clear-decor').hidden = !path;
+  if (field === 'decor') $('#clear-decor').hidden = !path && current.decorMode !== 'prompt';
   image.onerror = () => {
     if (media(field) !== path) return;
     status.textContent = 'Image indisponible';
@@ -236,6 +239,8 @@ function renderList() {
     button.addEventListener('click', () => {
       if (busy || !canLeave()) return;
       current = structuredClone(avatar);
+      sourceChanged = false;
+      decorChanged = false;
       generationResume = null;
       descriptionsOutdated = false;
       newMode = false;
@@ -257,13 +262,57 @@ function renderForm() {
   $('#breadcrumb-name').textContent = title;
   renderRecordStatus();
   $('#delete').hidden = !current.id;
-  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) $(`[name="${key}"]`).value = current[key] || '';
+  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) $(`[name="${key}"]`).value = current[key] || '';
+  $('#avatar-source-mode').value = current.sourceMode || 'photo';
+  $('#avatar-decor-mode').value = current.decorMode || 'image';
+  renderSourceMode();
   stopVoicePreview();
   for (const field of fields) renderMedia(field);
   renderGenerateAction();
   renderRegions();
   renderPrompts();
   renderList();
+}
+
+function renderSourceMode() {
+  const fromPrompt = current.sourceMode === 'prompt';
+  $('#source-prompt-field').hidden = !fromPrompt;
+  $('#avatar-source-prompt').required = fromPrompt;
+  $('#import-photo').hidden = fromPrompt;
+  $('#photo-image-field').hidden = fromPrompt;
+  const decorFromPrompt = current.decorMode === 'prompt';
+  $('#decor-prompt-field').hidden = !decorFromPrompt;
+  $('#avatar-decor-prompt').required = decorFromPrompt;
+  $('#import-decor').hidden = decorFromPrompt;
+  $('#decor-image-field').hidden = decorFromPrompt;
+  for (const button of document.querySelectorAll('[data-source-mode], [data-decor-mode]')) {
+    const selected = button.dataset.sourceMode ? button.dataset.sourceMode === (current.sourceMode || 'photo')
+      : button.dataset.decorMode === (current.decorMode || 'image');
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  }
+  $('#generate-all').textContent = 'Tout générer';
+  renderMedia('photo');
+  renderMedia('decor');
+}
+
+function generationSourceKey() {
+  return [current.sourceMode === 'prompt' ? ['prompt', current.sourcePrompt] : ['photo', current.photo],
+    current.decorMode === 'prompt' ? ['prompt', current.decorPrompt] : ['image', current.decor]];
+}
+
+function hasGenerationSource() {
+  return (current.sourceMode === 'prompt' ? !!current.sourcePrompt?.trim() : !!current.photo)
+    && (current.decorMode !== 'prompt' || !!current.decorPrompt?.trim());
+}
+
+for (const button of document.querySelectorAll('[data-source-mode], [data-decor-mode]')) {
+  button.addEventListener('click', () => {
+    if (busy || button.getAttribute('aria-pressed') === 'true') return;
+    const input = button.dataset.sourceMode ? $('#avatar-source-mode') : $('#avatar-decor-mode');
+    input.value = button.dataset.sourceMode || button.dataset.decorMode;
+    input.dispatchEvent(new Event('change'));
+  });
 }
 
 function canLeave() {
@@ -492,9 +541,11 @@ for (const key of promptKeys) {
   });
 }
 
-for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) {
+for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) {
   $(`[name="${key}"]`).addEventListener('input', event => {
     current[key] = event.target.value;
+    if (key === 'sourcePrompt') { generationResume = null; sourceChanged = true; setMedia('photo', ''); }
+    if (key === 'decorPrompt') { generationResume = null; decorChanged = true; setMedia('decor', ''); }
     dirty = true;
     renderRecordStatus();
     if (key === 'name') {
@@ -504,9 +555,31 @@ for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) {
   });
 }
 
+$('#avatar-source-mode').addEventListener('change', event => {
+  current.sourceMode = event.target.value;
+  setMedia('photo', '');
+  sourceChanged = true;
+  generationResume = null;
+  dirty = true;
+  renderSourceMode();
+  renderRecordStatus();
+});
+
+$('#avatar-decor-mode').addEventListener('change', event => {
+  current.decorMode = event.target.value;
+  setMedia('decor', '');
+  decorChanged = true;
+  generationResume = null;
+  dirty = true;
+  renderSourceMode();
+  renderRecordStatus();
+});
+
 $('#new').addEventListener('click', () => {
   if (busy || !canLeave()) return;
   current = emptyAvatar();
+  sourceChanged = false;
+  decorChanged = false;
   generationResume = null;
   descriptionsOutdated = false;
   newMode = true;
@@ -539,8 +612,17 @@ $('#voice-preview').addEventListener('click', async () => {
     if (request === voicePreviewRequest) message('Lecture de l’échantillon impossible. Réessayez plus tard.');
   }
 });
-$('#clear-decor').addEventListener('click', () => { generationResume = null; setMedia('decor', ''); });
+$('#clear-decor').addEventListener('click', () => {
+  generationResume = null;
+  current.decorMode = 'image'; current.decorPrompt = '';
+  decorChanged = true;
+  setMedia('decor', '');
+  renderForm();
+});
 $('#manual-mode').addEventListener('click', () => {
+  current.sourceMode = 'photo';
+  current.decorMode = 'image';
+  generationResume = null;
   newMode = false;
   renderForm();
   $('#upload-neutral').focus();
@@ -573,13 +655,15 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
 async function generateFromReferences(button) {
   if (busy) return;
   current.name = $('#avatar-name').value.trim();
-  if (!current.name || !current.photo) return message('Indiquez un nom et chargez une photo de référence.');
-  const key = JSON.stringify([current.name, current.photo, current.decor]);
+  if (!current.name || !hasGenerationSource()) return message('Indiquez un nom, puis ajoutez une photo ou décrivez votre avatar dans le prompt.');
+  const key = JSON.stringify([current.name, ...generationSourceKey()]);
   if (generationResume?.key !== key) generationResume = {key,
-    neutral: current.tones?.neutral && !current.characterSheet ? current.tones.neutral : '', characterSheet: '', sheetViews: {}};
-  const request = {name: current.name, photo: current.photo, decor: current.decor, voiceKey: $('#avatar-voice').value,
+    photo: !sourceChanged ? current.photo : '', decor: !decorChanged ? current.decor : '',
+    neutral: !sourceChanged && !decorChanged && current.tones?.neutral && !current.characterSheet ? current.tones.neutral : '', characterSheet: '', sheetViews: {}};
+  const request = {name: current.name, photo: current.photo, decor: current.decor, sourceMode: current.sourceMode || 'photo', sourcePrompt: current.sourcePrompt || '', voiceKey: $('#avatar-voice').value,
+    decorMode: current.decorMode || 'image', decorPrompt: current.decorPrompt || '',
     speechPersonality: $('#avatar-personality').value.trim(),
-    resume: {neutral: generationResume.neutral, characterSheet: generationResume.characterSheet, sheetViews: generationResume.sheetViews}};
+    resume: {photo: generationResume.photo, decor: generationResume.decor, neutral: generationResume.neutral, characterSheet: generationResume.characterSheet, sheetViews: generationResume.sheetViews}};
   generationState = {preview: generationResume.neutral ? 'ready' : 'running', neutral: generationResume.neutral ? 'ready' : 'running',
     characterSheet: generationResume.characterSheet ? 'ready' : 'pending'};
   newMode = false;
@@ -597,12 +681,14 @@ async function generateFromReferences(button) {
       } else if (event.type === 'stage' && fields.includes(event.tone)) {
         generationState[event.tone] = 'running';
         renderMedia(event.tone);
-        message(event.tone === 'characterSheet' ? 'Génération des vues de la planche…' : 'Génération du portrait neutre…', true, true);
+        message(event.tone === 'photo' ? 'Création de la photo depuis le prompt…' : event.tone === 'decor' ? 'Création du décor depuis le prompt…' : event.tone === 'characterSheet' ? 'Génération des vues de la planche…' : 'Génération du portrait neutre…', true, true);
       } else if (event.type === 'sheetView') {
         generationResume.sheetViews[event.view] = event.path;
         message(`Vue ${event.view} prête. Assemblage de la planche…`, true, true);
       } else if (event.type === 'portrait' && fields.includes(event.tone)) {
         generationState[event.tone] = 'ready';
+        if (event.tone === 'photo') { generationResume.photo = event.path; sourceChanged = false; }
+        if (event.tone === 'decor') { generationResume.decor = event.path; decorChanged = false; }
         if (event.tone === 'neutral') {
           generationResume.neutral = event.path;
           generationState.preview = 'ready';
@@ -620,11 +706,13 @@ async function generateFromReferences(button) {
     message('Portrait, planche et descriptions prêts à vérifier', true);
   });
   if (completed) generationResume = null;
+  if (completed) sourceChanged = false;
+  if (completed) decorChanged = false;
   generationState = null;
   setGenerationControls(false);
   renderRecordStatus();
   $('#prompts-progress').hidden = true;
-  for (const field of ['preview', 'neutral', 'characterSheet']) renderMedia(field);
+  for (const field of ['photo', 'decor', 'preview', 'neutral', 'characterSheet']) renderMedia(field);
 }
 $('#generate').addEventListener('click', () => generateFromReferences($('#generate')));
 $('#generate-all').addEventListener('click', () => generateFromReferences($('#generate-all')));
@@ -633,15 +721,18 @@ async function regenerateOne(field) {
   if (busy) return;
   const button = $(`#regenerate-${field}`);
   const name = $('#avatar-name').value.trim();
-  if (!name || !current.photo) return message('Indiquez un nom et chargez une photo de référence.');
+  if (!name || !hasGenerationSource()) return message('Indiquez un nom, puis ajoutez une photo ou décrivez votre avatar dans le prompt.');
   const neutral = current.tones?.neutral || '';
   if (field === 'characterSheet' && !neutral) return message('Générez ou importez le portrait neutre avant la planche.');
-  const key = JSON.stringify(['single', field, name, current.photo, current.decor, field === 'characterSheet' ? neutral : '']);
+  if (field === 'characterSheet' && (sourceChanged || decorChanged)) return message('La source a changé. Régénérez le portrait neutre avant la planche.');
+  const key = JSON.stringify(['single', field, name, ...generationSourceKey(), field === 'characterSheet' ? neutral : '']);
   if (generationResume?.key !== key) generationResume = {key, neutral: field === 'characterSheet' ? neutral : '', sheetViews: {}};
   const previousNeutral = neutral;
   const previewFollowedNeutral = !current.preview || current.preview === previousNeutral;
-  const request = {name, photo:current.photo, decor:current.decor, voiceKey:$('#avatar-voice').value,
-    only:field, describe:false, resume:{neutral:generationResume.neutral, sheetViews:generationResume.sheetViews}};
+  const request = {name, photo:current.sourceMode === 'prompt' && sourceChanged ? '' : current.photo, decor:current.decor, voiceKey:$('#avatar-voice').value,
+    sourceMode:current.sourceMode || 'photo', sourcePrompt:current.sourcePrompt || '',
+    decorMode:current.decorMode || 'image', decorPrompt:current.decorPrompt || '',
+    only:field, describe:false, resume:{photo:generationResume.photo, decor:generationResume.decor, neutral:generationResume.neutral, sheetViews:generationResume.sheetViews}};
   current.name = name;
   generationState = {[field]:'running'};
   newMode = false;
@@ -651,6 +742,16 @@ async function regenerateOne(field) {
   const completed = await run(button, `Régénération ${label}…`, async () => {
     await streamApi('/api/generate', {method:'POST', headers:{'Content-Type':'application/json', Accept:'application/x-ndjson'},
       body:JSON.stringify(request)}, event => {
+      if (event.type === 'portrait' && event.tone === 'photo') {
+        generationResume.photo = event.path;
+        sourceChanged = false;
+        setMedia('photo', event.path);
+      }
+      if (event.type === 'portrait' && event.tone === 'decor') {
+        generationResume.decor = event.path;
+        decorChanged = false;
+        setMedia('decor', event.path);
+      }
       if (event.type === 'sheetView') generationResume.sheetViews[event.view] = event.path;
       if (event.type === 'portrait' && event.tone === field) {
         descriptionsOutdated = true;
@@ -677,6 +778,8 @@ async function regenerateOne(field) {
   setGenerationControls(false);
   renderRecordStatus();
   renderMedia(field);
+  if (completed) sourceChanged = false;
+  if (completed) decorChanged = false;
   renderDescriptionNotice();
 }
 $('#regenerate-neutral').addEventListener('click', () => regenerateOne('neutral'));
@@ -709,7 +812,7 @@ $('#describe').addEventListener('click', async () => {
 
 $('#editor').addEventListener('submit', async event => {
   event.preventDefault();
-  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality']) current[key] = $(`[name="${key}"]`).value.trim();
+  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourceMode', 'sourcePrompt', 'decorMode', 'decorPrompt']) current[key] = $(`[name="${key}"]`).value.trim();
   for (const key of promptKeys) setPrompt(key, $(`#prompt-${key}`).value.trim());
   if (!current.characterSheet) return message('Générez ou importez la planche avant d’enregistrer cette fiche.');
   current.schemaVersion = 2;
@@ -720,6 +823,8 @@ $('#editor').addEventListener('submit', async event => {
       method: current.id ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(current)
     });
     current = saved;
+    sourceChanged = false;
+    decorChanged = false;
     dirty = false;
     await refreshCatalog();
     renderForm();
