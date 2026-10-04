@@ -1600,7 +1600,7 @@
     ],
     "preview": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Alnilam",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "b9d76c8d2411a0553a3f7f3e2e92f9f1f0f4fe90ed294054c41c592f88f40ca2",
@@ -2376,7 +2376,7 @@
       ]
     },
     "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
-    "updatedAt": "2026-09-29T14:13:11.466Z",
+    "updatedAt": "2026-10-04T10:26:02.968Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   }

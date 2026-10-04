@@ -1662,47 +1662,6 @@
     "schemaVersion": 2,
     "name": "Jude",
     "description": "Jude est un homme à la peau foncée, portant un chapeau de paille à ruban bleu marine, un costume beige clair, une chemise blanche et un gilet noir. Il a une barbe courte et soignée.",
-    "voiceKey": "gemini:Kore",
-    "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
-    "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
-    "decor": "",
-    "preview": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png",
-    "styleId": "",
-    "tones": {
-      "neutral": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png"
-    },
-    "tonePrompts": {
-      "neutral": "A bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition is a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting is soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background is a plain, light grey, providing a clean and uncluttered setting for the portrait."
-    },
-    "characterSheet": "images/e3c2483a-d1d8-4ce3-8edb-8b29e85596d8.png",
-    "characterSheetPrompt": "A comprehensive character reference sheet featuring three distinct, full-body views of the same man, presented side-by-side on a plain white background. The man has dark skin, a neatly trimmed short beard, and dark, short hair visible beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, accented by a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top, and a black V-neck knitted vest. The trousers are straight-legged and well-fitted. He completes his ensemble with dark brown leather lace-up dress shoes. The first view is a full-front shot, showing him standing squarely, looking directly forward, with both arms relaxed at his sides. The second view is a precise profile shot from his right side, capturing the depth of his suit jacket and the cut of his trousers, with his head turned to the right. The third view is a full-back shot, detailing the rear construction of the suit jacket, the drape of the trousers, and the back of his hat. All three figures are standing upright, with both shoes clearly visible, generous headroom, and no cropping, ensuring a complete and detailed visual reference.",
-    "sheetRegions": {
-      "front": {
-        "x": 0,
-        "y": 0,
-        "width": 0.3333333333333333,
-        "height": 1
-      },
-      "profile": {
-        "x": 0.3333333333333333,
-        "y": 0,
-        "width": 0.3333333333333333,
-        "height": 1
-      },
-      "back": {
-        "x": 0.6666666666666666,
-        "y": 0,
-        "width": 0.3333333333333333,
-        "height": 1
-      }
-    },
-    "framingPrompts": {
-      "bust": "Generate a bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition must be a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting should be soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background should be a plain, light grey, providing a clean and uncluttered setting for the portrait.",
-      "fullBody": "Generate a full-body image of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching straight-legged trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck, and a black V-neck knitted vest. He completes his ensemble with dark brown leather lace-up dress shoes. The man is standing upright, facing directly forward, with both arms relaxed at his sides. The composition must show one complete person, with both shoes clearly visible, generous headroom above his hat, and absolutely no cropping of any part of his body. The lighting should be even and bright, typical of a studio setting, highlighting the details of his attire. The background should be plain white."
-    },
-    "preset": true,
-    "createdAt": "2026-09-29T13:15:16.414Z",
-    "updatedAt": "2026-09-29T14:13:11.466Z",
     "tags": [
       "homme",
       "chapeau de paille",
@@ -2483,6 +2442,56 @@
         -0.009453139535202512,
         -0.006123391349442432
       ]
-    }
+    },
+    "voiceKey": "gemini:Alnilam",
+    "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
+    "posePrompts": {
+      "neutral": "Stand naturally facing the camera, shoulders relaxed and hands resting comfortably, with a calm attentive expression.",
+      "success": "Give one encouraging thumbs-up with a pleased smile; for a reserved character use a discreet thumbs-up near the torso, for an energetic character a more expressive celebratory thumbs-up.",
+      "failure": "Offer one gentle open hand toward the learner with a sympathetic, reassuring expression; keep the gesture restrained or more expressive according to the character personality, inviting another attempt."
+    },
+    "sourceMode": "photo",
+    "sourcePrompt": "",
+    "decorMode": "image",
+    "decorPrompt": "",
+    "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
+    "decor": "",
+    "preview": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png",
+    "styleId": "",
+    "tones": {
+      "neutral": "images/cfc200fe-788f-4349-a9d1-1f863bc5aa15.png"
+    },
+    "tonePrompts": {
+      "neutral": "A bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition is a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting is soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background is a plain, light grey, providing a clean and uncluttered setting for the portrait."
+    },
+    "characterSheet": "images/e3c2483a-d1d8-4ce3-8edb-8b29e85596d8.png",
+    "characterSheetPrompt": "A comprehensive character reference sheet featuring three distinct, full-body views of the same man, presented side-by-side on a plain white background. The man has dark skin, a neatly trimmed short beard, and dark, short hair visible beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, accented by a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top, and a black V-neck knitted vest. The trousers are straight-legged and well-fitted. He completes his ensemble with dark brown leather lace-up dress shoes. The first view is a full-front shot, showing him standing squarely, looking directly forward, with both arms relaxed at his sides. The second view is a precise profile shot from his right side, capturing the depth of his suit jacket and the cut of his trousers, with his head turned to the right. The third view is a full-back shot, detailing the rear construction of the suit jacket, the drape of the trousers, and the back of his hat. All three figures are standing upright, with both shoes clearly visible, generous headroom, and no cropping, ensuring a complete and detailed visual reference.",
+    "sheetRegions": {
+      "front": {
+        "x": 0,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "profile": {
+        "x": 0.3333333333333333,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "back": {
+        "x": 0.6666666666666666,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      }
+    },
+    "framingPrompts": {
+      "bust": "Generate a bust portrait of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor, with subtle shadows beneath them. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His attire includes a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck. Over the shirt, he wears a black V-neck knitted vest. A light tan, double-breasted suit jacket with wide lapels is visible over the vest and shirt, adding a touch of classic elegance. The man's head is slightly tilted, and his expression is neutral yet engaging. The composition must be a tight bust shot, ensuring his face and lips are prominent, large, and completely unobstructed, ideal for a talking video. The lighting should be soft and even, originating from the front-right, casting gentle shadows that highlight his facial contours. The background should be a plain, light grey, providing a clean and uncluttered setting for the portrait.",
+      "fullBody": "Generate a full-body image of a man with dark skin, featuring an oval-shaped face and a neatly trimmed short beard and mustache. His dark brown eyes gaze directly forward, conveying a calm and composed demeanor. His eyebrows are dark, well-defined, and neatly groomed. His hair is very short and dark, visible at the temples and nape of the neck beneath his hat. He wears a light beige straw boater hat with a flat crown and brim, adorned with a dark navy blue ribbon band. His complete outfit consists of a light tan or beige double-breasted suit, including a jacket and matching straight-legged trousers. The suit jacket features wide lapels, two rows of dark buttons, and flap pockets. Beneath the jacket, he wears a crisp white collared dress shirt, unbuttoned at the top to reveal a thin, delicate gold chain around his neck, and a black V-neck knitted vest. He completes his ensemble with dark brown leather lace-up dress shoes. The man is standing upright, facing directly forward, with both arms relaxed at his sides. The composition must show one complete person, with both shoes clearly visible, generous headroom above his hat, and absolutely no cropping of any part of his body. The lighting should be even and bright, typical of a studio setting, highlighting the details of his attire. The background should be plain white."
+    },
+    "preset": true,
+    "createdAt": "2026-09-29T13:15:16.414Z",
+    "updatedAt": "2026-10-04T10:26:02.968Z"
   }
 ]
