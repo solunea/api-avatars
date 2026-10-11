@@ -7996,7 +7996,7 @@
     ],
     "preview": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Algieba",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "97f41eb274f5fb901a3cd4b6fc6145ddf26bcb51e92057272158246305b440bf",
@@ -8772,7 +8772,7 @@
       ]
     },
     "speechPersonality": "Une voix calme et posée, avec une intonation claire et engageante. Yannis s'exprime avec une curiosité intellectuelle et une détermination tranquille, reflétant un esprit réfléchi et une approche méthodique, idéal pour des explications techniques ou des récits inspirants.",
-    "updatedAt": "2026-10-11T14:39:50.819Z",
+    "updatedAt": "2026-10-11T16:36:05.548Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },

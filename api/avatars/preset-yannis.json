@@ -789,7 +789,7 @@
       0.014629490975616898
     ]
   },
-  "voiceKey": "gemini:Kore",
+  "voiceKey": "gemini:Algieba",
   "speechPersonality": "Une voix calme et posée, avec une intonation claire et engageante. Yannis s'exprime avec une curiosité intellectuelle et une détermination tranquille, reflétant un esprit réfléchi et une approche méthodique, idéal pour des explications techniques ou des récits inspirants.",
   "posePrompts": {
     "neutral": "Yannis stands waist-up, looking forward with a relaxed, attentive expression and a slight, gentle smile. His shoulders are level and relaxed. His arms are bent, with his hands clasped gently in front of his waist, fingers anatomically plausible and visible below his unobstructed face. He wears his white astronaut suit.",
@@ -838,5 +838,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T14:39:50.818Z",
-  "updatedAt": "2026-10-11T14:39:50.819Z"
+  "updatedAt": "2026-10-11T16:36:05.548Z"
 }
