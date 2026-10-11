@@ -816,7 +816,7 @@
     ],
     "preview": "images/8093cc08-2627-4347-9dbf-e8876d4ce6a9.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Autonoe",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "35cdb24a7533e6ec4b780ec2f5524f29d18c40a8d71f44864811ad1ea0217639",
@@ -1592,7 +1592,7 @@
       ]
     },
     "speechPersonality": "Une voix posée et claire, avec un rythme modéré et une articulation précise, reflétant le professionnalisme et la sérénité de l'avatar. La chaleur naturelle de la voix \"Kore\" s'accorde parfaitement à son expression bienveillante et son rôle éducatif.",
-    "updatedAt": "2026-10-11T10:52:37.431Z",
+    "updatedAt": "2026-10-11T16:37:18.123Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
