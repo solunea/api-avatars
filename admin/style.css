@@ -202,6 +202,9 @@ input::placeholder, textarea::placeholder { color: #6f6f78; }
 .text-button { display: block; margin: 5px 0 0 auto; padding: 0; border: 0; background: none; color: #c4a6ff; font-size: 11px; }
 .text-button:hover { text-decoration: underline; }
 .creation-actions { display: none; }
+.creation-brief > small { display: block; margin-top: 7px; color: #8e8e99; line-height: 1.5; }
+.new-mode .creation-brief { grid-column: 1 / -1; }
+.new-mode .generated-detail { display: none; }
 .inspector-note { margin: 19px 0 15px; padding: 12px; border: 1px solid #574486; border-radius: 8px; background: #231c33; color: #ccb9f5; font-size: 11px; line-height: 1.55; }
 .save-button { width: 100%; }
 

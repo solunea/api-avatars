@@ -14,6 +14,7 @@ import {generateBundle, describeBundle, describeSheetBundle, completeAvatarDescr
 import {pushPublishedHead} from './lib/git-publish.js';
 import {providerErrorMessage} from './lib/provider-error.js';
 import {normalizeClipFeature, indexAvatarFeatures} from './lib/clip-features.js';
+import {fitCharacterSheet} from './lib/sheet-layout.js';
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const root = process.env.API_AVATAR_ROOT || projectDir;
@@ -59,6 +60,7 @@ function cleanAvatar(input, previous) {
       ? normalizeAvatarPosePrompts(input.posePrompts || previous.posePrompts) : undefined,
     sourceMode: input.sourceMode ?? previous?.sourceMode ?? 'photo',
     sourcePrompt: input.sourcePrompt ?? previous?.sourcePrompt ?? '',
+    creationBrief: input.creationBrief ?? previous?.creationBrief ?? '',
     decorMode: input.decorMode ?? previous?.decorMode ?? 'image',
     decorPrompt: input.decorPrompt ?? previous?.decorPrompt ?? '',
     photo: String(input.photo || ''), decor: String(input.decor || ''),
@@ -169,7 +171,7 @@ app.post('/api/remove-sheet-background', async (request, response) => {
     const source = mediaPath(root, request.body?.characterSheet);
     if (!source) return response.status(400).json({error: 'Planche invalide'});
     const original = readFileSync(source);
-    const alpha = (await sharp(original).ensureAlpha().stats()).channels[3];
+    const alpha = (await sharp(await sharp(original).ensureAlpha().png().toBuffer()).stats()).channels[3];
     if (alpha.min === 0 && alpha.mean < 250) {
       return response.json({path: request.body.characterSheet});
     }
@@ -179,6 +181,19 @@ app.post('/api/remove-sheet-background', async (request, response) => {
     const path = `images/${randomUUID()}.png`;
     writeFileSync(join(root, path), buffer);
     response.json({path});
+  } catch (error) { mediaResponse(response, error); }
+});
+
+app.post('/api/fit-sheet', async (request, response) => {
+  try {
+    const source = mediaPath(root, request.body?.characterSheet);
+    if (!source) return response.status(400).json({error: 'Planche invalide'});
+    const original = readFileSync(source);
+    const buffer = await fitCharacterSheet(original, request.body.sheetRegions);
+    if (buffer === original) return response.json({path:request.body.characterSheet, sheetRegions:request.body.sheetRegions || defaultSheetRegions});
+    const path = `images/${randomUUID()}.png`;
+    writeFileSync(join(root, path), buffer);
+    response.json({path, sheetRegions: defaultSheetRegions});
   } catch (error) { mediaResponse(response, error); }
 });
 

@@ -20,7 +20,7 @@ let messageTimer;
 let voicePreviewRequest = 0;
 
 function emptyAvatar() {
-  return {id: '', schemaVersion: 2, name: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
+  return {id: '', schemaVersion: 2, name: '', creationBrief: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
     characterSheet: '', characterSheetPrompt: '', sheetRegions: structuredClone(defaultRegions), framingPrompts: {bust:'', fullBody:''},
     tones: {neutral: ''}, tonePrompts: {neutral: ''}};
 }
@@ -262,7 +262,7 @@ function renderForm() {
   $('#breadcrumb-name').textContent = title;
   renderRecordStatus();
   $('#delete').hidden = !current.id;
-  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) $(`[name="${key}"]`).value = current[key] || '';
+  for (const key of ['name', 'creationBrief', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) $(`[name="${key}"]`).value = current[key] || '';
   $('#avatar-source-mode').value = current.sourceMode || 'photo';
   $('#avatar-decor-mode').value = current.decorMode || 'image';
   renderSourceMode();
@@ -370,6 +370,7 @@ function renderRegions() {
   overlay.replaceChildren();
   overlay.hidden = !current.characterSheet;
   const regions = current.sheetRegions || defaultRegions;
+  $('#fit-sheet').hidden = !current.characterSheet || Object.keys(regions).length !== 3;
   $('.sheet-frame').classList.toggle('legacy', Object.keys(regions).length > 3);
   if (Object.keys(regions).length === 3 && ['front','profile','back'].every(name => regions[name])) {
     renderSheetSliders(overlay, regions);
@@ -541,9 +542,20 @@ for (const key of promptKeys) {
   });
 }
 
-for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) {
+for (const key of ['name', 'creationBrief', 'description', 'voiceKey', 'speechPersonality', 'sourcePrompt', 'decorPrompt']) {
   $(`[name="${key}"]`).addEventListener('input', event => {
     current[key] = event.target.value;
+    if (key === 'creationBrief') {
+      generationResume = null;
+      sourceChanged = true;
+      current.description = '';
+      current.speechPersonality = '';
+      $('#avatar-description').value = '';
+      $('#avatar-personality').value = '';
+      descriptionsOutdated = true;
+      if (current.sourceMode === 'prompt') setMedia('photo', '');
+      if (current.decorMode === 'prompt') { decorChanged = true; setMedia('decor', ''); }
+    }
     if (key === 'sourcePrompt') { generationResume = null; sourceChanged = true; setMedia('photo', ''); }
     if (key === 'decorPrompt') { generationResume = null; decorChanged = true; setMedia('decor', ''); }
     dirty = true;
@@ -629,7 +641,7 @@ $('#manual-mode').addEventListener('click', () => {
 });
 
 function setGenerationControls(disabled) {
-  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new, #regenerate-neutral, #regenerate-characterSheet, #upload-neutral, #upload-characterSheet')) {
+  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new, #regenerate-neutral, #regenerate-characterSheet, #upload-neutral, #upload-characterSheet, #fit-sheet, #remove-sheet-background')) {
     element.disabled = disabled;
   }
 }
@@ -643,9 +655,11 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
   if (result.posePrompts) current.posePrompts = {...result.posePrompts};
   if (!current.description && result.description) current.description = result.description;
   if (!current.speechPersonality && result.speechPersonality) current.speechPersonality = result.speechPersonality;
+  if (!current.creationBrief && result.creationBrief) current.creationBrief = result.creationBrief;
   if (Array.isArray(result.tags)) current.tags = result.tags;
   $('#avatar-description').value = current.description;
   $('#avatar-personality').value = current.speechPersonality;
+  $('#avatar-brief').value = current.creationBrief || '';
   descriptionsOutdated = false;
   dirty = true;
   renderRecordStatus();
@@ -656,14 +670,15 @@ async function generateFromReferences(button) {
   if (busy) return;
   current.name = $('#avatar-name').value.trim();
   if (!current.name || !hasGenerationSource()) return message('Indiquez un nom, puis ajoutez une photo ou décrivez votre avatar dans le prompt.');
-  const key = JSON.stringify([current.name, ...generationSourceKey()]);
+  const key = JSON.stringify([current.name, current.creationBrief, ...generationSourceKey()]);
   if (generationResume?.key !== key) generationResume = {key,
     photo: !sourceChanged ? current.photo : '', decor: !decorChanged ? current.decor : '',
-    neutral: !sourceChanged && !decorChanged && current.tones?.neutral && !current.characterSheet ? current.tones.neutral : '', characterSheet: '', sheetViews: {}};
+    neutral: !sourceChanged && !decorChanged && current.tones?.neutral && !current.characterSheet ? current.tones.neutral : '', characterSheet: ''};
   const request = {name: current.name, photo: current.photo, decor: current.decor, sourceMode: current.sourceMode || 'photo', sourcePrompt: current.sourcePrompt || '', voiceKey: $('#avatar-voice').value,
     decorMode: current.decorMode || 'image', decorPrompt: current.decorPrompt || '',
+    creationBrief: current.creationBrief || '', description: $('#avatar-description').value.trim(),
     speechPersonality: $('#avatar-personality').value.trim(),
-    resume: {photo: generationResume.photo, decor: generationResume.decor, neutral: generationResume.neutral, characterSheet: generationResume.characterSheet, sheetViews: generationResume.sheetViews}};
+    resume: {photo: generationResume.photo, decor: generationResume.decor, neutral: generationResume.neutral, characterSheet: generationResume.characterSheet}};
   generationState = {preview: generationResume.neutral ? 'ready' : 'running', neutral: generationResume.neutral ? 'ready' : 'running',
     characterSheet: generationResume.characterSheet ? 'ready' : 'pending'};
   newMode = false;
@@ -681,10 +696,7 @@ async function generateFromReferences(button) {
       } else if (event.type === 'stage' && fields.includes(event.tone)) {
         generationState[event.tone] = 'running';
         renderMedia(event.tone);
-        message(event.tone === 'photo' ? 'Création de la photo depuis le prompt…' : event.tone === 'decor' ? 'Création du décor depuis le prompt…' : event.tone === 'characterSheet' ? 'Génération des vues de la planche…' : 'Génération du portrait neutre…', true, true);
-      } else if (event.type === 'sheetView') {
-        generationResume.sheetViews[event.view] = event.path;
-        message(`Vue ${event.view} prête. Assemblage de la planche…`, true, true);
+        message(event.tone === 'photo' ? 'Création de la photo depuis le prompt…' : event.tone === 'decor' ? 'Création du décor depuis le prompt…' : event.tone === 'characterSheet' ? 'Génération de la planche complète…' : 'Génération du portrait neutre…', true, true);
       } else if (event.type === 'portrait' && fields.includes(event.tone)) {
         generationState[event.tone] = 'ready';
         if (event.tone === 'photo') { generationResume.photo = event.path; sourceChanged = false; }
@@ -725,14 +737,15 @@ async function regenerateOne(field) {
   const neutral = current.tones?.neutral || '';
   if (field === 'characterSheet' && !neutral) return message('Générez ou importez le portrait neutre avant la planche.');
   if (field === 'characterSheet' && (sourceChanged || decorChanged)) return message('La source a changé. Régénérez le portrait neutre avant la planche.');
-  const key = JSON.stringify(['single', field, name, ...generationSourceKey(), field === 'characterSheet' ? neutral : '']);
-  if (generationResume?.key !== key) generationResume = {key, neutral: field === 'characterSheet' ? neutral : '', sheetViews: {}};
+  const key = JSON.stringify(['single', field, name, current.creationBrief, ...generationSourceKey(), field === 'characterSheet' ? neutral : '']);
+  if (generationResume?.key !== key) generationResume = {key, neutral: field === 'characterSheet' ? neutral : ''};
   const previousNeutral = neutral;
   const previewFollowedNeutral = !current.preview || current.preview === previousNeutral;
   const request = {name, photo:current.sourceMode === 'prompt' && sourceChanged ? '' : current.photo, decor:current.decor, voiceKey:$('#avatar-voice').value,
     sourceMode:current.sourceMode || 'photo', sourcePrompt:current.sourcePrompt || '',
     decorMode:current.decorMode || 'image', decorPrompt:current.decorPrompt || '',
-    only:field, describe:false, resume:{photo:generationResume.photo, decor:generationResume.decor, neutral:generationResume.neutral, sheetViews:generationResume.sheetViews}};
+    creationBrief:current.creationBrief || '', description:current.description || '', speechPersonality:current.speechPersonality || '',
+    only:field, describe:false, resume:{photo:generationResume.photo, decor:generationResume.decor, neutral:generationResume.neutral}};
   current.name = name;
   generationState = {[field]:'running'};
   newMode = false;
@@ -752,7 +765,6 @@ async function regenerateOne(field) {
         decorChanged = false;
         setMedia('decor', event.path);
       }
-      if (event.type === 'sheetView') generationResume.sheetViews[event.view] = event.path;
       if (event.type === 'portrait' && event.tone === field) {
         descriptionsOutdated = true;
         if (field === 'neutral') {
@@ -784,6 +796,19 @@ async function regenerateOne(field) {
 }
 $('#regenerate-neutral').addEventListener('click', () => regenerateOne('neutral'));
 $('#regenerate-characterSheet').addEventListener('click', () => regenerateOne('characterSheet'));
+$('#fit-sheet').addEventListener('click', () => {
+  if (!current.characterSheet) return message('Importez ou générez une planche avant d’ajuster son cadrage.');
+  run($('#fit-sheet'), 'Ajustement du cadrage…', async () => {
+    const result = await api('/api/fit-sheet', {method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({characterSheet:current.characterSheet, sheetRegions:current.sheetRegions || defaultRegions})});
+    setMedia('characterSheet', result.path);
+    current.sheetRegions = structuredClone(result.sheetRegions);
+    renderRegions();
+    descriptionsOutdated = true;
+    renderDescriptionNotice();
+    message('Cadrage ajusté. Vérifiez la planche avant d’enregistrer.', true);
+  });
+});
 $('#remove-sheet-background').addEventListener('click', () => {
   if (!current.characterSheet) return message('Importez ou générez une planche avant de retirer son fond.');
   run($('#remove-sheet-background'), 'Détourage de la planche…', async () => {
@@ -803,8 +828,9 @@ $('#describe').addEventListener('click', async () => {
   if (!paths.neutral || !current.characterSheet) return message('Chargez le neutre et la planche avant de générer leurs descriptions.');
   await run($('#describe'), 'Description détaillée des images…', async () => {
     const result = await api('/api/describe', {method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({schemaVersion: 2, tones: paths, characterSheet: current.characterSheet, decor: current.decor, name: current.name,
-        voiceKey: current.voiceKey, speechPersonality: $('#avatar-personality').value.trim()})});
+      body: JSON.stringify({schemaVersion: 2, tones: paths, characterSheet: current.characterSheet, photo: current.photo, decor: current.decor, name: current.name,
+        voiceKey: current.voiceKey, creationBrief: current.creationBrief || '', description: $('#avatar-description').value.trim(),
+        speechPersonality: $('#avatar-personality').value.trim()})});
     applyGeneratedDetails(result);
     message('Descriptions et champs manquants prêts à relire', true);
   });
@@ -812,7 +838,7 @@ $('#describe').addEventListener('click', async () => {
 
 $('#editor').addEventListener('submit', async event => {
   event.preventDefault();
-  for (const key of ['name', 'description', 'voiceKey', 'speechPersonality', 'sourceMode', 'sourcePrompt', 'decorMode', 'decorPrompt']) current[key] = $(`[name="${key}"]`).value.trim();
+  for (const key of ['name', 'creationBrief', 'description', 'voiceKey', 'speechPersonality', 'sourceMode', 'sourcePrompt', 'decorMode', 'decorPrompt']) current[key] = $(`[name="${key}"]`).value.trim();
   for (const key of promptKeys) setPrompt(key, $(`#prompt-${key}`).value.trim());
   if (!current.characterSheet) return message('Générez ou importez la planche avant d’enregistrer cette fiche.');
   current.schemaVersion = 2;

@@ -14,9 +14,22 @@ import {removeWhiteFringe} from '../lib/matte.js';
 import {pushPublishedHead} from '../lib/git-publish.js';
 import {providerErrorMessage} from '../lib/provider-error.js';
 
-function imageResult(model, options) {
-  const bytes = model === 'ideogram-ai/ideogram-4-5' ? options.input.images[0] : png;
-  return `data:image/png;base64,${bytes.toString('base64')}`;
+async function imageResult(model, options) {
+  let bytes = png;
+  if (model === 'ideogram-ai/ideogram-4-5') bytes = await sharp(options.input.images[0]).flatten({background:'white'}).png().toBuffer();
+  if (model.startsWith('851-labs/')) {
+    const {width, height} = await sharp(options.input.image).metadata();
+    const image = new PNG({width,height});
+    for (let column = 0; column < 3; column++) {
+      for (let y = Math.floor(height * .2); y < height * .9; y++) {
+        for (let x = Math.floor((column + .35) * width / 3); x < (column + .65) * width / 3; x++) {
+          image.data.set([70,80,90,255], (y * width + x) * 4);
+        }
+      }
+    }
+    bytes = PNG.sync.write(image);
+  }
+  return 'data:image/png;base64,' + bytes.toString('base64');
 }
 
 const png = PNG.sync.write(new PNG({width: 1, height: 1}));
@@ -132,7 +145,7 @@ test('une planche v2 existante à cinq zones reste lisible', t => {
   assert.deepEqual(validateAvatar(item, root), []);
 });
 
-test('import v2 sans descriptions les retrouve depuis le neutre et la planche', async t => {
+test('import v2 sans ADN complète les descriptions depuis le neutre, la planche et la source', async t => {
   const root = fixture(t);
   const item = avatarV2();
   item.description = ''; item.speechPersonality = ''; item.tonePrompts.neutral = '';
@@ -141,7 +154,7 @@ test('import v2 sans descriptions les retrouve depuis le neutre et la planche', 
   await completeAvatarDescriptions(root,item,async (model, options) => {
     calls += 1;
     assert.equal(model,'google/gemini-2.5-flash');
-    assert.equal(options.input.images.length,2);
+    assert.equal(options.input.images.length,3);
     return [detailedSheetBundle];
   });
   assert.equal(calls,1);
@@ -238,19 +251,16 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   const events = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 4);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 2);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 2);
   assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
-  assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 2);
+  assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 3);
   const eventNames = events.map(event => `${event.type}:${event.tone || ''}`);
   assert.deepEqual(eventNames.slice(0, 3), ['stage:neutral', 'portrait:neutral', 'stage:characterSheet']);
   assert.ok(eventNames.includes('portrait:characterSheet'));
   assert.deepEqual(eventNames.slice(-2), ['stage:descriptions', 'details:']);
   for (const event of events.filter(item => item.type === 'portrait')) assert.ok(existsSync(join(root, event.path)));
-  for (const event of events.filter(item => item.type === 'sheetView')) {
-    assert.match(event.path, /^uploads\/view-/);
-    assert.equal(existsSync(join(root, event.path)), false);
-  }
+  assert.equal(events.some(event => event.type === 'sheetView'), false);
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
   assert.deepEqual(result.posePrompts,posePrompts);
@@ -292,7 +302,7 @@ test('un prompt crée une référence puis un avatar v2 valide sans photo import
   };
   const result = await generateBundle(root, {name:'Ada', sourceMode:'prompt', sourcePrompt}, run, event => events.push(event));
   const images = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
-  assert.equal(images.length, 5);
+  assert.equal(images.length, 3);
   assert.match(images[0].input.prompt, /Une guide aux cheveux bouclés/);
   assert.match(images[0].input.prompt, /empty placeholder/);
   assert.equal(images[1].input.images.length, 1);
@@ -335,7 +345,8 @@ test('les sources invalides échouent sans appel IA', async t => {
     {sourceMode:'prompt',sourcePrompt:'Une guide',decor:'images/absent.png'},
     {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'invalid'},
     {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:' '},
-    {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:'a'.repeat(4001)}]) {
+    {sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:'a'.repeat(4001)},
+    {creationBrief:'a'.repeat(4001)}, {creationBrief:42}]) {
     await assert.rejects(generateBundle(root, {name:'Ada', ...draft}, async () => { calls++; }));
   }
   assert.equal(calls, 0);
@@ -343,6 +354,8 @@ test('les sources invalides échouent sans appel IA', async t => {
   assert.ok(validateAvatar(item, root).includes('prompt source requis'));
   item.sourcePrompt = 'a'.repeat(4001);
   assert.ok(validateAvatar(item, root).includes('prompt source invalide'));
+  item.creationBrief = 'a'.repeat(4001);
+  assert.ok(validateAvatar(item, root).includes('consignes de création invalides'));
 });
 
 for (const sourceMode of ['photo','prompt']) for (const decorMode of ['image','prompt']) {
@@ -407,7 +420,7 @@ test('régénérer la planche réutilise le neutre sans analyser les description
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'characterSheet',describe:false,
     resume:{neutral:'images/neutral.png'}}, run);
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 3);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
   assert.equal(result.tones.neutral, 'images/neutral.png');
@@ -415,13 +428,13 @@ test('régénérer la planche réutilise le neutre sans analyser les description
   assert.deepEqual(result.sheetRegions, defaultSheetRegions);
 });
 
-test('génération avec décor transmet les deux références au neutre puis les vues séparées', async t => {
+test('génération avec décor transmet les deux références au neutre puis à la planche complète', async t => {
   const root = fixture(t);
   writeFileSync(join(root, 'images', 'photo.png'), png);
   const calls = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
   await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
-  assert.equal(calls.length, 6);
+  assert.equal(calls.length, 4);
   const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
   assert.equal(generationCalls[0].options.input.images.length, 2);
   assert.deepEqual(generationCalls[0].options.input.images[1], png);
@@ -429,8 +442,8 @@ test('génération avec décor transmet les deux références au neutre puis les
   assert.deepEqual(generationCalls[1].options.input.images[1], png);
   assert.equal(generationCalls[1].options.input.images.length, 2);
   assert.match(generationCalls[1].options.input.prompt, /head-to-toe/);
-  assert.match(generationCalls[2].options.input.prompt, /side profile/);
-  assert.match(generationCalls[3].options.input.prompt, /rear view/);
+  assert.match(generationCalls[1].options.input.prompt, /side profile/);
+  assert.match(generationCalls[1].options.input.prompt, /rear view/);
 });
 
 test('un neutre existant déclenche automatiquement la génération de la planche seule', async t => {
@@ -445,35 +458,30 @@ test('un neutre existant déclenche automatiquement la génération de la planch
     event => events.push(event));
   assert.equal(result.tones.neutral, 'images/neutral.png');
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 3);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral', 'characterSheet']);
 });
 
-test('une erreur 502 reprend seulement la vue manquante et réutilise les images terminées', async t => {
+test('une erreur de planche réutilise le neutre terminé à la reprise', async t => {
   const root = fixture(t);
-  let failProfile = true;
-  const calls = [];
-  const events = [];
+  let failSheet = true;
+  const calls = [], events = [];
   const run = async (model, options) => {
     calls.push({model, options});
     if (model.startsWith('google/')) return [detailedSheetBundle];
-    if (['ideogram-ai/ideogram-4-5', 'black-forest-labs/flux-2-pro'].includes(model) && options.input.prompt.includes('left side profile') && failProfile) {
-      throw new Error('status 502 Bad Gateway');
-    }
+    if (['ideogram-ai/ideogram-4-5', 'black-forest-labs/flux-2-pro'].includes(model)
+      && options.input.prompt.includes('character reference sheet') && failSheet) throw new Error('status 502 Bad Gateway');
     return imageResult(model, options);
   };
   await assert.rejects(generateBundle(root, {name:'Ada',photo:'images/photo.png'}, run, event => events.push(event)), /502/);
-  failProfile = false;
+  failSheet = false;
   const neutral = events.find(event => event.type === 'portrait' && event.tone === 'neutral')?.path;
-  const sheetViews = Object.fromEntries(events.filter(event => event.type === 'sheetView').map(event => [event.view, event.path]));
   assert.ok(neutral && existsSync(join(root, neutral)));
-  assert.deepEqual(Object.keys(sheetViews).sort(), ['back', 'front']);
-  assert.ok(Object.values(sheetViews).every(path => existsSync(join(root, path))));
+  assert.equal(events.some(event => event.type === 'sheetView'), false);
   const callsBeforeResume = calls.length;
-  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,sheetViews}}, run);
+  const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral}}, run);
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
-  assert.ok(Object.values(sheetViews).every(path => !existsSync(join(root, path))));
   assert.deepEqual(calls.slice(callsBeforeResume).map(call => call.model),
     ['ideogram-ai/ideogram-4-5', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
 });
@@ -498,7 +506,7 @@ test('après une erreur de description, la reprise ne relance aucune image', asy
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,characterSheet}}, run,
     event => resumedEvents.push(event));
   assert.equal(result.characterSheet, characterSheet);
-  assert.equal(calls.filter(model => model === 'ideogram-ai/ideogram-4-5').length, 4);
+  assert.equal(calls.filter(model => model === 'ideogram-ai/ideogram-4-5').length, 2);
   assert.equal(resumedEvents.find(event => event.tone === 'characterSheet').reused, true);
 });
 
@@ -630,6 +638,23 @@ test('administration locale accepte la création puis la suppression', async t =
     await new Promise(resolve => setTimeout(resolve, 100));
   }
   assert.ok(ready, 'serveur local démarré');
+  const sheetSource = new PNG({width:300,height:225});
+  for (let column=0;column<3;column++) for (let y=60;y<210;y++) for (let x=column*100+35;x<column*100+65;x++) {
+    sheetSource.data.set([80,90,100,255],(y*300+x)*4);
+  }
+  const originalSheet = PNG.sync.write(sheetSource);
+  writeFileSync(join(root,'images/sheet.png'),originalSheet);
+  const fitted = await fetch(`${base}/api/fit-sheet`, {method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({characterSheet:'images/sheet.png',sheetRegions:defaultSheetRegions})});
+  assert.equal(fitted.status,200);
+  const fittedSheet = await fitted.json();
+  assert.notEqual(fittedSheet.path,'images/sheet.png');
+  assert.deepEqual(fittedSheet.sheetRegions,defaultSheetRegions);
+  assert.deepEqual(readFileSync(join(root,'images/sheet.png')),originalSheet);
+  assert.equal((await sharp(join(root,fittedSheet.path)).metadata()).width,2048);
+  const invalidFit = await fetch(`${base}/api/fit-sheet`, {method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({characterSheet:'images/../outside.png'})});
+  assert.equal(invalidFit.status,400);
   const availableVoices = await (await fetch(`${base}/api/voices`)).json();
   assert.equal(availableVoices.length, 30);
   assert.ok(availableVoices.every(voice => voice.key === `gemini:${voice.name}` && ['male', 'female'].includes(voice.gender)));
@@ -649,10 +674,12 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal(describedError.status, 502);
   assert.match(describedError.headers.get('content-type'), /application\/json/);
   assert.match((await describedError.json()).error, /trois portraits sont requis/);
-  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),posePrompts,sourceMode:'prompt',sourcePrompt:'Une guide en veste bleue',decorMode:'prompt',decorPrompt:'Un salon lumineux',decor:'images/decor.png',speechPersonality:'  Calme \n et   posée  '})});
+  const creationBrief = 'Pédagogue réservée, calme et rassurante face aux erreurs.';
+  const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),creationBrief,posePrompts,sourceMode:'prompt',sourcePrompt:'Une guide en veste bleue',decorMode:'prompt',decorPrompt:'Un salon lumineux',decor:'images/decor.png',speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
   assert.equal(detail.speechPersonality, 'Calme et posée');
+  assert.equal(detail.creationBrief, creationBrief);
   assert.equal(detail.sourceMode, 'prompt');
   assert.equal(detail.sourcePrompt, 'Une guide en veste bleue');
   assert.equal(detail.decorMode, 'prompt');
@@ -666,6 +693,7 @@ test('administration locale accepte la création puis la suppression', async t =
   const updatedAvatar = await updated.json();
   assert.equal(updatedAvatar.id, 'preset-ada');
   assert.equal(updatedAvatar.speechPersonality, 'Rassurante');
+  assert.equal(updatedAvatar.creationBrief, creationBrief);
   assert.equal(updatedAvatar.sourceMode, 'prompt');
   assert.equal(updatedAvatar.decorMode, 'prompt');
   assert.equal(updatedAvatar.decorPrompt, 'Un salon lumineux');
