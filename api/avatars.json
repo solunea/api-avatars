@@ -8794,7 +8794,7 @@
     ],
     "preview": "images/da626a21-e5c2-4235-9ea5-4484eb916d76.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Leda",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "738731dcee1d6c6de51499e439dfd6e83d7fbca222e55949c30fff630c1a807d",
@@ -9570,7 +9570,7 @@
       ]
     },
     "speechPersonality": "Une voix calme, claire et posée, avec une intonation encourageante et bienveillante. Elle s'exprime avec assurance et une touche de chaleur, idéale pour des explications pédagogiques ou des conseils avisés.",
-    "updatedAt": "2026-10-11T16:32:48.739Z",
+    "updatedAt": "2026-10-11T16:35:51.956Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
@@ -9592,7 +9592,7 @@
     ],
     "preview": "images/187262e6-514a-4615-a3b0-f006d0eef2a0.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Erinome",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "7c2ae0bbe2cf8ff5f5143421e5dbe697bee5ef0c2b5701aa90fc30ac11e9b8fb",
@@ -10368,7 +10368,7 @@
       ]
     },
     "speechPersonality": "Voix douce et mélodieuse, avec un débit posé et une intonation chaleureuse. Elle s'exprime avec clarté et une pointe de bienveillance, invitant à la confiance et à l'écoute. Son ton est toujours respectueux et encourageant.",
-    "updatedAt": "2026-10-11T16:35:15.880Z",
+    "updatedAt": "2026-10-11T16:35:40.934Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   }

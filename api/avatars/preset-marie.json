@@ -789,7 +789,7 @@
       -0.0008810600590166002
     ]
   },
-  "voiceKey": "gemini:Kore",
+  "voiceKey": "gemini:Leda",
   "speechPersonality": "Une voix calme, claire et posée, avec une intonation encourageante et bienveillante. Elle s'exprime avec assurance et une touche de chaleur, idéale pour des explications pédagogiques ou des conseils avisés.",
   "posePrompts": {
     "neutral": "Marie stands waist-up with a calm, attentive expression, her shoulders relaxed and slightly back. Her arms are gently at her sides, with her hands visible below her waist, fingers naturally relaxed. Her posture is open and receptive, ready to listen.",
@@ -838,5 +838,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T16:32:48.739Z",
-  "updatedAt": "2026-10-11T16:32:48.739Z"
+  "updatedAt": "2026-10-11T16:35:51.956Z"
 }
