@@ -5841,7 +5841,7 @@
         0.011348444799616324
       ]
     },
-    "voiceKey": "gemini:Callirrhoe",
+    "voiceKey": "gemini:Erinome",
     "speechPersonality": "Lydia a une voix calme et posée, avec une intonation douce et encourageante. Elle s'exprime avec clarté et bienveillance, adoptant un ton didactique et rassurant, idéal pour guider et soutenir. Son débit est modéré, favorisant la compréhension et la confiance.",
     "posePrompts": {
       "neutral": "Lydia stands waist-up, facing forward with a calm, attentive expression. Her shoulders are relaxed, and her arms are gently bent, with hands clasped loosely in front of her waist. Her gaze is direct and welcoming, conveying readiness to listen.",
@@ -5890,7 +5890,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:11:46.424Z",
-    "updatedAt": "2026-10-11T11:11:46.424Z"
+    "updatedAt": "2026-10-11T16:36:47.968Z"
   },
   {
     "id": "preset-jeanne",

@@ -4804,7 +4804,7 @@
     ],
     "preview": "images/7ad45fbd-88ed-4867-9d3b-d8285a667f9d.png",
     "decor": "",
-    "voiceKey": "gemini:Callirrhoe",
+    "voiceKey": "gemini:Erinome",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "fc9d287f15a03d9af55a74fa7af40902fe39e59fcee328b02593a6ddb0a90858",
@@ -5580,7 +5580,7 @@
       ]
     },
     "speechPersonality": "Lydia a une voix calme et posée, avec une intonation douce et encourageante. Elle s'exprime avec clarté et bienveillance, adoptant un ton didactique et rassurant, idéal pour guider et soutenir. Son débit est modéré, favorisant la compréhension et la confiance.",
-    "updatedAt": "2026-10-11T11:11:46.424Z",
+    "updatedAt": "2026-10-11T16:36:47.968Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
