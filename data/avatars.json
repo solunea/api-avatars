@@ -7524,7 +7524,7 @@
         -0.0029097775423058024
       ]
     },
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Charon",
     "speechPersonality": "Voix calme et posée, avec une intonation naturelle et engageante. Le débit est modéré, clair et articulé, transmettant confiance et bienveillance. Il s'exprime avec une légère chaleur, invitant à l'écoute et à la compréhension mutuelle.",
     "posePrompts": {
       "neutral": "Ryan stands waist-up, facing forward with a relaxed, attentive expression. His shoulders are level, and his arms are gently at his sides, hands visible and open, conveying an approachable and engaged stance. His gaze is direct and calm.",
@@ -7573,7 +7573,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:58:06.850Z",
-    "updatedAt": "2026-10-11T11:58:06.850Z"
+    "updatedAt": "2026-10-11T16:36:32.346Z"
   },
   {
     "id": "preset-kevin",

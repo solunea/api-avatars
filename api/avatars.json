@@ -6399,7 +6399,7 @@
     ],
     "preview": "images/c37613c5-b29f-4120-8429-4670888ac602.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Charon",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "ae89a1b1b72c08858f9022c9e1ce6816447ef0faa138ecc217a70ac2de3b5bc4",
@@ -7175,7 +7175,7 @@
       ]
     },
     "speechPersonality": "Voix calme et posée, avec une intonation naturelle et engageante. Le débit est modéré, clair et articulé, transmettant confiance et bienveillance. Il s'exprime avec une légère chaleur, invitant à l'écoute et à la compréhension mutuelle.",
-    "updatedAt": "2026-10-11T11:58:06.850Z",
+    "updatedAt": "2026-10-11T16:36:32.346Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
