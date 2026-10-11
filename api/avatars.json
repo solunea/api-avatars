@@ -7198,7 +7198,7 @@
     ],
     "preview": "images/bb050d66-6414-407d-a561-810f35420692.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Charon",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "c17ea47e98ed1f99f74508f13d7583f3e16a2331649cd40990159a3cab8f6712",
@@ -7974,7 +7974,7 @@
       ]
     },
     "speechPersonality": "Voix masculine, posée et rassurante, avec une légère profondeur. Le ton est direct et professionnel, mais empreint de bienveillance et de clarté, idéal pour des explications techniques ou des conseils pratiques. Il inspire confiance et autorité calme.",
-    "updatedAt": "2026-10-11T12:00:01.473Z",
+    "updatedAt": "2026-10-11T16:36:18.976Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },

@@ -8367,7 +8367,7 @@
         0.004403009743301855
       ]
     },
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Charon",
     "speechPersonality": "Voix masculine, posée et rassurante, avec une légère profondeur. Le ton est direct et professionnel, mais empreint de bienveillance et de clarté, idéal pour des explications techniques ou des conseils pratiques. Il inspire confiance et autorité calme.",
     "posePrompts": {
       "neutral": "The man stands with a relaxed, attentive posture, shoulders squared, and arms gently at his sides. His expression is calm and focused, with a slight, encouraging nod. His hands are visible, resting naturally below his waist, ready to engage.",
@@ -8416,7 +8416,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T12:00:01.473Z",
-    "updatedAt": "2026-10-11T12:00:01.473Z"
+    "updatedAt": "2026-10-11T16:36:18.976Z"
   },
   {
     "id": "preset-yannis",
