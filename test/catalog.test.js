@@ -48,6 +48,20 @@ function fixture(t) {
   for (const name of ['photo', 'preview', 'neutral', 'success', 'failure', 'decor', 'sheet']) writeFileSync(join(root, 'images', `${name}.png`), png);
   return root;
 }
+
+async function startServer(t, root, token = 'test-only-token') {
+  const port = 32000 + Math.floor(Math.random() * 20000);
+  const child = spawn(process.execPath, ['server.js'], {cwd: join(import.meta.dirname, '..'),
+    env: {...process.env, API_AVATAR_ROOT: root, PORT: String(port), REPLICATE_API_TOKEN: token}, stdio: 'ignore'});
+  t.after(() => child.kill());
+  const base = `http://127.0.0.1:${port}`;
+  for (let i = 0; i < 100; i++) {
+    try { if ((await fetch(`${base}/api/avatars`)).ok) return base; } catch {}
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  assert.fail('serveur local non démarré');
+}
+
 function avatar() {
   return {id:'preset-ada', name:'Ada', description:'Guide', tags:['veste bleue'], voiceKey:'gemini:Kore', speechPersonality:'Chaleureuse et posée', photo:'images/photo.png', decor:'', preview:'images/preview.png',
     clip:{model:CLIP_MODEL, imageHash:createHash('sha256').update(png).digest('hex'), embedding:[1, ...Array(767).fill(0)]},
@@ -632,16 +646,7 @@ test('le détourage retire un halo blanc inventé sans effacer une barbe blanche
 
 test('administration locale accepte la création puis la suppression', async t => {
   const root = fixture(t);
-  const port = 32000 + Math.floor(Math.random() * 20000);
-  const child = spawn(process.execPath, ['server.js'], {cwd:join(import.meta.dirname, '..'), env:{...process.env, API_AVATAR_ROOT:root, PORT:String(port), REPLICATE_API_TOKEN:'test-only-token'}, stdio:'ignore'});
-  t.after(() => child.kill());
-  const base = `http://127.0.0.1:${port}`;
-  let ready = false;
-  for (let i=0;i<100;i++) {
-    try {const response=await fetch(`${base}/api/avatars`);if(response.ok){ready=true;break;}} catch {}
-    await new Promise(resolve => setTimeout(resolve, 100));
-  }
-  assert.ok(ready, 'serveur local démarré');
+  const base = await startServer(t, root);
   const sheetSource = new PNG({width:300,height:225});
   for (let column=0;column<3;column++) for (let y=60;y<210;y++) for (let x=column*100+35;x<column*100+65;x++) {
     sheetSource.data.set([80,90,100,255],(y*300+x)*4);
@@ -705,4 +710,27 @@ test('administration locale accepte la création puis la suppression', async t =
   assert.equal((await fetch(`${base}/api/avatars/preset-ada`, {method:'DELETE'})).status, 200);
   assert.deepEqual(await (await fetch(`${base}/api/avatars`)).json(), []);
   assert.equal(existsSync(join(root, 'images', 'photo.png')), false);
+});
+
+test('une image modifiée et ses descriptions anciennes se sauvegardent sans jeton ni appel IA', async t => {
+  const root = fixture(t);
+  const original = avatarV2();
+  saveCatalog(root, [original]);
+  writeFileSync(join(root, 'images', 'new-neutral.png'), png);
+  const base = await startServer(t, root, '');
+  const response = await fetch(`${base}/api/avatars/${original.id}`, {method: 'PUT',
+    headers: {'Content-Type': 'application/json'}, body: JSON.stringify({...original,
+      tones: {neutral: 'images/new-neutral.png'}, preview: 'images/new-neutral.png',
+      tags: [], description: '', speechPersonality: '', descriptionsOutdated: true})});
+  assert.equal(response.status, 200);
+  const saved = await response.json();
+  assert.equal(saved.descriptionsOutdated, true);
+  assert.equal(saved.tones.neutral, 'images/new-neutral.png');
+  assert.deepEqual(saved.framingPrompts, original.framingPrompts);
+  assert.deepEqual(saved.tonePrompts, original.tonePrompts);
+  assert.equal(saved.clip, undefined);
+  assert.deepEqual(saved.tags, []);
+  const reloaded = await (await fetch(`${base}/api/avatars/${original.id}`)).json();
+  assert.equal(reloaded.descriptionsOutdated, true);
+  assert.deepEqual(validateAvatar(reloaded, root), []);
 });

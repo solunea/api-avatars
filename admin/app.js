@@ -1,3 +1,5 @@
+import {regenerateCatalog} from './catalog-regeneration.js';
+
 const tones = ['neutral'];
 const fields = ['photo', 'decor', 'preview', 'neutral', 'characterSheet'];
 const promptKeys = ['bust', 'fullBody'];
@@ -12,12 +14,13 @@ let dirty = false;
 let busy = false;
 let generationState = null;
 let generationResume = null;
-let descriptionsOutdated = false;
 let sourceChanged = false;
 let decorChanged = false;
 let activeRegion = 'front';
 let messageTimer;
 let voicePreviewRequest = 0;
+let catalogTasks = [];
+let stopCatalog = false;
 
 function emptyAvatar() {
   return {id: '', schemaVersion: 2, name: '', creationBrief: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
@@ -155,9 +158,11 @@ function renderMedia(field) {
 }
 
 function setMedia(field, path) {
+  if (['photo', 'decor', 'neutral', 'characterSheet'].includes(field) && path !== media(field)) {
+    markDescriptionsOutdated(field === 'neutral' ? ['bust'] : field === 'characterSheet' ? ['fullBody'] : promptKeys);
+    current.tags = [];
+  }
   const replacingSheet = field === 'characterSheet' && path && path !== current.characterSheet;
-  if (['photo', 'decor', 'neutral', 'characterSheet'].includes(field)
-    && path !== (tones.includes(field) ? current.tones[field] : current[field])) current.tags = [];
   if (tones.includes(field)) current.tones[field] = path;
   else current[field] = path;
   if (field === 'neutral' && path && !current.preview) { current.preview = path; renderMedia('preview'); }
@@ -196,8 +201,15 @@ function renderPrompts() {
 function renderDescriptionNotice() {
   if (generationState) return;
   const notice = $('#prompts-progress');
-  notice.hidden = !descriptionsOutdated;
-  if (descriptionsOutdated) notice.textContent = 'Image modifiée : vérifiez les descriptions ou utilisez « Décrire les images ».';
+  notice.hidden = !current.descriptionsOutdated;
+  if (current.descriptionsOutdated) notice.textContent = 'Descriptions à relire. Vous pouvez enregistrer les images et conserver ces textes, puis les actualiser plus tard.';
+}
+
+function markDescriptionsOutdated(keys = promptKeys) {
+  const previous = current.outdatedDescriptions || (current.descriptionsOutdated ? promptKeys : []);
+  current.outdatedDescriptions = [...new Set([...previous, ...keys])];
+  current.descriptionsOutdated = true;
+  renderDescriptionNotice();
 }
 
 function selectTone(tone) {
@@ -230,11 +242,12 @@ function renderList() {
     const name = document.createElement('strong');
     name.textContent = avatar.name;
     const subtitle = document.createElement('small');
-    subtitle.textContent = avatar.schemaVersion === 2 ? 'Neutre + planche' : 'Ancien format · à mettre à jour';
+    subtitle.textContent = avatar.descriptionsOutdated ? 'Descriptions à relire' : avatar.schemaVersion === 2 ? 'Neutre + planche' : 'Ancien format · à mettre à jour';
     copy.append(name, subtitle);
     const dot = document.createElement('span');
     dot.className = 'catalog-dot';
-    dot.setAttribute('aria-label', 'Fiche enregistrée');
+    dot.classList.toggle('outdated', !!avatar.descriptionsOutdated);
+    dot.setAttribute('aria-label', avatar.descriptionsOutdated ? 'Fiche enregistrée, descriptions à relire' : 'Fiche enregistrée');
     button.append(img, copy, dot);
     button.addEventListener('click', () => {
       if (busy || !canLeave()) return;
@@ -242,7 +255,6 @@ function renderList() {
       sourceChanged = false;
       decorChanged = false;
       generationResume = null;
-      descriptionsOutdated = false;
       newMode = false;
       dirty = false;
       renderForm();
@@ -351,7 +363,6 @@ for (const input of document.querySelectorAll('input[type="file"][data-field]'))
           headers:{'Content-Type':'application/json'}, body:JSON.stringify({characterSheet:result.path})});
         setMedia(field, cutout.path);
       }
-      if (field === 'neutral' || field === 'characterSheet') { descriptionsOutdated = true; renderDescriptionNotice(); }
       message('Image chargée', true);
     });
     input.value = '';
@@ -546,13 +557,13 @@ for (const key of ['name', 'creationBrief', 'description', 'voiceKey', 'speechPe
   $(`[name="${key}"]`).addEventListener('input', event => {
     current[key] = event.target.value;
     if (key === 'creationBrief') {
+      markDescriptionsOutdated();
       generationResume = null;
       sourceChanged = true;
       current.description = '';
       current.speechPersonality = '';
       $('#avatar-description').value = '';
       $('#avatar-personality').value = '';
-      descriptionsOutdated = true;
       if (current.sourceMode === 'prompt') setMedia('photo', '');
       if (current.decorMode === 'prompt') { decorChanged = true; setMedia('decor', ''); }
     }
@@ -593,7 +604,6 @@ $('#new').addEventListener('click', () => {
   sourceChanged = false;
   decorChanged = false;
   generationResume = null;
-  descriptionsOutdated = false;
   newMode = true;
   activeTone = 'bust';
   dirty = false;
@@ -641,7 +651,7 @@ $('#manual-mode').addEventListener('click', () => {
 });
 
 function setGenerationControls(disabled) {
-  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new, #regenerate-neutral, #regenerate-characterSheet, #upload-neutral, #upload-characterSheet, #fit-sheet, #remove-sheet-background')) {
+  for (const element of document.querySelectorAll('#editor input, #editor textarea, #editor select, #editor button, #generate, #describe, #new, #regenerate-neutral, #regenerate-characterSheet, #upload-neutral, #upload-characterSheet, #fit-sheet, #remove-sheet-background, #regenerate-catalog, #build, #publish')) {
     element.disabled = disabled;
   }
 }
@@ -660,7 +670,8 @@ function applyGeneratedDetails(result, {preserveNeutral = false} = {}) {
   $('#avatar-description').value = current.description;
   $('#avatar-personality').value = current.speechPersonality;
   $('#avatar-brief').value = current.creationBrief || '';
-  descriptionsOutdated = false;
+  current.descriptionsOutdated = false;
+  current.outdatedDescriptions = [];
   dirty = true;
   renderRecordStatus();
   renderPrompts();
@@ -766,7 +777,6 @@ async function regenerateOne(field) {
         setMedia('decor', event.path);
       }
       if (event.type === 'portrait' && event.tone === field) {
-        descriptionsOutdated = true;
         if (field === 'neutral') {
           generationResume.neutral = event.path;
           setMedia('neutral', event.path);
@@ -780,7 +790,6 @@ async function regenerateOne(field) {
         renderMedia(field);
       }
     });
-    descriptionsOutdated = true;
     message(field === 'neutral'
       ? 'Neutre régénéré. Vérifiez sa cohérence avec la planche et les descriptions avant d’enregistrer.'
       : 'Planche régénérée. Vérifiez les découpes et les descriptions avant d’enregistrer.', true);
@@ -804,8 +813,6 @@ $('#fit-sheet').addEventListener('click', () => {
     setMedia('characterSheet', result.path);
     current.sheetRegions = structuredClone(result.sheetRegions);
     renderRegions();
-    descriptionsOutdated = true;
-    renderDescriptionNotice();
     message('Cadrage ajusté. Vérifiez la planche avant d’enregistrer.', true);
   });
 });
@@ -816,8 +823,6 @@ $('#remove-sheet-background').addEventListener('click', () => {
       headers:{'Content-Type':'application/json'}, body:JSON.stringify({characterSheet:current.characterSheet})});
     if (result.path !== current.characterSheet) {
       setMedia('characterSheet', result.path);
-      descriptionsOutdated = true;
-      renderDescriptionNotice();
     }
     message('Fond retiré. Vérifiez la planche avant d’enregistrer.', true);
   });
@@ -838,23 +843,27 @@ $('#describe').addEventListener('click', async () => {
 
 $('#editor').addEventListener('submit', async event => {
   event.preventDefault();
+  if (busy) return;
   for (const key of ['name', 'creationBrief', 'description', 'voiceKey', 'speechPersonality', 'sourceMode', 'sourcePrompt', 'decorMode', 'decorPrompt']) current[key] = $(`[name="${key}"]`).value.trim();
   for (const key of promptKeys) setPrompt(key, $(`#prompt-${key}`).value.trim());
   if (!current.characterSheet) return message('Générez ou importez la planche avant d’enregistrer cette fiche.');
   current.schemaVersion = 2;
   current.tones = {neutral: current.tones.neutral || current.preview};
   const missingDescriptions = promptKeys.some(key => !promptValue(key)) || !current.tonePrompts?.neutral || !current.characterSheetPrompt;
-  await run($('#save'), missingDescriptions ? 'Description des portraits à partir des images…' : 'Enregistrement de l’avatar…', async () => {
+  await run($('#save'), missingDescriptions && !current.descriptionsOutdated ? 'Description des portraits à partir des images…' : 'Enregistrement de l’avatar…', async () => {
     const saved = await api(current.id ? `/api/avatars/${encodeURIComponent(current.id)}` : '/api/avatars', {
       method: current.id ? 'PUT' : 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(current)
     });
     current = saved;
+    // Une correction manuelle invalide les étapes préparées pour cette fiche.
+    catalogTasks = catalogTasks.map(task => task.avatar.id === saved.id
+      ? {avatar: structuredClone(saved), status: 'pending'} : task);
     sourceChanged = false;
     decorChanged = false;
     dirty = false;
     await refreshCatalog();
     renderForm();
-    message('Avatar enregistré. Utilisez Publier pour le diffuser.', true);
+    message(current.descriptionsOutdated ? 'Avatar enregistré avec les descriptions actuelles, à relire plus tard.' : 'Avatar enregistré. Utilisez Publier pour le diffuser.', true);
   });
 });
 
@@ -881,6 +890,91 @@ $('#publish').addEventListener('click', () => {
     const result = await api('/api/push', {method: 'POST'});
     message(result.message, true);
   });
+});
+
+function renderCatalogProgress() {
+  $('#batch-scope').textContent = `${catalogTasks.length} avatar(s) enregistrés seront traités, y compris ceux masqués par la recherche. Chaque avatar consomme une génération d’image, un détourage si nécessaire et une analyse de ses descriptions.`;
+  const labels = {pending: 'En attente', generating: 'Génération de l’image…', describing: 'Rédaction du prompt…', saving: 'Enregistrement…', done: 'Enregistré', error: 'Échec'};
+  const items = catalogTasks.map(task => {
+    const item = document.createElement('li');
+    item.dataset.state = task.status;
+    item.textContent = `${task.avatar.name} — ${labels[task.status]}${task.error ? ` : ${task.error}` : ''}`;
+    return item;
+  });
+  $('#batch-results').replaceChildren(...items);
+  const done = catalogTasks.filter(task => task.status === 'done').length;
+  const errors = catalogTasks.filter(task => task.status === 'error').length;
+  $('#batch-progress').textContent = `${done} / ${catalogTasks.length} avatar(s) enregistrés${errors ? ` · ${errors} échec(s)` : ''}${stopCatalog ? ' · Arrêt demandé' : ''}`;
+  const remaining = catalogTasks.length - done;
+  $('#batch-start').textContent = !remaining ? 'Régénération terminée'
+    : catalogTasks.some(task => task.generated) ? `Reprendre les ${remaining} avatar(s) restants` : 'Lancer la régénération';
+  $('#batch-start').disabled = busy || !remaining;
+}
+
+function resetCatalogTasks() {
+  catalogTasks = catalog.map(avatar => ({avatar: structuredClone(avatar), status: 'pending'}));
+  stopCatalog = false;
+  renderCatalogProgress();
+}
+
+$('#regenerate-catalog').addEventListener('click', () => {
+  if (busy) return;
+  if (dirty) return message('Enregistrez la fiche en cours avant de régénérer le catalogue.');
+  if (!catalogTasks.length || !catalogTasks.some(task => task.generated) || catalogTasks.every(task => task.status === 'done')) resetCatalogTasks();
+  else {
+    catalogTasks = catalogTasks.filter(task => catalog.some(avatar => avatar.id === task.avatar.id));
+    for (const avatar of catalog) if (!catalogTasks.some(task => task.avatar.id === avatar.id)) {
+      catalogTasks.push({avatar: structuredClone(avatar), status: 'pending'});
+    }
+    renderCatalogProgress();
+  }
+  $('#catalog-regeneration').showModal();
+});
+$('#batch-target').addEventListener('change', resetCatalogTasks);
+$('#batch-close').addEventListener('click', () => { if (!busy) $('#catalog-regeneration').close(); });
+$('#catalog-regeneration').addEventListener('cancel', event => { if (busy) event.preventDefault(); });
+$('#batch-stop').addEventListener('click', () => {
+  stopCatalog = true;
+  $('#batch-stop').disabled = true;
+  renderCatalogProgress();
+});
+$('#batch-start').addEventListener('click', async () => {
+  if (busy) return;
+  stopCatalog = false;
+  const controls = ['#batch-target', '#batch-close', '#batch-start'];
+  await run($('#batch-start'), 'Régénération du catalogue…', async () => {
+    setGenerationControls(true);
+    for (const selector of controls) $(selector).disabled = true;
+    $('#batch-stop').hidden = false;
+    $('#batch-stop').disabled = false;
+    try {
+      await regenerateCatalog(catalogTasks, {target: $('#batch-target').value, request: api,
+        generate: (options, onEvent) => streamApi('/api/generate', {method: 'POST',
+          headers: {'Content-Type': 'application/json', Accept: 'application/x-ndjson'}, body: JSON.stringify(options)}, onEvent),
+        shouldStop: () => stopCatalog,
+        onProgress: task => {
+          if (task.status === 'done') {
+            const index = catalog.findIndex(avatar => avatar.id === task.saved.id);
+            if (index !== -1) catalog[index] = task.saved;
+            if (current.id === task.saved.id) {
+              current = structuredClone(task.saved);
+              sourceChanged = decorChanged = dirty = false;
+            }
+          }
+          renderCatalogProgress();
+        }});
+      const errors = catalogTasks.filter(task => task.status === 'error').length;
+      message(errors ? `${errors} échec(s). Les résultats terminés sont enregistrés ; utilisez Reprendre pour les autres.`
+        : stopCatalog ? 'Traitement arrêté après l’avatar en cours. Les résultats terminés sont enregistrés.'
+          : 'Catalogue régénéré et enregistré localement. Utilisez Publier pour le diffuser.', !errors);
+    } finally {
+      for (const selector of controls) $(selector).disabled = false;
+      $('#batch-stop').hidden = true;
+      setGenerationControls(false);
+      renderForm();
+    }
+  });
+  renderCatalogProgress();
 });
 
 async function init() {

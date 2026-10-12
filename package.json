@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node --watch server.js",
     "build": "node scripts/build.js",
     "index:clip": "node scripts/index-clip.js",
-    "test": "node --test test/catalog.test.js test/clip-features.test.js test/image-generation.test.js test/sheet-layout.test.js"
+    "test": "node --test test/catalog.test.js test/catalog-regeneration.test.js test/clip-features.test.js test/image-generation.test.js test/sheet-layout.test.js"
   },
   "dependencies": {
     "dotenv": "^17.2.4",

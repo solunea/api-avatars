@@ -61,6 +61,9 @@ function cleanAvatar(input, previous) {
     sourceMode: input.sourceMode ?? previous?.sourceMode ?? 'photo',
     sourcePrompt: input.sourcePrompt ?? previous?.sourcePrompt ?? '',
     creationBrief: input.creationBrief ?? previous?.creationBrief ?? '',
+    descriptionsOutdated: input.descriptionsOutdated === undefined ? !!previous?.descriptionsOutdated : input.descriptionsOutdated === true,
+    outdatedDescriptions: Array.isArray(input.outdatedDescriptions)
+      ? [...new Set(input.outdatedDescriptions.filter(key => ['bust', 'fullBody'].includes(key)))] : previous?.outdatedDescriptions,
     decorMode: input.decorMode ?? previous?.decorMode ?? 'image',
     decorPrompt: input.decorPrompt ?? previous?.decorPrompt ?? '',
     photo: String(input.photo || ''), decor: String(input.decor || ''),
@@ -93,7 +96,13 @@ app.get('/api/avatars/:id', (request, response) => {
   const avatar = readCatalog(root).find(item => item.id === request.params.id);
   response.status(avatar ? 200 : 404).json(avatar || {error: 'Avatar introuvable'});
 });
-async function prepareAvatar(avatar) {
+async function prepareAvatar(avatar, previous) {
+  // Sauvegarder une image et ses anciens textes ne doit dépendre d'aucun appel IA.
+  if (avatar.descriptionsOutdated) {
+    if (!previous || avatar.tones?.neutral !== previous.tones?.neutral || avatar.preview !== previous.preview) avatar.clip = undefined;
+    avatar.posePrompts = normalizeAvatarPosePrompts(avatar.posePrompts);
+    return validateAvatar(avatar, root);
+  }
   const errors = validateAvatar(avatar, root).filter(error => !/^description (neutral|success|failure|bust|fullBody|de planche) manquante$/.test(error));
   if (errors.length) return errors;
   const missingDescriptions = Object.values(avatar.tonePrompts).some(prompt => !prompt) || (avatar.schemaVersion === 2 &&
@@ -136,7 +145,7 @@ app.put('/api/avatars/:id', async (request, response) => {
     if (index === -1) return response.status(404).json({error: 'Avatar introuvable'});
     const previous = avatars[index];
     const avatar = cleanAvatar(request.body, previous);
-    const errors = await prepareAvatar(avatar);
+    const errors = await prepareAvatar(avatar, previous);
     if (errors.length) return response.status(400).json({error: errors.join(', ')});
     avatars[index] = avatar;
     saveCatalog(root, avatars);

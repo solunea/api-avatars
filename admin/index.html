@@ -7,19 +7,31 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=source-blocks-2">
-  <script type="module" src="app.js?v=source-blocks-2"></script>
+  <link rel="stylesheet" href="style.css?v=catalog-regeneration-1">
+  <script type="module" src="app.js?v=catalog-regeneration-1"></script>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#studio" aria-label="api-avatars, accueil du studio"><span>api-</span><strong>avatars</strong></a>
     <div class="top-actions">
+      <button id="regenerate-catalog" class="button button-quiet" type="button">Régénérer le catalogue</button>
       <button id="build" class="button button-quiet" type="button">Valider l’API</button>
       <button id="publish" class="button button-primary" type="button">Publier</button>
     </div>
   </header>
 
   <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+
+  <dialog id="catalog-regeneration" aria-labelledby="catalog-regeneration-title">
+    <div class="batch-heading"><h2 id="catalog-regeneration-title">Régénérer le catalogue</h2><button id="batch-close" class="button button-quiet" type="button" aria-label="Fermer">Fermer</button></div>
+    <label for="batch-target">Éléments à régénérer</label>
+    <select id="batch-target"><option value="characterSheet">Toutes les planches + prompts plein pied</option><option value="neutral">Tous les neutres + prompts buste</option></select>
+    <p id="batch-scope"></p>
+    <p>Chaque avatar terminé est enregistré localement. La publication reste séparée.</p>
+    <p id="batch-progress" role="status" aria-live="polite"></p>
+    <ol id="batch-results"></ol>
+    <div class="batch-actions"><button id="batch-stop" class="button button-secondary" type="button" hidden>Arrêter après cet avatar</button><button id="batch-start" class="button button-primary" type="button">Lancer la régénération</button></div>
+  </dialog>
 
   <main id="studio" class="workspace">
     <aside class="catalog-panel" aria-labelledby="catalog-title">
