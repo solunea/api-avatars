@@ -6393,16 +6393,15 @@
     "description": "Un homme barbu aux cheveux bruns, portant un casque de sécurité blanc et un casque anti-bruit jaune autour du cou. Il est vêtu d'une veste de travail rouge, grise et noire, et d'un pantalon noir.",
     "tags": [
       "homme",
-      "travailleur",
+      "barbu",
       "casque de securite",
       "casque anti bruit",
       "veste de travail",
-      "uniforme",
-      "barbe",
-      "brun",
-      "gris",
-      "rouge",
-      "bottes"
+      "professionnel",
+      "calme",
+      "pedagogue",
+      "confiant",
+      "bienveillant"
     ],
     "preview": "images/bb050d66-6414-407d-a561-810f35420692.png",
     "decor": "",
@@ -7182,7 +7181,7 @@
       ]
     },
     "speechPersonality": "Voix masculine, posée et rassurante, avec une légère profondeur. Le ton est direct et professionnel, mais empreint de bienveillance et de clarté, idéal pour des explications techniques ou des conseils pratiques. Il inspire confiance et autorité calme.",
-    "updatedAt": "2026-10-11T16:36:18.976Z",
+    "updatedAt": "2026-10-12T17:27:17.167Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
