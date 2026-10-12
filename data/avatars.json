@@ -13439,7 +13439,7 @@
         0.015037814876942735
       ]
     },
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Gacrux",
     "speechPersonality": "Kore. Une voix douce et posée, avec une intonation chaleureuse et encourageante. Le débit est calme et réfléchi, invitant à la confiance et à l'écoute. Elle exprime une bienveillance naturelle et une patience sereine, idéale pour des explications claires et rassurantes.",
     "posePrompts": {
       "neutral": "Yoriko stands with a gentle, attentive posture, her head slightly tilted, conveying serene readiness. Her hands are relaxed at her sides, one gently touching her bag strap, reflecting her calm and thoughtful demeanor. A soft, reassuring smile graces her lips.",
@@ -13489,6 +13489,6 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T18:17:15.466Z",
-    "updatedAt": "2026-10-12T18:17:15.466Z"
+    "updatedAt": "2026-10-12T18:17:38.367Z"
   }
 ]

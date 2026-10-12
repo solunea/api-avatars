@@ -11992,7 +11992,7 @@
     ],
     "preview": "images/1d90bfbb-8845-4a5f-8e47-dec4081c7283.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Gacrux",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "83741bcd8cf070c4c3ae89685b6c1aba8f12bd4b0994952bcb1b85994938c5bc",
@@ -12768,7 +12768,7 @@
       ]
     },
     "speechPersonality": "Kore. Une voix douce et posée, avec une intonation chaleureuse et encourageante. Le débit est calme et réfléchi, invitant à la confiance et à l'écoute. Elle exprime une bienveillance naturelle et une patience sereine, idéale pour des explications claires et rassurantes.",
-    "updatedAt": "2026-10-12T18:17:15.466Z",
+    "updatedAt": "2026-10-12T18:17:38.367Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   }
