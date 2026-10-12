@@ -9593,7 +9593,7 @@
     ],
     "preview": "images/afe6f357-5f42-45a5-a51b-b4c1ff5cb31c.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Enceladus",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "1a1324304abdc3b721d35c61cdbd6d191e651332af6edc6dfede4c36ad9e1f1a",
@@ -10369,7 +10369,7 @@
       ]
     },
     "speechPersonality": "Voix calme et posée, avec un timbre naturel et une intonation stable. Le débit est modéré, reflétant une personnalité réfléchie et fiable. Il y a une chaleur sous-jacente, mais l'expression reste mesurée et directe, évitant les envolées dramatiques ou l'exubérance.",
-    "updatedAt": "2026-10-12T16:39:38.358Z",
+    "updatedAt": "2026-10-12T16:39:49.319Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   }
