@@ -441,9 +441,13 @@ test('génération avec décor transmet les deux références au neutre puis à 
   assert.equal(generationCalls[1].options.input.images.length, 2);
   assert.deepEqual(generationCalls[1].options.input.images[1], png);
   assert.equal(generationCalls[1].options.input.images.length, 2);
-  assert.match(generationCalls[1].options.input.prompt, /head-to-toe/);
+  assert.match(generationCalls[1].options.input.prompt, /complete full-body/);
   assert.match(generationCalls[1].options.input.prompt, /side profile/);
   assert.match(generationCalls[1].options.input.prompt, /rear view/);
+  assert.match(generationCalls[1].options.input.prompt, /backpacks, straps, bags, tools and handheld objects/);
+  assert.match(generationCalls[1].options.input.prompt, /quadruped stance/);
+  assert.match(generationCalls[1].options.input.prompt, /limb placement shaped by the character creationBrief/);
+  assert.doesNotMatch(generationCalls[1].options.input.prompt, /arms relaxed at sides|no props[,\.]/);
 });
 
 test('un neutre existant déclenche automatiquement la génération de la planche seule', async t => {
