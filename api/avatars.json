@@ -7190,16 +7190,18 @@
     "name": "Yannis",
     "description": "Yannis, un jeune homme à la peau constellée de taches de rousseur, porte une combinaison spatiale blanche ornée de logos NASA et du drapeau américain. Ses cheveux courts et sa barbe soignée complètent son allure.",
     "tags": [
+      "astronaute",
       "combinaison spatiale",
-      "uniforme blanc",
-      "patchs",
+      "nasa",
       "drapeau americain",
-      "logo nasa",
-      "taches de rousseur",
+      "homme",
+      "rousseurs",
       "barbe",
-      "cheveux frises courts",
-      "portrait",
-      "feuille de reference"
+      "explorateur",
+      "reflechi",
+      "methodique",
+      "calme",
+      "determine"
     ],
     "preview": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png",
     "decor": "",
@@ -7979,7 +7981,7 @@
       ]
     },
     "speechPersonality": "Une voix calme et posée, avec une intonation claire et engageante. Yannis s'exprime avec une curiosité intellectuelle et une détermination tranquille, reflétant un esprit réfléchi et une approche méthodique, idéal pour des explications techniques ou des récits inspirants.",
-    "updatedAt": "2026-10-11T16:36:05.548Z",
+    "updatedAt": "2026-10-12T17:58:59.121Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },

@@ -7595,16 +7595,18 @@
     "name": "Yannis",
     "description": "Yannis, un jeune homme à la peau constellée de taches de rousseur, porte une combinaison spatiale blanche ornée de logos NASA et du drapeau américain. Ses cheveux courts et sa barbe soignée complètent son allure.",
     "tags": [
+      "astronaute",
       "combinaison spatiale",
-      "uniforme blanc",
-      "patchs",
+      "nasa",
       "drapeau americain",
-      "logo nasa",
-      "taches de rousseur",
+      "homme",
+      "rousseurs",
       "barbe",
-      "cheveux frises courts",
-      "portrait",
-      "feuille de reference"
+      "explorateur",
+      "reflechi",
+      "methodique",
+      "calme",
+      "determine"
     ],
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
@@ -8383,12 +8385,13 @@
     "voiceKey": "gemini:Algieba",
     "speechPersonality": "Une voix calme et posée, avec une intonation claire et engageante. Yannis s'exprime avec une curiosité intellectuelle et une détermination tranquille, reflétant un esprit réfléchi et une approche méthodique, idéal pour des explications techniques ou des récits inspirants.",
     "posePrompts": {
-      "neutral": "Yannis stands waist-up, looking forward with a relaxed, attentive expression and a slight, gentle smile. His shoulders are level and relaxed. His arms are bent, with his hands clasped gently in front of his waist, fingers anatomically plausible and visible below his unobstructed face. He wears his white astronaut suit.",
-      "success": "Yannis stands waist-up, looking forward with a gentle, encouraging smile. His shoulders are relaxed. His left arm is slightly raised, with his hand open, palm slightly upward in a modest, approving gesture, fingers anatomically plausible and visible below his unobstructed face. He wears his white astronaut suit.",
-      "failure": "Yannis stands waist-up, looking forward with an empathetic, reassuring expression. His shoulders are slightly softened. His right arm is gently extended forward, palm slightly up, inviting another attempt, fingers anatomically plausible and visible below his unobstructed face. He wears his white astronaut suit."
+      "neutral": "Yannis stands with a natural, attentive posture, head slightly tilted, conveying serene intelligence. His shoulders are relaxed, and his hands are at his sides, one holding the helmet, reflecting his calm and methodical nature. His gaze is direct and thoughtful.",
+      "success": "Yannis offers a subtle, encouraging smile, his head held high with quiet pride. He raises his free right hand slightly, palm open in a modest gesture of accomplishment, reflecting his determined yet understated success. His eyes convey satisfaction.",
+      "failure": "Yannis maintains a composed expression, a gentle, reassuring look in his eyes. He places his free right hand gently over his heart, conveying empathy and inviting another attempt with a supportive, understanding posture. His head is slightly bowed."
     },
     "sourceMode": "photo",
     "sourcePrompt": "",
+    "creationBrief": "Yannis est un explorateur réfléchi et méthodique, animé par une curiosité insatiable pour l'inconnu. Il aborde chaque défi avec une détermination tranquille et une approche logique, toujours prêt à partager ses découvertes avec clarté et engagement. Sa posture est assurée, ses gestes mesurés, et son regard exprime une intelligence sereine, invitant à la découverte et à la compréhension.",
     "decorMode": "image",
     "decorPrompt": "",
     "photo": "images/e8b87ddf-57a5-4dc7-9b15-fd58202103e7.jpg",
@@ -8399,10 +8402,10 @@
       "neutral": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png"
     },
     "tonePrompts": {
-      "neutral": "A head-and-shoulders portrait of Yannis, a male character with an oval face, a calm and direct gaze from his dark eyes, and thick, natural dark eyebrows. His short, tightly curled dark brown hair frames his face, which is distinctly marked by numerous small, dark freckles across his nose, cheeks, and forehead. He has a full, well-groomed dark beard that covers his jawline and chin. Yannis is wearing a thick, white astronaut suit, visible from the chest up. The suit features a high, padded white collar and a prominent white strap running vertically down the front. On his left chest (viewer's right), a circular blue patch with the white NASA logo is clearly visible, alongside a rectangular American flag patch on his upper left arm. The material of the suit appears durable and slightly textured, suggesting a quilted or padded design. He maintains a neutral, attentive expression, looking directly at the viewer. The composition is a tight bust shot, centered, with soft, even lighting illuminating his face and the suit details against a plain, light grey background."
+      "neutral": "A neutral bust portrait of Yannis, a young man with a calm, thoughtful expression. His dark skin is covered with numerous prominent freckles, and he has short, tightly curled dark hair and a neatly trimmed dark beard. He wears a white astronaut suit, visible from the shoulders up, featuring a high collar and various embroidered patches. On his right chest, a circular blue NASA logo patch with a red swoosh is clearly visible, alongside an American flag patch on his upper right arm. A white strap with a metallic buckle crosses his chest. The suit's textured fabric and subtle folds are apparent, suggesting a durable, functional material. His gaze is direct and level, conveying a serene intelligence and quiet confidence. The lighting is soft and even, highlighting his facial features and the details of his suit without harsh shadows. The composition focuses on his head and upper torso, ensuring his face is large and unobstructed for talking video, without adding a human mouth. The background is a plain, light grey studio backdrop, providing a clean, professional presentation."
     },
-    "characterSheet": "images/5e75b9fb-f8c5-4a10-9fd6-69cbb3893173.png",
-    "characterSheetPrompt": "A comprehensive character reference sheet for Yannis, featuring three full-body views: front, profile, and back, presented against a solid black background. Yannis is a male character with short, tightly curled dark brown hair, a full dark beard, and numerous freckles visible on his face and neck. He is depicted wearing a complete, pristine white astronaut suit. The front view showcases the suit's intricate details: a padded white jumpsuit with a high collar, multiple white straps with silver buckles, and various patches including a prominent circular blue NASA logo patch on the left chest, an American flag patch on the left upper arm, and several smaller circular patches in blue, red, white, and yellow scattered across the chest and arms. He wears white gloves with light blue cuffs and white lace-up astronaut boots. The profile view highlights the suit's bulkiness and padded texture, showing the flag patch on the arm and the full length of the suit down to the boots. The back view reveals a large, integrated white backpack-like module with visible straps and a small circular patch on its surface, confirming the suit's complete design. All views maintain consistent details of the suit's material, which appears thick, durable, and slightly textured, with visible seams and functional elements. Yannis stands in a neutral, straight pose in all three depictions.",
+    "characterSheet": "images/40fcb82b-dc44-4a09-ba49-b63ca74a1acd.png",
+    "characterSheetPrompt": "A character reference sheet for Yannis, featuring three full-body views: front, profile, and back, all against a clean white background. Yannis is a young man with dark skin, abundant freckles, short curly dark hair, and a well-groomed dark beard. He wears a complete white astronaut suit, meticulously detailed with various patches and functional elements. In the front view, he stands upright, holding a white astronaut helmet with a dark visor in his left hand, resting against his hip. Visible patches include a circular blue NASA logo with a red swoosh on his right chest, an American flag on his right upper arm, and other smaller circular and rectangular emblems on his sleeves and legs. Blue and red connectors, valves, and straps are integrated into the suit's design. The suit features articulated joints, reinforced knee and elbow pads, and sturdy white boots with grey soles and red accents. In the profile view, he stands facing right, showcasing the suit's depth, the backpack on his back, and the intricate network of hoses and connectors running along his side. The helmet is not visible in this view. The backpack is white, rectangular, with visible straps and blue circular elements. The back view reveals the full extent of the white backpack, its multiple straps, and additional blue and black control panels or vents on the suit's back. All views maintain consistent proportions, material textures, and color accuracy, providing a comprehensive visual guide to his full astronaut ensemble and equipment.",
     "sheetRegions": {
       "front": {
         "x": 0,
@@ -8424,12 +8427,12 @@
       }
     },
     "framingPrompts": {
-      "bust": "A close-up bust portrait of Yannis, a male character with an oval face, a calm and direct gaze from his dark eyes, and thick, natural dark eyebrows. His short, tightly curled dark brown hair frames his face, which is distinctly marked by numerous small, dark freckles across his nose, cheeks, and forehead. He has a full, well-groomed dark beard that covers his jawline and chin. Yannis is wearing a thick, white astronaut suit, visible from the chest up. The suit features a high, padded white collar and a prominent white strap running vertically down the front. On his left chest (viewer's right), a circular blue patch with the white NASA logo is clearly visible, alongside a rectangular American flag patch on his upper left arm. The material of the suit appears durable and slightly textured, suggesting a quilted or padded design. He maintains a neutral, attentive expression, with his face and lips large and unobstructed, ideal for a talking video. The composition is a tight bust shot, centered, with soft, even lighting illuminating his face and the suit details against a plain, light grey background.",
-      "fullBody": "A full-body portrait of Yannis, a male character with short, tightly curled dark brown hair, a full dark beard, and numerous small, dark freckles visible on his face and neck. He stands confidently, looking directly at the viewer with a calm and composed expression. Yannis is wearing a complete, pristine white astronaut suit. The suit is a padded jumpsuit with a high collar, multiple white straps with silver buckles, and various patches including a prominent circular blue NASA logo patch on the left chest, an American flag patch on the left upper arm, and several smaller circular patches in blue, red, white, and yellow scattered across the chest and arms. He wears white gloves with light blue cuffs and white lace-up astronaut boots. The suit material appears thick, durable, and slightly textured, with visible seams. Both of his white astronaut boots are fully visible. The composition shows one complete person, from head to toe, with generous headroom above his head and no cropping at any edge. The lighting is soft and even, highlighting the suit's details against a plain, light grey background."
+      "bust": "A detailed bust portrait of Yannis, a young man with a calm and intellectually curious expression, reflecting his methodical and determined persona. His dark skin is richly textured with numerous freckles, complementing his short, tightly curled dark hair and a neatly trimmed, full dark beard. He is dressed in a pristine white astronaut suit, visible from the upper chest upwards, featuring a high, padded collar and intricate detailing. Prominently displayed on his right chest is a circular blue NASA logo patch with a vibrant red swoosh, alongside a meticulously embroidered American flag patch on his upper right arm. A robust white strap with a metallic silver buckle is visible across his upper chest, adding to the suit's functional aesthetic. The suit's fabric exhibits subtle folds and a durable, slightly textured appearance. His eyes, a warm brown, convey a serene intelligence and direct engagement, maintaining a natural, attentive gaze. The composition is a close-up, ensuring his face and upper body are large and unobstructed, ideal for a talking video, without adding a human mouth. Soft, diffused studio lighting illuminates his features evenly, casting minimal shadows and highlighting the suit's pristine white color against a plain, light grey background.",
+      "fullBody": "A full-body image of Yannis, a young man embodying a thoughtful and determined explorer, standing confidently. His dark skin is adorned with a constellation of freckles, and he has short, curly dark hair and a well-groomed dark beard. He is entirely clad in a complete, pristine white astronaut suit, showcasing its full design from head to toe. The suit is rich in detail, featuring numerous patches including a prominent circular blue NASA logo with a red swoosh on his right chest, an American flag on his right upper arm, and various other circular and rectangular emblems on his sleeves and legs. Functional elements like blue and red connectors, valves, and white straps are integrated throughout the suit. He wears sturdy white astronaut boots with grey soles and distinct red accents, both shoes clearly visible. A white astronaut helmet with a dark visor is held casually in his left hand, resting against his side. A white, rectangular backpack with visible straps and blue circular components is securely attached to his back. His pose is natural and balanced, reflecting his methodical and assured temperament, with all extremities visible. The composition includes generous margins around his entire figure, ensuring no cropping of any part of the character or his equipment. The lighting is bright and even, highlighting the suit's texture and details against a plain, light grey studio background."
     },
     "preset": true,
     "createdAt": "2026-10-11T14:39:50.818Z",
-    "updatedAt": "2026-10-11T16:36:05.548Z"
+    "updatedAt": "2026-10-12T17:58:59.121Z"
   },
   {
     "id": "preset-marie",
