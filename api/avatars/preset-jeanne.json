@@ -4,16 +4,15 @@
   "name": "Jeanne",
   "description": "Jeanne est une jeune femme au teint clair parsemé de taches de rousseur, avec des cheveux bruns courts et ondulés. Elle porte un costume bleu marine et une chemise bleue claire.",
   "tags": [
-    "femme",
+    "jeune femme",
     "professionnelle",
-    "costume",
-    "bleu marine",
-    "chemise",
+    "costume bleu marine",
+    "chemise bleue",
     "cheveux courts",
-    "ondules",
     "taches de rousseur",
-    "portrait",
-    "reference"
+    "calme",
+    "confiante",
+    "encourageante"
   ],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
@@ -792,12 +791,13 @@
   "voiceKey": "gemini:Callirrhoe",
   "speechPersonality": "La voix de Callirrhoe sera calme, posée et professionnelle, avec une intonation chaleureuse et encourageante. Elle transmettra confiance et clarté, idéale pour des explications précises ou des conseils bienveillants, tout en restant accessible et engageante.",
   "posePrompts": {
-    "neutral": "Jeanne stands waist-up, facing forward with a calm, attentive expression. Her shoulders are relaxed, and her arms are gently at her sides, hands visible and open, conveying a ready and engaged posture.",
-    "success": "Jeanne smiles softly, her eyes conveying modest satisfaction. Her shoulders are slightly back, and one hand is gently placed over her heart, expressing sincere appreciation or quiet pride in a supportive manner.",
-    "failure": "Jeanne offers a gentle, understanding expression, her brow slightly furrowed with empathy. Her shoulders are relaxed, and one hand is extended slightly forward with an open palm, inviting another attempt with reassurance."
+    "neutral": "Jeanne stands waist-up, facing forward with a calm, attentive expression. Her shoulders are relaxed, and her arms rest naturally at her sides. Her head is level, conveying a poised and professional demeanor, ready to listen or speak.",
+    "success": "Jeanne stands waist-up, a warm, gentle smile on her face, eyes sparkling with approval. She holds one hand gently over her heart, conveying sincere encouragement and shared satisfaction, her posture slightly open and welcoming.",
+    "failure": "Jeanne stands waist-up, her expression soft and empathetic, with a slight, reassuring nod. She extends one hand forward with an open, gentle palm, inviting another attempt and offering calm support without judgment."
   },
   "sourceMode": "photo",
   "sourcePrompt": "",
+  "creationBrief": "Jeanne est une personne posée et professionnelle, dont la présence inspire confiance. Son tempérament est calme et réfléchi, toujours prête à offrir des conseils clairs et bienveillants. Elle aborde les situations avec une attitude encourageante et une gestuelle mesurée, favorisant la clarté et l'accessibilité. Son sourire chaleureux et son regard attentif témoignent de son engagement à soutenir et à guider avec empathie.",
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/0b7b0e32-f57a-4c64-b4f2-f7c42035f53a.jpg",
@@ -808,10 +808,10 @@
     "neutral": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png"
   },
   "tonePrompts": {
-    "neutral": "A captivating headshot of a young woman with a calm, neutral expression, maintaining direct eye contact with the viewer. Her warm, deep brown eyes are clear and engaging. She has fair skin generously dusted with numerous delicate freckles across her nose and upper cheeks, highlighting her natural beauty. Her full, well-defined dark eyebrows frame her gaze. Her medium-full lips are naturally rosy pink, closed in a subtle, almost imperceptible hint of a gentle smile. Her dark brown, shoulder-length hair is styled in soft, natural waves, parted centrally and framing her face gracefully, ending just above her shoulders. She is wearing a crisp light blue collared button-down shirt, with the top two buttons unfastened, beneath a structured navy blue blazer with a visible lapel. The shot is a medium close-up, framed from just above her head to her upper chest, clearly showing the shirt collar and the upper part of the blazer. The lighting is soft, even, and diffused, casting no harsh shadows, illuminating her face beautifully against a smooth, solid light beige background, creating a clean, professional aesthetic."
+    "neutral": "A bust-up portrait of Jeanne, a young woman with a fair complexion delicately adorned with numerous brown freckles across her nose and cheeks. Her short, wavy, rich brown hair frames her face, ending just above her shoulders. Her eyes, a warm brown, meet the viewer directly with a soft, calm, and approachable neutral expression, reflecting her professional yet encouraging demeanor. Her lips are naturally closed, forming a gentle, subtle curve. She wears a crisp, light blue collared button-down shirt, with the top button unfastened, peeking out from under a tailored navy blue suit jacket. The suit fabric appears smooth and refined. Her shoulders are relaxed, and her posture conveys quiet confidence and composure, without rigidity. The lighting is soft and even, originating from the front-right, casting gentle highlights on her hair and skin, enhancing texture. The background is a plain, warm, light beige, providing a clean contrast. The framing is centered, capturing her head and upper chest, with the bottom of the frame cutting just below her suit lapels."
   },
-  "characterSheet": "images/6d42bed1-0bd8-4635-8219-5246c2452f3e.png",
-  "characterSheetPrompt": "A character reference sheet for Jeanne, featuring three distinct full-body views: front, profile, and back. In all three views, Jeanne is a young woman with an oval face, clear skin, and light freckles across her nose and cheeks. Her large, expressive dark brown eyes and naturally well-defined dark eyebrows are consistent. Her short, wavy dark brown hair is parted slightly to the side, reaching just above her shoulders. She is dressed in a professional dark navy blue suit, comprising a tailored single-breasted jacket with notched lapels and matching slim-fit trousers. A light sky blue collared button-down shirt, with the top button unfastened, is worn beneath the jacket. Her feet are clad in dark navy blue or black flat shoes, clearly visible in all views. The front view shows her standing upright, facing forward with a neutral expression, arms naturally at her sides. The profile view presents her facing to the right, showcasing the side silhouette of her body, suit, and hair, with her ear visible. The back view displays her from behind, detailing the back of her suit jacket, trousers, and hair, with her shoulders and back posture clearly visible. Each view is presented against a plain, light beige backdrop, ensuring clear visibility of all clothing details and her physical form without obstruction or artistic embellishment.",
+  "characterSheet": "images/ccf7c573-5a1a-4ea8-94bd-966e6ca0056a.png",
+  "characterSheetPrompt": "A character reference sheet for a young adult woman named Jeanne, presented with three complete full-body views: front, profile, and back, each against a plain white background. In all views, Jeanne has fair skin with visible freckles and short, wavy brown hair. She is dressed in a complete professional navy blue suit, consisting of a tailored blazer with a notched lapel and matching straight-leg trousers. Underneath the blazer, she wears a light blue collared button-up shirt, with the top two buttons undone. She wears dark blue flat shoes. In the front view, Jeanne stands facing directly forward, with her arms relaxed at her sides and hands gently resting. Her expression is neutral and composed. In the profile view, she stands facing right, showcasing her side silhouette, with her posture straight and balanced. In the back view, she stands with her back to the viewer, clearly showing the cut and fit of her navy blue blazer and trousers. Her morphology, outfit, and overall appearance are consistent across all three views. No equipment is present.",
   "sheetRegions": {
     "front": {
       "x": 0,
@@ -833,10 +833,10 @@
     }
   },
   "framingPrompts": {
-    "bust": "A bust portrait of a young woman with a warm, approachable expression, meticulously preserving her distinct identity. Her oval face features a medium skin tone adorned with numerous small, scattered reddish-brown freckles across her nose and upper cheeks. She has expressive, dark brown eyes with subtle warm undertones and naturally full, dark eyebrows. Her soft, slightly parted lips show a gentle, closed-mouth smile. Her rich, medium chestnut brown hair is styled in a voluminous, wavy bob, reaching just above her shoulders, with a soft, slightly off-center part to her left, framing her face with natural texture. She wears a crisp navy blue blazer over a light sky-blue collared button-up shirt, with the top two buttons undone, revealing small white buttons. She poses facing directly towards the viewer, head level, with a soft, engaging gaze. The shot is framed from just above her chest, capturing her shoulders and extending to just above her head, set against a smooth, out-of-focus light beige background. Soft, diffused front lighting illuminates her face evenly, highlighting her features without harsh shadows, creating a natural, professional aesthetic.",
-    "fullBody": "A full-body portrait of Jeanne, a young woman with an oval face and clear skin, featuring light freckles across her nose and cheeks. Her large, expressive dark brown eyes maintain a calm, direct gaze, complemented by naturally well-defined dark eyebrows. Her short, wavy dark brown hair is parted slightly to the side, reaching just above her shoulders. She is dressed in a professional dark navy blue suit, consisting of a tailored single-breasted jacket with notched lapels and matching slim-fit trousers. Beneath the jacket, she wears a light sky blue collared button-down shirt, with the top button unfastened. Her feet are clad in dark navy blue or black flat shoes, both clearly visible. She stands upright with a relaxed, neutral posture, arms naturally at her sides. The composition captures her entire figure from head to toe, with generous headroom and no cropping at any edge. The lighting is soft and uniform, casting minimal shadows, set against a plain, light beige backdrop, emphasizing her professional yet approachable demeanor."
+    "bust": "A head-and-shoulders portrait of a young adult woman, Jeanne, with fair skin and visible freckles across her nose and cheeks. Her short, wavy brown hair frames her face, reaching just above her shoulders. She has dark brown eyes, looking directly forward with a calm, neutral, and attentive expression. Her lips are naturally closed in a relaxed, slight smile, showing no teeth. Her existing facial features, including her mouth, are large and unobstructed, suitable for a talking video avatar. She is wearing a dark navy blue blazer with a notched lapel, over a light blue collared button-up shirt. The top two buttons of the shirt are undone, revealing a small amount of skin at the collarbone. The blazer's lapel and the shirt's collar are clearly visible. Her shoulders are slightly relaxed and level. The framing is tight enough to keep her face and upper chest prominent, ensuring her head and upper torso fill a significant portion of the frame. Soft, professional studio lighting evenly illuminates her face and upper body, creating subtle shadows that define her features without being harsh. The background is a plain, solid light beige backdrop, providing a clean and unobtrusive setting in a realistic, high-resolution portrait photography style.",
+    "fullBody": "A full-body image of a young adult woman, Jeanne, with fair skin and visible freckles, and short, wavy brown hair. She is dressed in a complete professional navy blue suit, consisting of a tailored blazer with a notched lapel and matching straight-leg trousers. Underneath the blazer, she wears a light blue collared button-up shirt, with the top two buttons undone. She completes her attire with dark blue flat shoes. She stands naturally upright, facing directly forward, with her arms relaxed at her sides and hands gently resting. Her posture is balanced and poised. Her head is held level, and her expression is neutral and composed. The composition captures her entire silhouette from head to toe, ensuring every extremity, including her hands and both feet in their shoes, is fully visible. The image has generous margins around her, ensuring no part of her body or clothing is cropped. She is centered in the frame. Even, soft studio lighting highlights the texture of her suit and the details of her face, casting minimal, soft shadows. The background is a plain, solid light beige backdrop, providing a clean and professional setting that does not distract from the character, in a realistic, high-resolution photography style consistent with the reference images."
   },
   "preset": true,
   "createdAt": "2026-10-11T11:55:57.728Z",
-  "updatedAt": "2026-10-11T11:55:57.728Z"
+  "updatedAt": "2026-10-12T17:01:28.844Z"
 }

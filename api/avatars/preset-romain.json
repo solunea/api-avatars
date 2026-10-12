@@ -4,16 +4,18 @@
   "name": "Romain",
   "description": "Romain est un homme aux cheveux courts et bouclés, portant des lunettes de sécurité transparentes et une barbe soignée. Il est vêtu d'une blouse de laboratoire blanche sur une chemise claire, avec un pantalon gris et des baskets blanches.",
   "tags": [
+    "homme",
+    "scientifique",
     "blouse de laboratoire",
     "lunettes de securite",
-    "cheveux boucles",
+    "gants",
+    "clipboards",
+    "cheveux courts",
     "barbe",
-    "baskets blanches",
-    "chemise blanche",
-    "pantalon gris",
-    "boucles d oreilles",
-    "portrait",
-    "fiche personnage"
+    "methodique",
+    "didactique",
+    "calme",
+    "professionnel"
   ],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
@@ -792,12 +794,13 @@
   "voiceKey": "gemini:Algieba",
   "speechPersonality": "Voix calme et posée, avec une intonation claire et didactique. Romain s'exprime avec précision et une légère gravité, reflétant une personnalité attentive et méthodique, capable d'expliquer des concepts complexes avec patience et assurance.",
   "posePrompts": {
-    "neutral": "Romain stands waist-up, shoulders relaxed, with a calm, attentive expression. His arms are gently at his sides, hands visible and open, conveying a readiness to listen and engage.",
-    "success": "Romain maintains a focused, slightly pleased expression. His shoulders are squared, and one hand is raised gently to his chest, conveying a modest sense of accomplishment and approval.",
-    "failure": "Romain shows a compassionate, reassuring expression. His shoulders are slightly softened, and one hand is extended forward with an open palm, inviting another attempt and offering support."
+    "neutral": "Romain stands with a natural, attentive posture, weight evenly distributed. His head is held level, eyes forward, reflecting his methodical and focused nature. His gloved hands hold two clipboards in front of his chest, maintaining a calm and composed demeanor.",
+    "success": "Romain offers a subtle, encouraging smile, his head slightly tilted in approval. With his right gloved hand, he gently raises a single index finger, indicating a point well made or a successful step, while still holding the clipboards with his left hand. His posture remains composed and supportive.",
+    "failure": "Romain maintains a calm, reassuring expression, his gaze empathetic. He shifts his weight slightly, and with his right gloved hand, he extends an open palm forward in a gentle, inviting gesture, suggesting 'let's try again' or 'it's okay,' while still holding the clipboards with his left hand. His posture conveys patience and understanding."
   },
   "sourceMode": "photo",
   "sourcePrompt": "",
+  "creationBrief": "Romain est un scientifique attentif et méthodique, dont la patience et l'assurance transparaissent dans sa manière posée de s'exprimer. Il aborde les situations avec une précision didactique, toujours prêt à expliquer clairement, avec une légère gravité qui souligne son sérieux et sa fiabilité. Ses gestes sont mesurés, reflétant sa concentration.",
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/cb3d562b-c8f2-4106-ac95-a70f8824506b.jpg",
@@ -808,10 +811,10 @@
     "neutral": "images/92590686-052f-448a-8c19-faebb71ad1e9.png"
   },
   "tonePrompts": {
-    "neutral": "A close-up headshot captures a young adult man with a medium-dark, warm skin tone and a neutral, direct gaze. He has neatly trimmed, short dark curly hair styled upwards, and a well-groomed, short dark beard and mustache connecting to his sideburns. His dark brown eyes are visible through large, clear, wraparound safety glasses featuring thick transparent frames, which cover the bridge of his nose and extend beyond his temples. A small silver hoop earring adorns his left ear. He wears a pristine bright white lab coat, its open collar and lapels clearly visible, over a crisp white collared shirt buttoned to the neck. He is posed frontally, looking straight at the viewer with a calm, composed expression. Soft, even lighting originates from the front, casting minimal shadows and gently illuminating his features against a plain, solid medium grey background. The framing cuts off just below his shoulders, with his head centered horizontally and positioned towards the top of the frame, providing ample space around his upper body, emphasizing a professional and focused demeanor."
+    "neutral": "A bust portrait of Romain, a man with a calm and attentive expression, looking directly forward. He has short, dark, curly hair and a neatly trimmed dark beard and mustache. His eyes are visible behind clear, rectangular safety glasses with thick, transparent frames that sit comfortably on his nose. He wears a crisp white lab coat over a light-colored collared shirt, with the top button of the shirt visible. The lab coat's lapels are clearly defined. The composition is a head-and-shoulders shot, with his upper chest and shoulders visible, centered in the frame. The lighting is soft and even, highlighting the textures of his hair and clothing without harsh shadows. The background is a plain, solid medium gray, providing a clean and unobstructed backdrop. His facial features are large and clear, suitable for a talking video, with no obstruction to his mouth area, which maintains a neutral, closed-lip expression. The overall impression is one of professionalism and quiet competence."
   },
-  "characterSheet": "images/a46fee27-8765-4b8b-b6c6-335a373f0235.png",
-  "characterSheetPrompt": "A character reference sheet for Romain, featuring three full-body views: front, profile (right side), and back, all against a pure black background. In all views, Romain is a man with an oval face, dark skin, short dark curly hair, a neatly trimmed beard and mustache, dark brown eyes, and clear, wide, rectangular safety glasses. He wears small silver hoop earrings. His attire consists of a crisp white collared shirt, a white lab coat with a notched lapel, long sleeves, and two front pockets, extending to mid-thigh. He also wears light grey trousers and clean white sneakers with white laces. The front view shows him standing straight, arms relaxed at his sides, hands visible. The profile view shows him standing straight, looking forward, revealing the side details of his lab coat and the fit of his trousers. The back view displays the rear of the lab coat, including a central back vent and a half-belt detail at the waist, along with the back of his trousers and shoes.",
+  "characterSheet": "images/c8ac840c-d937-4e96-89a0-6fa6ffb034f8.png",
+  "characterSheetPrompt": "A comprehensive character reference sheet for Romain, presented with three distinct full-body views: front, profile (right side), and back. Romain is a man with short, dark, curly hair, a neatly trimmed dark beard and mustache, and clear safety glasses. He wears a pristine white lab coat that extends to mid-thigh, featuring a collar, lapels, and button closures down the front. Beneath the lab coat, he wears a light-colored collared shirt and gray trousers. His feet are clad in clean white sneakers with white laces and soles. Crucially, he wears light blue disposable gloves on both hands in all three views. In the front view, Romain stands upright, facing directly forward, with his arms relaxed at his sides, hands gloved. His expression is neutral and attentive. The profile view shows Romain standing straight, facing right, with his right arm slightly bent and his gloved hand resting naturally. His left arm is not visible. The side profile of his face, glasses, and hair is clear. The back view displays the full rear of his lab coat, including a horizontal strap detail across the lower back, and the back of his gray trousers and white sneakers. His gloved hands are visible at his sides. All views are presented against a pure white or transparent background, ensuring a clean silhouette. The character maintains consistent proportions, clothing details, and equipment across all three perspectives, with every extremity and item of clothing clearly visible and uncropped.",
   "sheetRegions": {
     "front": {
       "x": 0,
@@ -833,10 +836,10 @@
     }
   },
   "framingPrompts": {
-    "bust": "A detailed bust portrait capturing a young adult male, late 20s to early 30s, looking directly at the viewer with a neutral, calm expression. He possesses a warm, medium-dark skin tone and prominent, neatly shaped dark eyebrows. His dark brown eyes, observant and focused, are partially shielded by large, clear plastic safety glasses featuring a robust, transparent frame across the brow and temples. His facial hair includes a well-groomed, full dark beard and mustache, connected cleanly around his jawline. His short, dark, and naturally curly hair is styled with a subtle fade on the sides and maintains a slight volume on top. A small, shiny silver hoop earring is clearly visible in his left ear. He is dressed in a professional white lab coat, worn open over a crisp white collared shirt, with two small buttons visible on the placket. The pose is strictly frontal, with his shoulders slightly relaxed and symmetrical. The lighting is soft and diffused, emanating from the front to evenly illuminate his face and attire, producing minimal, gentle shadows. The backdrop is a plain, solid medium-gray, providing a clean, uncluttered visual. The framing is a tight bust shot, encompassing his entire head and extending downwards to just below his sternum, showcasing the upper part of his chest and shoulders.",
-    "fullBody": "A dark-skinned male with a short, neatly trimmed dark beard and mustache, complemented by short, clean-cut dark hair. His dark eyes gaze directly ahead, conveying a focused, neutral expression. He wears clear, rectangular safety glasses with a subtle metallic frame. He is dressed in a crisp, long-sleeved white lab coat that extends to just above his knees, featuring a standard collar, a single visible button closure at the top, and two practical patch pockets on the lower front. Beneath the lab coat, a white collared shirt is visible. He wears matching white, straight-leg pants and clean, unblemished white sneakers with white laces. The character stands confidently in a full-body, front-facing pose, with both hands relaxed at his sides, maintaining an upright and composed posture. The shot captures the entire person from the very top of his head (crown) down to the soles of both his white sneakers, including generous margins around him. The lighting is soft, even, and bright, illuminating the subject uniformly without harsh shadows, suggesting a professional studio setup. The background is pure black, ensuring the character is completely isolated and the central focus."
+    "bust": "A detailed bust image of Romain, captured from the chest up, focusing on his head and upper torso. He has short, dark, curly hair and a well-maintained dark beard and mustache. His eyes are visible through clear, rectangular safety glasses with transparent frames, which are positioned squarely on his face. He wears a clean white lab coat over a light-colored collared shirt, with the shirt's collar and the lab coat's lapels clearly visible. The composition ensures his face is prominent and unobstructed, with his mouth area clear for potential speaking animations, maintaining a neutral, closed-lip expression. The lighting is soft and even, casting minimal shadows and highlighting the textures of his hair, skin, and fabric. The background is a plain, solid medium gray, providing a clean and professional setting. The image should keep his facial and speaking features large and unobstructed, without adding a human mouth, to allow for talking video integration. The overall impression is one of focused professionalism and quiet confidence.",
+    "fullBody": "A full-body image of Romain, standing upright and facing directly forward, with a neutral and attentive expression. He is a man with short, dark, curly hair, a neatly trimmed dark beard and mustache, and clear safety glasses. He wears a pristine white lab coat that extends to mid-thigh, a light-colored collared shirt underneath, gray trousers, and clean white sneakers with white laces and soles. Both of his hands are covered with light blue disposable gloves. He holds two dark blue clipboards stacked together in his gloved hands, positioned in front of his chest. His grip on the clipboards is firm and natural. The composition shows the complete character from head to toe, with every extremity, including both shoes, and all equipment fully visible. There are generous margins around the character, ensuring no cropping of any part of his body or the clipboards. The lighting is bright and even, casting soft shadows and clearly defining the textures of his clothing and accessories. The background is a plain, solid medium gray, providing a clean and professional backdrop for the character."
   },
   "preset": true,
   "createdAt": "2026-10-11T10:28:29.831Z",
-  "updatedAt": "2026-10-11T10:28:29.831Z"
+  "updatedAt": "2026-10-12T16:55:54.369Z"
 }

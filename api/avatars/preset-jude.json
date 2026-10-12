@@ -5,16 +5,15 @@
   "description": "Jude est un homme à la peau foncée, portant un chapeau de paille à ruban bleu marine, un costume beige clair, une chemise blanche et un gilet noir. Il a une barbe courte et soignée.",
   "tags": [
     "homme",
-    "chapeau canotier",
-    "blazer beige",
+    "chapeau de paille",
+    "costume beige",
     "gilet noir",
-    "chemise blanche",
-    "costume",
     "elegant",
-    "mode classique",
-    "fond gris",
-    "portrait",
-    "reference"
+    "pose",
+    "confiance",
+    "mentor",
+    "barbe courte",
+    "chemise blanche"
   ],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
@@ -793,12 +792,13 @@
   "voiceKey": "gemini:Alnilam",
   "speechPersonality": "La voix de Jude est calme et posée, avec une articulation claire et un ton confiant. Il s'exprime avec une certaine élégance, reflétant son apparence soignée. Le débit est modéré, permettant une bonne compréhension de chaque mot.",
   "posePrompts": {
-    "neutral": "Jude stands waist-up, shoulders relaxed, head slightly tilted, with a calm, attentive expression. His hands are clasped loosely in front of him, fingers gently intertwined, conveying a thoughtful and composed presence. Face unobstructed.",
-    "success": "Jude smiles subtly, his shoulders slightly back, conveying quiet pride. One hand rests gently over his heart, fingers relaxed, while the other arm hangs naturally. His expression is one of modest approval and satisfaction. Face unobstructed.",
-    "failure": "Jude maintains a calm, reassuring expression, his brow slightly furrowed with empathy. One hand is extended forward with an open, gentle palm, inviting another attempt. His shoulders are slightly lowered, conveying support. Face unobstructed."
+    "neutral": "Jude stands with a calm, attentive posture, head held level, and a neutral, thoughtful expression. His body is balanced, conveying quiet confidence. Arms are relaxed at his sides, or hands are clasped gently in front, reflecting his composed demeanor. Waist-up composition.",
+    "success": "Jude displays a subtle, approving smile, his eyes conveying warmth. He gently places one hand over his heart, a gesture of sincere satisfaction and appreciation, reflecting his composed and benevolent nature. Waist-up composition.",
+    "failure": "Jude maintains a calm, reassuring expression, his gaze empathetic. He extends one hand slightly forward, palm open in a gentle, supportive gesture, inviting another attempt with quiet encouragement. Waist-up composition."
   },
   "sourceMode": "photo",
   "sourcePrompt": "",
+  "creationBrief": "Jude incarne la sérénité et la confiance. Son allure soignée et son expression posée reflètent une personnalité réfléchie et élégante. Il aborde les situations avec calme et une assurance tranquille, toujours prêt à écouter et à communiquer avec clarté. Son attitude est celle d'un mentor bienveillant, dont la présence inspire respect et confiance, sans jamais être autoritaire.",
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
@@ -809,10 +809,10 @@
     "neutral": "images/27555f8e-35a0-480b-9372-faf4171e7dbe.png"
   },
   "tonePrompts": {
-    "neutral": "A medium close-up portrait of a dark-skinned adult male, likely African-American, gazing directly forward with a composed, neutral expression. His face features a short, meticulously groomed dark beard and mustache, complementing his dark brown eyes and slightly full, relaxed lips. His head is adorned with a classic straw boater hat, its natural beige woven texture visible, encircled by a prominent dark navy blue grosgrain ribbon band. Short, dark hair is visible just below the hat brim. He wears a crisp white button-down shirt, unbuttoned at the top, revealing a delicate gold chain necklace. Layered underneath a light tan or camel-colored tailored blazer, a black V-neck knit cardigan or vest adds a touch of depth. The framing is from the chest up, capturing the entire hat and resting just below his pectoral line. Soft, diffused lighting illuminates his face evenly from the front, minimizing harsh shadows and providing a subtle glow to his complexion against a plain, light gray studio background, ensuring the focus remains entirely on the subject."
+    "neutral": "A bust-level portrait of Jude, a man with dark skin and a short, neatly trimmed beard, looking directly forward with a neutral, calm expression. He wears a classic straw boater hat adorned with a distinct navy blue ribbon. His attire includes a light beige blazer, a crisp white collared shirt unbuttoned at the top, revealing a thin gold chain, and a black V-neck cardigan worn underneath. The composition is a tight bust shot, ensuring his face and upper body are prominent and unobstructed, ideal for a talking video avatar without an artificial human mouth. The lighting is soft and even, casting minimal shadows to highlight his features clearly. The background is a plain, solid grey, providing a clean and professional aesthetic. The image should maintain a realistic photographic style, capturing the textures of his straw hat, fabric clothing, and the subtle sheen of his skin. His eyes are open and attentive, conveying a thoughtful presence. The framing should keep his head and shoulders centered, allowing ample space around his head for visual balance, while ensuring his facial features are large and clear for expressive communication."
   },
-  "characterSheet": "images/33e4f00e-237e-47f8-8fe9-9c495bee14fd.png",
-  "characterSheetPrompt": "A full-body reference sheet featuring a single Black man with a round face, full cheeks, and a short, neatly trimmed dark beard and mustache. He maintains a calm, neutral expression. His very short, dark hair is barely visible beneath his hat. The sheet presents three distinct full-body views arranged side-by-side: front, right profile, and back. In all views, he wears a classic light beige straw boater hat adorned with a prominent navy blue ribbon band. His attire includes a stylish, open, double-breasted tan suit jacket with peaked lapels, worn over a dark charcoal grey V-neck waistcoat that is buttoned up. Beneath the vest, a crisp white dress shirt is visible, unbuttoned at the collar without a tie. He completes the ensemble with matching tan suit trousers and dark blue leather dress shoes. The man stands upright with a relaxed, natural posture in each view. In the front view, he faces directly forward with arms hanging naturally. The profile view captures him facing right, showcasing the suit's fit. The back view highlights the reverse of his suit and hat. The lighting is soft and even, originating from the front, minimizing shadows and creating a clear, professional presentation of the character. Each figure is framed from head to toe, occupying the majority of the vertical space.",
+  "characterSheet": "images/23c03312-3cc7-411c-b079-663149cb2321.png",
+  "characterSheetPrompt": "A comprehensive character reference sheet for Jude, featuring three distinct full-body views: front, profile, and back, all presented against a plain white background. Jude is a man with dark skin and a short, neatly trimmed beard. In all views, he wears a classic straw boater hat with a prominent navy blue ribbon. His outfit consists of a light beige double-breasted blazer with two dark buttons on each side, a matching pair of light beige trousers, a crisp white collared shirt, a black V-neck cardigan, and dark dress shoes. The front view shows Jude standing upright, facing directly forward, with a neutral expression and a direct gaze. His arms are relaxed at his sides. The profile view presents Jude standing upright, facing directly to the right, with his arms relaxed at his sides. This view clearly displays the side profile of his hat, blazer, trousers, and shoes. The back view depicts Jude standing upright, facing directly away from the viewer, with his arms relaxed at his sides. This view showcases the back of his hat, blazer, and trousers, ensuring all details of his attire are visible from behind. All three views maintain a consistent realistic photographic style, accurately depicting the colors, textures, and proportions of Jude and his complete ensemble. No equipment is present or held in any of the views.",
   "sheetRegions": {
     "front": {
       "x": 0,
@@ -834,10 +834,10 @@
     }
   },
   "framingPrompts": {
-    "bust": "A detailed bust image of Jude, a man with dark skin, an oval face, and a neatly trimmed short beard and mustache. His dark, attentive eyes look directly at the viewer, conveying a calm and composed expression. His dark, neatly shaped eyebrows are prominent, and his short, dark hair is visible beneath his headwear. He wears a classic straw boater hat with a prominent dark blue ribbon band, worn level on his head. His attire consists of a light beige double-breasted blazer with wide lapels, worn over a crisp white collared shirt. The shirt is unbuttoned at the collar, revealing a black V-neck cardigan underneath and a subtle gold chain around his neck. His upper torso is visible, with shoulders relaxed and slightly squared, and his head held straight. The composition is a tight bust shot, ensuring his face and lips are large, clear, and completely unobstructed for potential talking video. Ample space is provided around his head and shoulders. The lighting is soft, even studio lighting that highlights his facial features without harsh shadows, set against a plain, solid grey backdrop.",
-    "fullBody": "A detailed full-body image of Jude, a man with dark skin, presenting a composed and elegant demeanor. His oval face features a neatly trimmed short beard and mustache, with dark, calm eyes looking forward and well-defined dark eyebrows. His short, dark hair is visible under his stylish straw boater hat, which has a dark blue ribbon and is worn perfectly level. He is dressed in a complete light beige double-breasted suit, comprising a blazer with wide lapels and matching tailored trousers. Underneath the blazer, he wears a crisp white collared shirt, unbuttoned at the top, and a black V-neck cardigan. A thin gold chain is visible around his neck. He completes his ensemble with dark, polished dress shoes. He stands upright, with his full body visible and arms relaxed at his sides, hands visible. The composition is a full-body shot, ensuring the entire person is visible from head to toe, with both shoes clearly seen. There is generous headroom above his hat and no cropping of any part of his body. The lighting is even, professional studio lighting that accentuates the texture and color of his suit, set against a plain, solid grey backdrop."
+    "bust": "A bust-level portrait of Jude, a man with dark skin and a short, neatly trimmed beard, looking directly forward with a neutral, calm expression. He wears a classic straw boater hat adorned with a distinct navy blue ribbon. His attire includes a light beige blazer, a crisp white collared shirt unbuttoned at the top, revealing a thin gold chain, and a black V-neck cardigan worn underneath. The composition is a tight bust shot, ensuring his face and upper body are prominent and unobstructed, ideal for a talking video avatar without an artificial human mouth. The lighting is soft and even, casting minimal shadows to highlight his features clearly. The background is a plain, solid grey, providing a clean and professional aesthetic. The image should maintain a realistic photographic style, capturing the textures of his straw hat, fabric clothing, and the subtle sheen of his skin. His eyes are open and attentive, conveying a thoughtful presence. The framing should keep his head and shoulders centered, allowing ample space around his head for visual balance, while ensuring his facial features are large and clear for expressive communication.",
+    "fullBody": "A full-body portrait of Jude, a man with dark skin and a short, neatly trimmed beard, standing in a natural, confident posture. He wears a classic straw boater hat with a navy blue ribbon, a light beige double-breasted blazer, matching light beige trousers, a white collared shirt, a black V-neck cardigan, and dark dress shoes. His stance is balanced and elegant, reflecting his composed persona, with his weight evenly distributed. Both of his dark dress shoes are clearly visible. His arms are relaxed at his sides, or one hand could be gently resting on the other, conveying a sense of calm readiness. The entire character, including every extremity and all elements of his outfit, must be fully visible within the frame, with generous margins around him and no cropping. The lighting is soft and uniform, highlighting the textures of his clothing and the details of his hat. The background is plain and solid, allowing the character to stand out. The image should be rendered in a realistic photographic style, capturing the precise shape and color of his attire and accessories. His expression is neutral yet attentive, consistent with his thoughtful and confident demeanor. No equipment is present or held in this view. The overall composition should present Jude as a complete and well-defined figure, ready for any interaction."
   },
   "preset": true,
   "createdAt": "2026-09-29T13:15:16.414Z",
-  "updatedAt": "2026-10-11T11:02:03.485Z"
+  "updatedAt": "2026-10-12T16:52:19.381Z"
 }

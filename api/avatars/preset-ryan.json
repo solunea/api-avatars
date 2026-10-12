@@ -4,15 +4,18 @@
   "name": "Ryan",
   "description": "Ryan est un homme aux cheveux courts châtain grisonnant et barbe soignée. Il porte un blazer bleu marine sur un t-shirt assorti, dégageant une allure moderne et décontractée.",
   "tags": [
-    "costume bleu marine",
-    "blazer",
-    "t shirt col rond",
-    "barbe soignee",
-    "cheveux courts",
     "homme",
-    "chaussures decontractees",
-    "fond gris clair",
-    "portrait studio"
+    "chatain grisonnant",
+    "barbe soignee",
+    "blazer bleu marine",
+    "t shirt bleu marine",
+    "pantalon bleu marine",
+    "chaussures marron",
+    "elegance decontractee",
+    "calme",
+    "bienveillant",
+    "professionnel",
+    "moderne"
   ],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
@@ -791,12 +794,13 @@
   "voiceKey": "gemini:Charon",
   "speechPersonality": "Voix calme et posée, avec une intonation naturelle et engageante. Le débit est modéré, clair et articulé, transmettant confiance et bienveillance. Il s'exprime avec une légère chaleur, invitant à l'écoute et à la compréhension mutuelle.",
   "posePrompts": {
-    "neutral": "Ryan stands waist-up, facing forward with a relaxed, attentive expression. His shoulders are level, and his arms are gently at his sides, hands visible and open, conveying an approachable and engaged stance. His gaze is direct and calm.",
-    "success": "Ryan smiles subtly, a hint of pride in his hazel eyes, as he stands waist-up. His right hand is gently placed over his heart, conveying sincere approval and a modest sense of accomplishment. His shoulders are slightly back, exuding quiet confidence.",
-    "failure": "Ryan maintains a gentle, reassuring expression, his gaze empathetic, as he stands waist-up. His left hand is extended slightly forward, palm open in a supportive gesture, inviting another attempt with understanding and encouragement. His shoulders are relaxed."
+    "neutral": "Ryan stands in a natural, attentive posture, head held level, shoulders relaxed. His expression is calm and composed, reflecting his thoughtful and benevolent nature. His arms rest gently at his sides, conveying an approachable and steady presence.",
+    "success": "Ryan displays a subtle, warm smile, his eyes conveying genuine approval. He makes a gentle, open-palm gesture with one hand, slightly raised, indicating encouragement and shared success. His posture remains relaxed, radiating quiet confidence and support.",
+    "failure": "Ryan's expression is empathetic and understanding, with a slight softening of his gaze. He places one hand gently over his heart, conveying compassion and reassurance, inviting another attempt. His posture is slightly inclined forward, showing supportive engagement."
   },
   "sourceMode": "photo",
   "sourcePrompt": "",
+  "creationBrief": "Ryan est un individu posé et bienveillant, dont la présence inspire confiance. Son tempérament est calme et réfléchi, avec une capacité à exprimer une chaleur authentique. Ses gestes sont mesurés et naturels, renforçant son discours clair et articulé. Il aborde les situations avec une attitude encourageante et une écoute attentive, favorisant la compréhension mutuelle.",
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/046711e3-573a-46a7-8d8e-371c91c7046a.jpg",
@@ -807,10 +811,10 @@
     "neutral": "images/c37613c5-b29f-4120-8429-4670888ac602.png"
   },
   "tonePrompts": {
-    "neutral": "A head-and-shoulders portrait of Ryan, a man in his late 30s to early 40s, with an oval face and clear skin. His eyes are a calm hazel, looking directly forward, framed by natural, medium-thickness dark brown eyebrows. His short, neatly trimmed hair is dark brown with subtle grey at the temples and sides, styled slightly to the right. He has a well-groomed, short dark brown beard and mustache, also showing hints of grey. He wears a sophisticated navy blue single-breasted blazer with notched lapels, made of a smooth, possibly wool-blend fabric, over a plain navy blue crew-neck t-shirt made of soft cotton. The composition is a tight bust shot, centered, with his face and lips prominent and unobstructed, ideal for talking video. His shoulders are relaxed, and the lighting is soft and even from the front, casting minimal shadows against a plain, light grey backdrop, ensuring a clean and professional appearance."
+    "neutral": "A detailed bust portrait of Ryan, a man embodying a calm and engaging presence. He has short, neatly styled greying chestnut brown hair, with distinct silver strands visible throughout, particularly at the temples. His well-groomed beard is short, dark brown with integrated grey, meticulously trimmed to define his jawline and mustache area. His skin is fair to medium, smooth and healthy-looking, with subtle natural texture. His eyes, a warm hazel-green, meet the viewer's gaze directly and neutrally, conveying attentiveness and an inviting composure. His lips are closed in a relaxed, gentle line, hinting at his natural warmth. He is dressed in a smart, single-breasted navy blue blazer made from a finely woven, smooth wool-blend fabric, worn over a soft, plain crew-neck t-shirt in a matching deep navy shade. The blazer's lapels are visible, and the garment fits him perfectly, accentuating his modern, relaxed yet confident style. His head is held level, shoulders relaxed in a natural, upright posture. The scene is illuminated by soft, diffused front lighting, casting minimal shadows and emphasizing his approachable features against a clean, evenly lit, light grey background. The framing is a close bust shot, encompassing his head, neck, and upper chest, capturing his composed and thoughtful essence."
   },
-  "characterSheet": "images/81eba1c4-0a92-41f2-82c6-6206e0203bc3.png",
-  "characterSheetPrompt": "A comprehensive character reference sheet for Ryan, featuring three full-body views against a pure black background. The first view is a front-facing full-body shot of Ryan, a man in his late 30s to early 40s, standing upright with a neutral expression and direct gaze. He wears a navy blue single-breasted suit jacket with notched lapels, a plain navy blue crew-neck t-shirt, and matching slim-fit navy blue suit trousers. His feet are clad in dark navy blue or black casual shoes with distinct white soles. The second view is a full-body profile shot from his right side, showing his posture, the fit of his suit, and the side profile of his face, short hair, and well-groomed beard. His gaze is directed to the right. The third view is a full-body back shot, detailing the rear of his navy blue suit jacket, which features a single vent, and the back of his matching trousers. All three views clearly show his short, dark brown hair with grey accents, and his dark navy blue or black shoes with white soles. The character is precisely cut out from the background, highlighting his silhouette.",
+  "characterSheet": "images/a70c342a-6e83-4010-b0d7-a4cd72440ce6.png",
+  "characterSheetPrompt": "A character reference sheet featuring Ryan, a human male, presented in three distinct full-body views: front, profile (right side), and back. Ryan has short, neatly trimmed, greying brown hair and a well-groomed full beard, consistent across all views. He maintains a neutral, relaxed standing posture with his arms gently at his sides, weight evenly distributed. He is dressed in a complete, modern outfit: a dark navy blazer with notched lapels and a two-button closure, worn open. Beneath the blazer, he wears a plain dark navy crew-neck t-shirt. His lower body is clad in dark navy tailored trousers with a contemporary fit, and he wears brown leather lace-up derby shoes with a subtle sheen. Each view is isolated on a plain white background, with generous margins around the figure, ensuring no part of his body or clothing is cropped. All details of his attire, from the texture of the blazer to the laces of his shoes, are clearly visible and consistent across the three perspectives.",
   "sheetRegions": {
     "front": {
       "x": 0,
@@ -832,10 +836,10 @@
     }
   },
   "framingPrompts": {
-    "bust": "Generate a detailed bust image of Ryan, a man in his late 30s to early 40s, with an oval face and clear complexion. His calm hazel eyes maintain a direct, engaging gaze, complemented by natural, dark brown eyebrows of medium thickness. His short, neatly trimmed hair, dark brown with hints of grey at the temples, is styled subtly to the right. A well-maintained, short dark brown beard and mustache, also showing some grey, frames his mouth. He is dressed in a sophisticated navy blue single-breasted blazer with notched lapels, crafted from a smooth, refined fabric, worn over a simple navy blue crew-neck t-shirt made of soft cotton. The composition should be a tight bust shot, centered, ensuring his face and lips are large, prominent, and entirely unobstructed, perfect for a talking video. His shoulders are relaxed, conveying an approachable demeanor. The lighting should be soft and even, originating from the front, creating minimal shadows. The backdrop is a plain, light grey, providing a clean and professional setting.",
-    "fullBody": "Generate a full-body image of Ryan, a man in his late 30s to early 40s, standing completely upright and facing forward, with a neutral, composed expression. His oval face, clear skin, and calm hazel eyes are clearly visible. His short, neatly trimmed dark brown hair, showing subtle grey at the temples, is styled to the right. He has a well-groomed, short dark brown beard and mustache with hints of grey. He is dressed in a complete navy blue suit: a single-breasted jacket with notched lapels, matching slim-fit trousers, and a plain navy blue crew-neck t-shirt underneath. His feet are visible, wearing dark navy blue or black casual shoes with distinct white soles. The composition must feature one complete person, with both shoes clearly visible, generous headroom above his head, and absolutely no cropping of any part of his body. His arms are relaxed at his sides. The lighting should be soft and even, highlighting the texture of his suit. The background is a plain, light grey, providing a clean and professional setting."
+    "bust": "A detailed bust image of Ryan, a human male, featuring his head and shoulders. He has short, neatly trimmed, greying brown hair with subtle silver streaks, and a well-groomed, full beard that frames his face. His facial expression is calm and neutral, with a direct and steady gaze from his warm hazel eyes, conveying a thoughtful and approachable demeanor. His skin is fair with a healthy, natural complexion. He is dressed in a dark navy blazer with distinct notched lapels and a two-button closure, which is worn open. Underneath, a plain dark navy crew-neck t-shirt is visible at the neckline and upper chest. The composition is tightly framed from the mid-chest upwards, ensuring his facial features and upper body are large and unobstructed, ideal for talking video, without adding a human mouth. The lighting is soft, even, and frontal, creating subtle highlights and minimal shadows. The backdrop is a plain, seamless light grey, providing a clean and professional context.",
+    "fullBody": "A detailed full-body image of Ryan, a human male, standing in a natural and relaxed posture. He has short, neatly trimmed, greying brown hair with subtle grey streaks, and a well-groomed, full beard. His build is slim to medium, and his posture is upright with his arms gently resting at his sides, conveying a calm and confident presence. He is wearing a complete, modern dark navy suit: a blazer with notched lapels, a two-button closure, and a subtle texture, worn open over a plain dark navy crew-neck t-shirt. His dark navy tailored trousers have a contemporary fit, and he wears polished brown leather lace-up derby shoes. Every extremity, including both shoes, is fully visible. The composition ensures one complete character is shown with generous margins around the figure, and absolutely no cropping. The lighting is soft, even, and frontal, casting subtle, natural shadows that define his form. The background is a plain, seamless light grey, offering a clean and professional setting."
   },
   "preset": true,
   "createdAt": "2026-10-11T11:58:06.850Z",
-  "updatedAt": "2026-10-11T16:36:32.346Z"
+  "updatedAt": "2026-10-12T17:03:09.750Z"
 }
