@@ -4794,17 +4794,7 @@
     "id": "preset-jeanne",
     "name": "Jeanne",
     "description": "Jeanne est une jeune femme au teint clair parsemé de taches de rousseur, avec des cheveux bruns courts et ondulés. Elle porte un costume bleu marine et une chemise bleue claire.",
-    "tags": [
-      "jeune femme",
-      "professionnelle",
-      "costume bleu marine",
-      "chemise bleue",
-      "cheveux courts",
-      "taches de rousseur",
-      "calme",
-      "confiante",
-      "encourageante"
-    ],
+    "tags": [],
     "preview": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png",
     "decor": "",
     "voiceKey": "gemini:Callirrhoe",
@@ -5583,7 +5573,7 @@
       ]
     },
     "speechPersonality": "La voix de Callirrhoe sera calme, posée et professionnelle, avec une intonation chaleureuse et encourageante. Elle transmettra confiance et clarté, idéale pour des explications précises ou des conseils bienveillants, tout en restant accessible et engageante.",
-    "updatedAt": "2026-10-12T17:01:28.844Z",
+    "updatedAt": "2026-10-13T08:50:19.294Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
@@ -8757,7 +8747,7 @@
       ]
     },
     "speechPersonality": "Une voix calme, claire et posée, avec une intonation encourageante et bienveillante. Elle s'exprime avec assurance et une touche de chaleur, idéale pour des explications pédagogiques ou des conseils avisés.",
-    "updatedAt": "2026-10-13T08:45:49.310Z",
+    "updatedAt": "2026-10-13T08:46:41.394Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },

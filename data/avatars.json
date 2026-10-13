@@ -5064,17 +5064,7 @@
     "schemaVersion": 2,
     "name": "Jeanne",
     "description": "Jeanne est une jeune femme au teint clair parsemé de taches de rousseur, avec des cheveux bruns courts et ondulés. Elle porte un costume bleu marine et une chemise bleue claire.",
-    "tags": [
-      "jeune femme",
-      "professionnelle",
-      "costume bleu marine",
-      "chemise bleue",
-      "cheveux courts",
-      "taches de rousseur",
-      "calme",
-      "confiante",
-      "encourageante"
-    ],
+    "tags": [],
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "bb93aeeb70395b41fb49e7bdfb7b604e1c66d10da0cb9d8656dd95124ccf05a0",
@@ -5859,6 +5849,10 @@
     "sourceMode": "photo",
     "sourcePrompt": "",
     "creationBrief": "Jeanne est une personne posée et professionnelle, dont la présence inspire confiance. Son tempérament est calme et réfléchi, toujours prête à offrir des conseils clairs et bienveillants. Elle aborde les situations avec une attitude encourageante et une gestuelle mesurée, favorisant la clarté et l'accessibilité. Son sourire chaleureux et son regard attentif témoignent de son engagement à soutenir et à guider avec empathie.",
+    "descriptionsOutdated": true,
+    "outdatedDescriptions": [
+      "fullBody"
+    ],
     "decorMode": "image",
     "decorPrompt": "",
     "photo": "images/0b7b0e32-f57a-4c64-b4f2-f7c42035f53a.jpg",
@@ -5871,7 +5865,7 @@
     "tonePrompts": {
       "neutral": "A bust-up portrait of Jeanne, a young woman with a fair complexion delicately adorned with numerous brown freckles across her nose and cheeks. Her short, wavy, rich brown hair frames her face, ending just above her shoulders. Her eyes, a warm brown, meet the viewer directly with a soft, calm, and approachable neutral expression, reflecting her professional yet encouraging demeanor. Her lips are naturally closed, forming a gentle, subtle curve. She wears a crisp, light blue collared button-down shirt, with the top button unfastened, peeking out from under a tailored navy blue suit jacket. The suit fabric appears smooth and refined. Her shoulders are relaxed, and her posture conveys quiet confidence and composure, without rigidity. The lighting is soft and even, originating from the front-right, casting gentle highlights on her hair and skin, enhancing texture. The background is a plain, warm, light beige, providing a clean contrast. The framing is centered, capturing her head and upper chest, with the bottom of the frame cutting just below her suit lapels."
     },
-    "characterSheet": "images/ccf7c573-5a1a-4ea8-94bd-966e6ca0056a.png",
+    "characterSheet": "images/31bc73ae-6cd9-4fe2-a5f0-8b009cd59728.png",
     "characterSheetPrompt": "A character reference sheet for a young adult woman named Jeanne, presented with three complete full-body views: front, profile, and back, each against a plain white background. In all views, Jeanne has fair skin with visible freckles and short, wavy brown hair. She is dressed in a complete professional navy blue suit, consisting of a tailored blazer with a notched lapel and matching straight-leg trousers. Underneath the blazer, she wears a light blue collared button-up shirt, with the top two buttons undone. She wears dark blue flat shoes. In the front view, Jeanne stands facing directly forward, with her arms relaxed at her sides and hands gently resting. Her expression is neutral and composed. In the profile view, she stands facing right, showcasing her side silhouette, with her posture straight and balanced. In the back view, she stands with her back to the viewer, clearly showing the cut and fit of her navy blue blazer and trousers. Her morphology, outfit, and overall appearance are consistent across all three views. No equipment is present.",
     "sheetRegions": {
       "front": {
@@ -5899,7 +5893,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:55:57.728Z",
-    "updatedAt": "2026-10-12T17:01:28.844Z"
+    "updatedAt": "2026-10-13T08:50:19.294Z"
   },
   {
     "id": "preset-ryan",
@@ -9261,7 +9255,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T16:32:48.739Z",
-    "updatedAt": "2026-10-13T08:45:49.310Z"
+    "updatedAt": "2026-10-13T08:46:41.394Z"
   },
   {
     "id": "preset-louis",
