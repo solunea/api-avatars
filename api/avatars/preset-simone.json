@@ -789,7 +789,7 @@
       0.006876512360746764
     ]
   },
-  "voiceKey": "gemini:Kore",
+  "voiceKey": "gemini:Vindemiatrix",
   "speechPersonality": "Voix posée, de registre moyen à grave, avec un débit calme et régulier. Elle s'exprime avec clarté, des phrases structurées et un vocabulaire précis, allant droit au but avec courtoisie. Elle reformule pour s'assurer de la compréhension, pose des questions factuelles et reste sereine. Son humour est",
   "posePrompts": {
     "neutral": "Simone stands naturally, shoulders relaxed, head held level, with a calm and attentive posture, conveying her composed and reliable nature.",
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-13T09:59:23.877Z",
-  "updatedAt": "2026-10-13T09:59:23.877Z"
+  "updatedAt": "2026-10-13T10:02:32.761Z"
 }

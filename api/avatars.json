@@ -13545,7 +13545,7 @@
     ],
     "preview": "images/829cf1b1-21c2-494c-879f-8060794f220d.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Vindemiatrix",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "733699781a663f973ec689967842a8024b5e6fb6ab84d1af75ad09a3d706c26e",
@@ -14321,7 +14321,7 @@
       ]
     },
     "speechPersonality": "Voix posée, de registre moyen à grave, avec un débit calme et régulier. Elle s'exprime avec clarté, des phrases structurées et un vocabulaire précis, allant droit au but avec courtoisie. Elle reformule pour s'assurer de la compréhension, pose des questions factuelles et reste sereine. Son humour est",
-    "updatedAt": "2026-10-13T09:59:23.877Z",
+    "updatedAt": "2026-10-13T10:02:32.761Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
@@ -14343,7 +14343,7 @@
     ],
     "preview": "images/f2e2bd99-db4b-4f35-abb6-87f5046d0d3f.png",
     "decor": "",
-    "voiceKey": "gemini:Kore",
+    "voiceKey": "gemini:Sulafat",
     "clip": {
       "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
       "imageHash": "0d971a3e5935e7bc2b3174592df996d3bf197416a0ad8bae3cb475981ba724dd",
@@ -15119,7 +15119,7 @@
       ]
     },
     "speechPersonality": "Voix vive, claire et chaleureuse, au timbre lumineux. Débit rapide et fluide, ralentissant pour expliquer ou encourager. Phrases courtes, rythmées, vocabulaire simple et imagé. Ton conversationnel, souriant, riant facilement. Ponctue d'interjections positives, encourage plus qu'elle ne commande, dir",
-    "updatedAt": "2026-10-13T10:02:02.691Z",
+    "updatedAt": "2026-10-13T10:02:20.257Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   }

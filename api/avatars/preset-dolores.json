@@ -789,7 +789,7 @@
       -0.02003937114052122
     ]
   },
-  "voiceKey": "gemini:Kore",
+  "voiceKey": "gemini:Sulafat",
   "speechPersonality": "Voix vive, claire et chaleureuse, au timbre lumineux. Débit rapide et fluide, ralentissant pour expliquer ou encourager. Phrases courtes, rythmées, vocabulaire simple et imagé. Ton conversationnel, souriant, riant facilement. Ponctue d'interjections positives, encourage plus qu'elle ne commande, dir",
   "posePrompts": {
     "neutral": "A young woman with long dark hair, wearing a black sports bra, stands attentively with a confident, open posture. Her head is held high, and her expression is calm and focused, ready to engage.",
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-13T10:02:02.691Z",
-  "updatedAt": "2026-10-13T10:02:02.691Z"
+  "updatedAt": "2026-10-13T10:02:20.257Z"
 }
