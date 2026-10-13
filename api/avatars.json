@@ -6391,18 +6391,7 @@
     "id": "preset-kevin",
     "name": "Kevin",
     "description": "Un homme barbu aux cheveux bruns, portant un casque de sécurité blanc et un casque anti-bruit jaune autour du cou. Il est vêtu d'une veste de travail rouge, grise et noire, et d'un pantalon noir.",
-    "tags": [
-      "homme",
-      "barbu",
-      "casque de securite",
-      "casque anti bruit",
-      "veste de travail",
-      "professionnel",
-      "calme",
-      "pedagogue",
-      "confiant",
-      "bienveillant"
-    ],
+    "tags": [],
     "preview": "images/bb050d66-6414-407d-a561-810f35420692.png",
     "decor": "",
     "voiceKey": "gemini:Charon",
@@ -7181,7 +7170,7 @@
       ]
     },
     "speechPersonality": "Voix masculine, posée et rassurante, avec une légère profondeur. Le ton est direct et professionnel, mais empreint de bienveillance et de clarté, idéal pour des explications techniques ou des conseils pratiques. Il inspire confiance et autorité calme.",
-    "updatedAt": "2026-10-12T17:27:17.167Z",
+    "updatedAt": "2026-10-13T08:46:24.161Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },
@@ -7989,18 +7978,7 @@
     "id": "preset-marie",
     "name": "Marie",
     "description": "Marie, une femme aux cheveux gris courts et lunettes rondes, porte un tailleur beige et une chemise bleu clair. Son expression est calme et posée.",
-    "tags": [
-      "femme",
-      "cheveux gris",
-      "lunettes rondes",
-      "tailleur beige",
-      "chemise bleu clair",
-      "professionnel",
-      "elegant",
-      "calme",
-      "pedagogue",
-      "bienveillante"
-    ],
+    "tags": [],
     "preview": "images/e5be5d05-7890-46e3-97e3-2aeb19bc3333.png",
     "decor": "",
     "voiceKey": "gemini:Leda",
@@ -8779,7 +8757,7 @@
       ]
     },
     "speechPersonality": "Une voix calme, claire et posée, avec une intonation encourageante et bienveillante. Elle s'exprime avec assurance et une touche de chaleur, idéale pour des explications pédagogiques ou des conseils avisés.",
-    "updatedAt": "2026-10-12T16:42:19.121Z",
+    "updatedAt": "2026-10-13T08:45:49.310Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
   },

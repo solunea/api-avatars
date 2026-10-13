@@ -3,18 +3,7 @@
   "schemaVersion": 2,
   "name": "Marie",
   "description": "Marie, une femme aux cheveux gris courts et lunettes rondes, porte un tailleur beige et une chemise bleu clair. Son expression est calme et posée.",
-  "tags": [
-    "femme",
-    "cheveux gris",
-    "lunettes rondes",
-    "tailleur beige",
-    "chemise bleu clair",
-    "professionnel",
-    "elegant",
-    "calme",
-    "pedagogue",
-    "bienveillante"
-  ],
+  "tags": [],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
     "imageHash": "147cf71bbab0293430685c6ee97af26fc352acb99cac116ef899fa0992b13561",
@@ -799,6 +788,10 @@
   "sourceMode": "photo",
   "sourcePrompt": "",
   "creationBrief": "Marie est une personne posée et professionnelle, dotée d'une chaleur et d'un soutien intrinsèques. Son tempérament est serein et réfléchi. Elle aborde les interactions avec une attitude encourageante et bienveillante, toujours prête à offrir des explications claires ou des conseils avisés. Ses gestes sont mesurés et ouverts, reflétant son assurance et son style pédagogique. Elle maintient une manière de parler calme et régulière, transmettant chaleur et clarté, ce qui en fait une guide ou une mentore idéale.",
+  "descriptionsOutdated": true,
+  "outdatedDescriptions": [
+    "fullBody"
+  ],
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/da2623f0-48cb-4e0d-ab01-4c5e8eca05f3.jpg",
@@ -811,7 +804,7 @@
   "tonePrompts": {
     "neutral": "Marie, a woman embodying a calm and poised presence, gazes directly forward with a neutral and composed facial expression. Her clear, light blue eyes, accentuated by round, amber-patterned tortoise-shell glasses, meet the viewer with steady assurance. Her lips are gently closed, forming a serene line that reflects her thoughtful and benevolent temperament. Her short, finely styled, chin-length grey hair is meticulously parted to her left, forming a smooth, elegant bob that frames her face. She is impeccably dressed in a light blue collared shirt, visible beneath a well-tailored, professional beige blazer. The blazer features neat lapels and a structured silhouette, adding to her authoritative yet warm appearance. Soft, even studio lighting bathes her from the front, creating a clean, shadow-minimal portrait that highlights her features with gentle clarity. Marie is framed in a tight, centered bust shot, extending from just above her head to the mid-chest level of her blazer. The background is a seamless, solid, pastel blue, providing a clean and understated backdrop that perfectly complements her professional yet encouraging demeanor."
   },
-  "characterSheet": "images/319a60a1-628c-4b37-ab23-9f77e122c286.png",
+  "characterSheet": "images/01c00238-45b9-4279-8776-4da5191a8d7e.png",
   "characterSheetPrompt": "A character reference sheet featuring three full-body views of Marie, a mature woman, presented against a plain white background. The first view is a front-facing portrait, showing Marie standing upright with a neutral, composed expression, looking directly forward. Her silver-grey, neatly styled bob and round tortoiseshell glasses are clearly visible. She wears a light beige, single-breasted blazer over a light blue collared shirt, paired with matching light beige tailored trousers. Her dark brown leather shoes are visible. The second view is a full profile, facing right, detailing the side of her head, the layered cut of her hair, and the fit of her beige blazer and trousers. Her arm hangs naturally at her side, showcasing the full sleeve. The third view is a full back shot, displaying the rear of her silver-grey bob, the tailored back of her beige blazer, and the matching trousers, highlighting the garment's construction and drape. All views maintain consistent identity, hair, and outfit details.",
   "sheetRegions": {
     "front": {
@@ -839,5 +832,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T16:32:48.739Z",
-  "updatedAt": "2026-10-12T16:42:19.121Z"
+  "updatedAt": "2026-10-13T08:45:49.310Z"
 }

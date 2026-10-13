@@ -3,18 +3,7 @@
   "schemaVersion": 2,
   "name": "Kevin",
   "description": "Un homme barbu aux cheveux bruns, portant un casque de sécurité blanc et un casque anti-bruit jaune autour du cou. Il est vêtu d'une veste de travail rouge, grise et noire, et d'un pantalon noir.",
-  "tags": [
-    "homme",
-    "barbu",
-    "casque de securite",
-    "casque anti bruit",
-    "veste de travail",
-    "professionnel",
-    "calme",
-    "pedagogue",
-    "confiant",
-    "bienveillant"
-  ],
+  "tags": [],
   "clip": {
     "model": "andreasjansson/clip-features:75b33f253f7714a281ad3e9b28f63e3232d583716ef6718f2e46641077ea040a",
     "imageHash": "c17ea47e98ed1f99f74508f13d7583f3e16a2331649cd40990159a3cab8f6712",
@@ -799,6 +788,10 @@
   "sourceMode": "photo",
   "sourcePrompt": "",
   "creationBrief": "Kevin est un professionnel compétent et pédagogue, dont la présence inspire confiance et sérénité. Son tempérament est calme et posé, mais il peut exprimer une bienveillance chaleureuse, notamment lorsqu'il guide ou rassure. Ses gestes sont mesurés et clairs, renforçant son approche directe et professionnelle. Il aborde les situations avec une attitude constructive, toujours prêt à expliquer ou à offrir un soutien pratique, reflétant une autorité naturelle et une grande clarté.",
+  "descriptionsOutdated": true,
+  "outdatedDescriptions": [
+    "fullBody"
+  ],
   "decorMode": "image",
   "decorPrompt": "",
   "photo": "images/5274391d-f859-4839-a1a9-6caa56d8d5b9.jpg",
@@ -811,7 +804,7 @@
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of a man named Kevin, featuring a neutral, direct gaze. He has short, neatly trimmed brown hair visible beneath a pristine white hard hat, which is securely worn on his head. A well-maintained, medium-length brown beard frames his face, connecting to his sideburns. Around his neck, a pair of bright yellow industrial earmuffs with green accents rests comfortably, their band visible across his collarbone. He wears a robust work jacket, predominantly red on the shoulders and upper chest, transitioning to a dark grey mid-section and black lower body and sleeves. Reflective grey stripes are visible on the red and dark grey sections of the jacket. The collar is black, and a glimpse of a dark blue or grey undershirt is visible at the neck. The lighting is even and soft, highlighting the textures of his protective gear and clothing. The composition is a tight bust shot, centered, with his head and upper torso filling the frame, ensuring his facial features are prominent and unobstructed for a talking video, without adding a human mouth. The background is a plain, solid light grey, providing a clean and professional presentation."
   },
-  "characterSheet": "images/9ff63cff-6c67-4910-9024-5348b434aa67.png",
+  "characterSheet": "images/2f4cd694-08c5-46b5-b5f9-fb2d9a3c8511.png",
   "characterSheetPrompt": "A character reference sheet for Kevin, presented with three distinct full-body views: front, profile, and back, against a pure white background. Kevin is a man with short brown hair, a neatly trimmed brown beard, and a direct, neutral expression in the front view. He wears a white hard hat, securely fitted on his head. A pair of bright yellow industrial earmuffs with green accents hangs around his neck, resting on his shoulders. His work attire consists of a durable, multi-panel jacket: the upper chest and shoulders are red, the mid-section is dark grey, and the lower body and sleeves are black. Horizontal reflective grey stripes are present on the red and dark grey panels of the jacket, including the sleeves. The jacket features multiple pockets on the front, with black flaps. He wears plain black work trousers and sturdy dark grey work boots with visible laces and thick soles. In all three views, his posture is upright and natural, with his arms resting loosely at his sides. The front view shows him facing directly forward, hands relaxed. The profile view shows his right side, maintaining the same relaxed posture, clearly displaying the side of his hard hat, the earmuffs, and the side profile of his jacket and trousers. The back view shows him from behind, highlighting the red upper back panel of his jacket with a reflective stripe, the black lower back, and the back of his black trousers and boots. All details of his clothing, protective gear, and footwear are clearly visible and consistent across the three views, with no cropping.",
   "sheetRegions": {
     "front": {
@@ -839,5 +832,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T12:00:01.473Z",
-  "updatedAt": "2026-10-12T17:27:17.167Z"
+  "updatedAt": "2026-10-13T08:46:24.161Z"
 }
