@@ -15122,5 +15122,29 @@
     "updatedAt": "2026-10-13T10:02:20.257Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
+  },
+  {
+    "id": "preset-yannick",
+    "name": "Yannick",
+    "description": "Yannick est un homme chauve à la barbe et moustache grisonnantes, portant un polo bleu marine et un short gris. Son style décontracté et son regard direct évoquent une personnalité chaleureuse et expérimentée.",
+    "tags": [
+      "homme",
+      "chauve",
+      "barbe grisonnante",
+      "polo",
+      "short",
+      "sandales",
+      "decontracte",
+      "sociable",
+      "experimente",
+      "solaire"
+    ],
+    "preview": "images/b89c9209-80e0-40f8-8041-26bf08f1bb7c.png",
+    "decor": "",
+    "voiceKey": "gemini-3.8:Charon",
+    "speechPersonality": "Charon, adoptez un ton chaleureux et bienveillant, avec une voix ronde et un débit facile. Intégrez des rires fréquents et une tendance à partager des anecdotes, reflétant une personnalité sociable, détendue et pleine d'expérience.",
+    "updatedAt": "2026-10-27T10:23:29.426Z",
+    "schemaVersion": 2,
+    "hasCharacterSheet": true
   }
 ]

@@ -15998,5 +15998,76 @@
     "preset": true,
     "createdAt": "2026-10-13T10:02:02.691Z",
     "updatedAt": "2026-10-13T10:02:20.257Z"
+  },
+  {
+    "id": "preset-yannick",
+    "schemaVersion": 2,
+    "name": "Yannick",
+    "description": "Yannick est un homme chauve à la barbe et moustache grisonnantes, portant un polo bleu marine et un short gris. Son style décontracté et son regard direct évoquent une personnalité chaleureuse et expérimentée.",
+    "tags": [
+      "homme",
+      "chauve",
+      "barbe grisonnante",
+      "polo",
+      "short",
+      "sandales",
+      "decontracte",
+      "sociable",
+      "experimente",
+      "solaire"
+    ],
+    "voiceKey": "gemini-3.8:Charon",
+    "speechPersonality": "Charon, adoptez un ton chaleureux et bienveillant, avec une voix ronde et un débit facile. Intégrez des rires fréquents et une tendance à partager des anecdotes, reflétant une personnalité sociable, détendue et pleine d'expérience.",
+    "posePrompts": {
+      "neutral": "Yannick stands with a relaxed, attentive posture, head slightly tilted, a gentle, knowing smile playing on his lips, conveying his sociable and experienced nature. His arms are comfortably at his sides, with the silver watch visible on his left wrist.",
+      "success": "Yannick beams with a warm, genuine smile, his eyes crinkling at the corners. He raises his right hand slightly, palm open in a modest, encouraging gesture, reflecting his benevolent and sunny disposition.",
+      "failure": "Yannick maintains a calm, reassuring expression, a soft, understanding look in his eyes. He places his left hand gently over his heart, conveying empathy and inviting another attempt with a supportive, experienced attitude."
+    },
+    "sourceMode": "photo",
+    "sourcePrompt": "",
+    "creationBrief": "•\tPersonnalité : sociable, détendu, solaire, l’aisance de quelqu’un qui a de la bouteille.\n•\tParole : voix chaude et ronde, débit facile, rire fréquent, anecdotes et ton bienveillant.",
+    "descriptionsOutdated": false,
+    "outdatedDescriptions": [],
+    "decorMode": "image",
+    "decorPrompt": "",
+    "photo": "images/7a02c185-28b1-4f83-90f9-7e55e17fae84.jpg",
+    "decor": "",
+    "preview": "images/b89c9209-80e0-40f8-8041-26bf08f1bb7c.png",
+    "styleId": "",
+    "tones": {
+      "neutral": "images/b89c9209-80e0-40f8-8041-26bf08f1bb7c.png"
+    },
+    "tonePrompts": {
+      "neutral": "A mature, bald human male with medium-toned, slightly tanned skin. His facial features are well-defined: dark, intelligent eyes, a straight nose, and prominent ears. He sports a neatly trimmed mustache and a short stubble beard, both salt-and-pepper grey, contrasting with his darker eyebrows. He wears a dark teal long-sleeved polo shirt made of soft, textured cotton jersey fabric. The shirt features a modern mandarin collar with a V-neck opening secured by three small, dark buttons, two of which are visible. The fabric drapes naturally, indicating a comfortable fit. He stands with a natural, relaxed posture, facing directly forward. His shoulders are slightly back and at ease, conveying a subtle air of confidence and warmth consistent with a sociable, relaxed, experienced personality. His expression is neutral, with a soft, steady gaze and a gentle, almost imperceptible hint of a smile at the corners of his mouth, suggesting an inner calm and approachable demeanor. There are no overt gestures. The subject is illuminated by soft, diffused, natural-looking light from slightly above and in front, casting subtle shadows that highlight the contours of his face without being harsh. The background is a clean, uniform medium grey, providing a clear contrast. The shot is a tightly framed bust portrait, centered, showing him from just above the top of his bald head down to mid-chest, capturing the full width of his shoulders and the upper part of his polo shirt."
+    },
+    "characterSheet": "images/0e4583ff-b657-42f1-8431-cb977654155a.png",
+    "characterSheetPrompt": "A character reference sheet for Yannick, an adult human male, presented in three complete, full-body views: front, profile (right side), and back. In all views, Yannick stands upright with a natural, relaxed posture, arms comfortably at his sides, and a neutral facial expression. He has a bald head, a short, neatly trimmed grey beard and mustache, and dark eyes. His skin tone is a warm medium hue. He is dressed in a dark navy blue polo shirt featuring a collar and a three-button placket, with the top button undone. The collar and the short sleeve cuffs are accented with a thin reddish-brown trim. He wears dark grey shorts that reach just above the knee. On his feet, he has black open-toed sandals with visible straps. A silver watch is worn on his left wrist, clearly visible in the front and profile views. The character is centered in each frame, with generous margins, against a plain white background, ensuring all extremities and clothing details are fully visible and uncropped across all three perspectives.",
+    "sheetRegions": {
+      "front": {
+        "x": 0,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "profile": {
+        "x": 0.3333333333333333,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      },
+      "back": {
+        "x": 0.6666666666666666,
+        "y": 0,
+        "width": 0.3333333333333333,
+        "height": 1
+      }
+    },
+    "framingPrompts": {
+      "bust": "A head-and-shoulders portrait of Yannick, an adult human male, captured from the chest up. He has a bald head, a short, neatly trimmed grey beard and mustache, and dark, observant eyes that meet the viewer's gaze directly. His expression is neutral, calm, and composed, reflecting a sociable and experienced demeanor. His skin tone is a warm medium hue. He is wearing a dark navy blue polo shirt with a structured collar and a three-button placket, with the top button unfastened. A subtle reddish-brown trim is visible along the edge of the collar. A silver watch is present on his left wrist, partially visible within the frame. The composition is tight, ensuring his face and upper body are prominent and unobstructed, ideal for a talking video, without depicting an open mouth. The lighting is soft, even, and flattering, highlighting his features without harsh shadows. The background is a plain, solid grey, providing a clean and uncluttered setting.",
+      "fullBody": "A complete, full-body image of Yannick, an adult human male, standing with a relaxed and natural posture, embodying a sociable and experienced persona. He has a bald head, a short, neatly trimmed grey beard and mustache, and dark eyes that hold a calm, direct expression. His skin tone is a warm medium hue. He is dressed in a dark navy blue polo shirt with a collar and a three-button placket, with the top button unfastened. The collar and the short sleeve cuffs are distinctly accented with a thin reddish-brown trim. He wears dark grey shorts that extend to just above his knees. On his feet, he has black open-toed sandals with visible straps, ensuring both shoes are clearly seen. A silver watch is worn on his left wrist. The character stands centered, with all extremities, including his head, arms, hands, legs, and feet, fully visible. The composition includes generous margins around the entire figure, with no cropping of any part of his body or attire. The lighting is soft and even, creating a natural appearance against a plain, solid background."
+    },
+    "preset": true,
+    "createdAt": "2026-10-27T10:23:29.426Z",
+    "updatedAt": "2026-10-27T10:23:29.426Z"
   }
 ]
