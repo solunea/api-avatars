@@ -2,6 +2,10 @@
 
 Catalogue public d’avatars prédéfinis pour Cannelle, diffusé par les fichiers de `api/` et `images/`.
 
+Le sélecteur propose 30 voix sous **Gemini 3.1 Flash TTS** et les mêmes 30 sous **Gemini 3.8 Flash TTS**. Les nouvelles fiches de l’administration utilisent **Kore · Gemini 3.8 Flash TTS** par défaut. Les clés `gemini:Nom` conservent Gemini 3.1 ; `gemini-3.8:Nom` sélectionne Gemini 3.8 dans Thaleia. Le choix reste enregistré dans `voiceKey`, sans migration des fiches existantes. `GET /api/voices` expose `key`, `name`, `gender`, `model` et `modelLabel`. Les écoutes sont des aperçus du timbre issus de Chirp 3 HD, communs aux deux modèles.
+
+La synthèse est effectuée par l’éditeur Thaleia. Pour Gemini 3.8, les événements vocaux sont envoyés en `<...>` et les indications de ton dans `style` ; les balises `[...]` des projets sont adaptées à l’envoi. Les balises natives `<...>`, les réactions `|...|` et les prononciations `/IPA/` sont préservées pour 3.8. Pour 3.1, les balises natives reconnues sont converties en `[...]` et les mots entre barres sont conservés sans les barres. Les dialogues à deux voix ne sont pas activés par cette intégration.
+
 ## Développement
 
 Les fiches détaillées enregistrent des `posePrompts` cachés (`neutral`, `success`, `failure`), au même format que les avatars créés dans Cannelle. Le même appel Gemini que les descriptions propose ces poses selon la personnalité éditoriale, sans générer de nouvelles images. Le bilan iaCreate les exploite ensuite pour ses deux photos de résultat (gestes et expressions). Les anciens fichiers et les imports entièrement décrits sans jeton utilisent des poses de repli. **Décrire les images** permet de générer ou actualiser les poses personnalisées sans régénérer les visuels.
@@ -50,7 +54,7 @@ Si l’ADN est vide, le même appel Gemini propose une personnalité de fiction 
 
 Les prompts du personnage décrit, du décor décrit, du portrait neutre et de la planche, les modèles, les paramètres de génération et l’analyse Gemini sont communs aux deux outils. La planche est créée avec les références [neutre, photo source], sans contrôle IA supplémentaire du dos. Le recadrage et le nettoyage des halos utilisent aussi les mêmes algorithmes locaux. Un style du thème ne modifie pas le portrait de création ; les variantes stylisées restent disponibles après création.
 
-Le contrat source est dans `editeur/src/assets/js/avatar/shared/`. Ce dépôt embarque une copie autonome dans `lib/`. Depuis le dossier de l’éditeur, synchroniser avec `node tools/sync-avatar-creation-contract.mjs` ; ajouter `--check` pour vérifier sans écrire. Les tests de parité de l’éditeur comparent les deux parcours lorsque les deux dépôts sont présents.
+Le contrat source est dans `editeur/src/assets/js/avatar/shared/` et le catalogue vocal dans `editeur/src/assets/js/media/audio/gemini-voices.js`. Ce dépôt embarque des copies autonomes dans `lib/`. Depuis le dossier de l’éditeur, synchroniser avec `node tools/sync-avatar-creation-contract.mjs` ; ajouter `--check` pour vérifier sans écrire. Les tests de parité de l’éditeur comparent les deux parcours lorsque les deux dépôts sont présents.
 
 Depuis une photo : **5 appels IA sans décor** (portrait, détourage du portrait, planche, détourage de la planche, descriptions groupées) ou **4 avec décor**. Une source personnage décrite ajoute un appel, un décor décrit en ajoute un autre. L’indexation CLIP à l’enregistrement ajoute normalement un appel, réutilisé si le portrait n’a pas changé. Les erreurs et les descriptions trop courtes peuvent déclencher des reprises.
 

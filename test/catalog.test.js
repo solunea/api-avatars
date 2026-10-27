@@ -120,10 +120,13 @@ test('les poses restent cachées dans les fiches détaillées et les anciens fic
 test('la description v2 propose les poses en un appel et conserve les textes existants lors de la complétion', async t => {
   const root = fixture(t);
   const item = avatarV2();
+  item.voiceKey = 'gemini-3.8:Kore';
   const calls = [];
   const run = async (model,options) => { calls.push({model,options}); return [detailedSheetBundle]; };
   const details = await describeSheetBundle(root,item,run);
   assert.equal(calls.length,1);
+  assert.match(calls[0].options.input.prompt, /selected Gemini voice is Kore/);
+  assert.doesNotMatch(calls[0].options.input.prompt, /gemini-3\.8:/);
   assert.deepEqual(details.posePrompts,posePrompts);
   assert.match(calls[0].options.input.prompt,/Chaleureuse et posée/);
   assert.match(calls[0].options.input.prompt,/Do not always assign the same gesture/);
@@ -665,9 +668,10 @@ test('administration locale accepte la création puis la suppression', async t =
     body:JSON.stringify({characterSheet:'images/../outside.png'})});
   assert.equal(invalidFit.status,400);
   const availableVoices = await (await fetch(`${base}/api/voices`)).json();
-  assert.equal(availableVoices.length, 30);
-  assert.ok(availableVoices.every(voice => voice.key === `gemini:${voice.name}` && ['male', 'female'].includes(voice.gender)));
-  assert.deepEqual(availableVoices.find(voice => voice.key === 'gemini:Kore'), {key:'gemini:Kore', name:'Kore', gender:'female'});
+  assert.equal(availableVoices.length, 60);
+  assert.equal(new Set(availableVoices.map(voice => voice.key)).size, 60);
+  assert.ok(availableVoices.every(voice => voice.key === `${voice.model.includes('3.8') ? 'gemini-3.8' : 'gemini'}:${voice.name}` && ['male', 'female'].includes(voice.gender)));
+  assert.deepEqual(availableVoices.find(voice => voice.key === 'gemini:Kore'), {key:'gemini:Kore', name:'Kore', gender:'female', model:'google/gemini-3.1-flash-tts', modelLabel:'Gemini 3.1 Flash TTS'});
   for (const [name, gender] of Object.entries({Zephyr:'female', Achernar:'female', Algieba:'male', Gacrux:'female', Zubenelgenubi:'male'})) {
     assert.equal(availableVoices.find(voice => voice.name === name)?.gender, gender, `genre de ${name}`);
   }
@@ -687,6 +691,7 @@ test('administration locale accepte la création puis la suppression', async t =
   const created = await fetch(`${base}/api/avatars`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),creationBrief,posePrompts,sourceMode:'prompt',sourcePrompt:'Une guide en veste bleue',decorMode:'prompt',decorPrompt:'Un salon lumineux',decor:'images/decor.png',speechPersonality:'  Calme \n et   posée  '})});
   assert.equal(created.status, 201);
   const detail = await (await fetch(`${base}/api/avatars/preset-ada`)).json();
+  assert.equal(detail.voiceKey, 'gemini:Kore');
   assert.equal(detail.speechPersonality, 'Calme et posée');
   assert.equal(detail.creationBrief, creationBrief);
   assert.equal(detail.sourceMode, 'prompt');
@@ -698,9 +703,14 @@ test('administration locale accepte la création puis la suppression', async t =
   const index = await (await fetch(`${base}/api/avatars.json`)).json();
   assert.equal(index[0].speechPersonality, 'Calme et posée');
   assert.deepEqual(index[0].clip, detail.clip);
-  const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),name:'Ada Renommée',speechPersonality:'  Rassurante  '})});
+  const updated = await fetch(`${base}/api/avatars/preset-ada`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...avatar(),voiceKey:'gemini-3.8:Kore',name:'Ada Renommée',speechPersonality:'  Rassurante  '})});
   const updatedAvatar = await updated.json();
   assert.equal(updatedAvatar.id, 'preset-ada');
+  assert.equal(updatedAvatar.voiceKey, 'gemini-3.8:Kore');
+  assert.equal((await (await fetch(`${base}/api/avatars/preset-ada`)).json()).voiceKey, 'gemini-3.8:Kore');
+  assert.equal(JSON.parse(readFileSync(join(root,'data','avatars.json')))[0].voiceKey, 'gemini-3.8:Kore');
+  assert.equal(JSON.parse(readFileSync(join(root,'api','avatars.json')))[0].voiceKey, 'gemini-3.8:Kore');
+  assert.equal(JSON.parse(readFileSync(join(root,'api','avatars','preset-ada.json'))).voiceKey, 'gemini-3.8:Kore');
   assert.equal(updatedAvatar.speechPersonality, 'Rassurante');
   assert.equal(updatedAvatar.creationBrief, creationBrief);
   assert.equal(updatedAvatar.sourceMode, 'prompt');
@@ -733,4 +743,14 @@ test('une image modifiée et ses descriptions anciennes se sauvegardent sans jet
   const reloaded = await (await fetch(`${base}/api/avatars/${original.id}`)).json();
   assert.equal(reloaded.descriptionsOutdated, true);
   assert.deepEqual(validateAvatar(reloaded, root), []);
+});
+
+test('validation accepts both Gemini models and rejects unknown voices or prefixes', t => {
+  const root = fixture(t);
+  for (const voiceKey of ['gemini:Kore', 'gemini-3.8:Kore', 'gemini-3.8:Rasalgethi']) {
+    assert.deepEqual(validateAvatar({...avatar(), voiceKey}, root), []);
+  }
+  for (const voiceKey of ['gemini-3.8:Unknown', 'gemini-3.9:Kore', 'qwen3-custom:mine']) {
+    assert.ok(validateAvatar({...avatar(), voiceKey}, root).includes('voix Gemini invalide'));
+  }
 });

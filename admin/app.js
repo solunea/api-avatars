@@ -23,7 +23,7 @@ let catalogTasks = [];
 let stopCatalog = false;
 
 function emptyAvatar() {
-  return {id: '', schemaVersion: 2, name: '', creationBrief: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
+  return {id: '', schemaVersion: 2, name: '', creationBrief: '', description: '', tags: [], sourceMode: 'photo', sourcePrompt: '', decorMode:'image', decorPrompt:'', voiceKey: 'gemini-3.8:Kore', speechPersonality: '', photo: '', decor: '', preview: '',
     characterSheet: '', characterSheetPrompt: '', sheetRegions: structuredClone(defaultRegions), framingPrompts: {bust:'', fullBody:''},
     tones: {neutral: ''}, tonePrompts: {neutral: ''}};
 }
@@ -97,7 +97,7 @@ async function streamApi(path, options, onEvent) {
 function media(field) { return tones.includes(field) ? current.tones[field] : current[field]; }
 function mediaUrl(path) { return path ? `/${path}` : ''; }
 function wordCount(value) { return String(value || '').trim().split(/\s+/).filter(Boolean).length; }
-function selectedVoiceName() { return $('#avatar-voice').value.replace(/^gemini:/, ''); }
+function selectedVoiceName() { return $('#avatar-voice').value.replace(/^gemini(?:-3\.8)?:/, ''); }
 function voicePreviewUrl(name) {
   if (!/^[A-Za-z]+$/.test(name)) return '';
   const slug = name === 'Aoede' ? 'aoeda' : name.toLowerCase();
@@ -106,8 +106,8 @@ function voicePreviewUrl(name) {
 function updateVoicePreviewButton(playing = false) {
   const action = playing ? 'Mettre en pause' : 'Écouter';
   const button = $('#voice-preview');
-  button.setAttribute('aria-label', `${action} l’échantillon de ${selectedVoiceName()}`);
-  button.title = `${action} l’échantillon de ${selectedVoiceName()}`;
+  button.setAttribute('aria-label', `${action} l’aperçu du timbre de ${selectedVoiceName()} (échantillon Chirp 3 HD)`);
+  button.title = `${action} l’aperçu du timbre de ${selectedVoiceName()} (échantillon Chirp 3 HD)`;
   $('#voice-preview-icon').textContent = playing ? 'Ⅱ' : '▶';
 }
 function stopVoicePreview() {
@@ -983,18 +983,27 @@ async function init() {
     const select = $('#avatar-voice');
     const sortedVoices = voices.map(voice => {
       const key = typeof voice === 'string' ? voice : voice.key;
-      const name = typeof voice === 'string' ? voice.replace(/^gemini:/, '') : voice.name;
+      const name = typeof voice === 'string' ? voice.replace(/^gemini(?:-3\.8)?:/, '') : voice.name;
       const gender = typeof voice === 'string' ? '' : voice.gender;
-      return {key, name, gender};
-    }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+      return {key, name, gender, modelLabel: voice.modelLabel || 'Gemini 3.1 Flash TTS'};
+    }).sort((a, b) => a.modelLabel.localeCompare(b.modelLabel) || a.name.localeCompare(b.name, 'fr'));
     const options = sortedVoices.map(voice => {
       const option = document.createElement('option');
       option.value = voice.key;
       const genderLabel = voice.gender === 'female' ? 'féminine' : voice.gender === 'male' ? 'masculine' : '';
-      option.textContent = genderLabel ? `${voice.name} · ${genderLabel}` : voice.name;
+      option.textContent = `${voice.name} · ${voice.modelLabel}${genderLabel ? ` · ${genderLabel}` : ''}`;
       return option;
     });
-    select.replaceChildren(...options);
+    const groups = new Map();
+    sortedVoices.forEach((voice, index) => {
+      if (!groups.has(voice.modelLabel)) {
+        const group = document.createElement('optgroup');
+        group.label = voice.modelLabel;
+        groups.set(voice.modelLabel, group);
+      }
+      groups.get(voice.modelLabel).append(options[index]);
+    });
+    select.replaceChildren(...groups.values());
     $('#voice-preview').disabled = options.length === 0;
     renderForm();
   } catch (error) { message(error.message || String(error)); }
