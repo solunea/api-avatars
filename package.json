@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node --watch server.js",
     "build": "node scripts/build.js",
+    "crop:busts": "node scripts/crop-busts.js",
     "index:clip": "node scripts/index-clip.js",
     "test": "node --test test/catalog.test.js test/catalog-regeneration.test.js test/clip-features.test.js test/image-generation.test.js test/sheet-layout.test.js"
   },

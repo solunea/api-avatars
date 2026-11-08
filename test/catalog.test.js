@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {spawn} from 'node:child_process';
+import {execFileSync, spawn} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {CLIP_MODEL} from '../lib/clip-features.js';
 import {PNG} from 'pngjs';
@@ -194,6 +194,38 @@ test('catalogue vide et fiche importée produisent les endpoints statiques', t =
   assert.equal(existsSync(join(root, 'api', 'avatars', `${item.id}.json`)), false);
 });
 
+test('le recadrage du catalogue préserve les originaux et les portraits avec décor', t => {
+  const root = fixture(t);
+  const image = new PNG({width: 6, height: 4});
+  image.data.set([255, 255, 255, 255], (6 + 2) * 4);
+  image.data.set([70, 80, 90, 255], (2 * 6 + 3) * 4);
+  const source = PNG.sync.write(image);
+  const legacy = avatar();
+  legacy.preview = legacy.tones.neutral;
+  writeFileSync(join(root, legacy.tones.neutral), source);
+  writeFileSync(join(root, legacy.tones.success), source);
+  const withDecor = {...avatarV2(), id:'preset-camille', decor:'images/decor.png', preview:legacy.preview};
+  saveCatalog(root, [legacy, withDecor]);
+
+  const run = () => execFileSync(process.execPath, ['scripts/crop-busts.js'], {
+    cwd: join(import.meta.dirname, '..'), env: {...process.env, API_AVATAR_ROOT: root}, encoding:'utf8'
+  });
+  assert.match(run(), /2 buste\(s\) recadré\(s\) sur 1 fiche/);
+  const detail = id => JSON.parse(readFileSync(join(root, 'api', 'avatars', `${id}.json`)));
+  const cropped = detail(legacy.id);
+  assert.notEqual(cropped.preview, legacy.preview);
+  assert.equal(cropped.preview, cropped.tones.neutral);
+  assert.notEqual(cropped.tones.success, legacy.tones.success);
+  assert.equal(cropped.tones.failure, legacy.tones.failure);
+  assert.deepEqual(cropped.clip, legacy.clip);
+  assert.deepEqual(detail(withDecor.id), withDecor);
+  assert.deepEqual(readFileSync(join(root, legacy.preview)), source);
+  const {width, height, data} = PNG.sync.read(readFileSync(join(root, cropped.preview)));
+  assert.deepEqual([width, height], [2, 2]);
+  assert.deepEqual([...data.subarray(0, 4)], [255, 255, 255, 255]);
+  assert.match(run(), /0 buste\(s\) recadré\(s\)/);
+});
+
 test('la personnalité vocale reste facultative et limitée à 300 caractères', t => {
   const root = fixture(t);
   const item = avatar();
@@ -287,6 +319,8 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   assert.equal(generationCalls[1].options.input.images.length, 2);
   assert.deepEqual(generationCalls[1].options.input.images[1], png);
   assert.equal(result.tones.neutral, result.preview);
+  const {width, height} = await sharp(join(root, result.preview)).metadata();
+  assert.deepEqual([width, height], [768, 700]);
   assert.equal(result.schemaVersion,2);
   assert.ok(result.characterSheet);
   const sheet = await sharp(join(root, result.characterSheet)).metadata();
@@ -450,7 +484,9 @@ test('génération avec décor transmet les deux références au neutre puis à 
   writeFileSync(join(root, 'images', 'photo.png'), png);
   const calls = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
-  await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
+  const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:'images/decor.png'}, run);
+  const {width, height} = await sharp(join(root, result.preview)).metadata();
+  assert.deepEqual([width, height], [1000, 1000]);
   assert.equal(calls.length, 4);
   const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
   assert.equal(generationCalls[0].options.input.images.length, 2);
