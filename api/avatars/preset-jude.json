@@ -803,10 +803,10 @@
   "decorPrompt": "",
   "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
   "decor": "",
-  "preview": "images/27555f8e-35a0-480b-9372-faf4171e7dbe.png",
+  "preview": "images/733b67ba-6739-4f40-aebb-63b9948bf5b8.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/27555f8e-35a0-480b-9372-faf4171e7dbe.png"
+    "neutral": "images/733b67ba-6739-4f40-aebb-63b9948bf5b8.png"
   },
   "tonePrompts": {
     "neutral": "A bust-level portrait of Jude, a man with dark skin and a short, neatly trimmed beard, looking directly forward with a neutral, calm expression. He wears a classic straw boater hat adorned with a distinct navy blue ribbon. His attire includes a light beige blazer, a crisp white collared shirt unbuttoned at the top, revealing a thin gold chain, and a black V-neck cardigan worn underneath. The composition is a tight bust shot, ensuring his face and upper body are prominent and unobstructed, ideal for a talking video avatar without an artificial human mouth. The lighting is soft and even, casting minimal shadows to highlight his features clearly. The background is a plain, solid grey, providing a clean and professional aesthetic. The image should maintain a realistic photographic style, capturing the textures of his straw hat, fabric clothing, and the subtle sheen of his skin. His eyes are open and attentive, conveying a thoughtful presence. The framing should keep his head and shoulders centered, allowing ample space around his head for visual balance, while ensuring his facial features are large and clear for expressive communication."
@@ -839,5 +839,5 @@
   },
   "preset": true,
   "createdAt": "2026-09-29T13:15:16.414Z",
-  "updatedAt": "2026-10-12T16:52:19.381Z"
+  "updatedAt": "2026-11-08T11:44:42.945Z"
 }

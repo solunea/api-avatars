@@ -802,10 +802,10 @@
   "decorPrompt": "",
   "photo": "images/0b219286-fab8-419b-80b3-9e0c234ed0f4.jpg",
   "decor": "",
-  "preview": "images/1d90bfbb-8845-4a5f-8e47-dec4081c7283.png",
+  "preview": "images/9ac505ec-3464-42bb-ad5e-8ac4c5a2cd36.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/1d90bfbb-8845-4a5f-8e47-dec4081c7283.png"
+    "neutral": "images/9ac505ec-3464-42bb-ad5e-8ac4c5a2cd36.png"
   },
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of Yoriko, a young adult woman with a calm and reflective demeanor. Her dark hair is neatly pulled back, revealing her ears, which are adorned with small, oval-shaped gold-toned stud earrings. Her face displays a gentle, neutral expression, with a soft, attentive gaze directed forward. Subtle makeup enhances her natural features, including a hint of red on her lips and well-defined eyebrows. She wears a V-neck, long-sleeved dress in a rich, warm brown color. The fabric appears soft and flowing, with subtle gathers or pleats visible around the neckline and shoulders. A delicate gold-toned necklace with a tiny pendant is visible on her neck. A light beige shoulder bag strap is visible over her right shoulder. Her head is held level, and her shoulders are relaxed, conveying quiet attentiveness. The composition is centered, with her facial features large and unobstructed for talking video, without an exaggerated human mouth. Soft, even, natural light illuminates her, and the background is a plain, light grey backdrop."
@@ -838,5 +838,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-12T18:17:15.466Z",
-  "updatedAt": "2026-10-12T18:17:38.367Z"
+  "updatedAt": "2026-11-08T11:44:45.016Z"
 }

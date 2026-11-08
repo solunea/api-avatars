@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/ece28bfc-6abf-481d-a21a-f72cba7bb488.jpg",
   "decor": "",
-  "preview": "images/63ef97b5-8fd2-459d-bdf0-c1c7b14b34cb.png",
+  "preview": "images/469a7f74-51d6-48b0-9a60-2b3659e4ee45.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/63ef97b5-8fd2-459d-bdf0-c1c7b14b34cb.png"
+    "neutral": "images/469a7f74-51d6-48b0-9a60-2b3659e4ee45.png"
   },
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of a young man named Louis, with a neutral, attentive expression. He has a dark skin tone, a neatly trimmed short dark beard, and dark eyes that gaze directly forward. His dark hair is completely covered by a black knit beanie, which features a white rectangular patch on the front with a red dragon logo and white text. He wears a heavy-duty work jacket, predominantly bright orange with large navy blue sections on the lower torso and inner arms. The jacket has prominent grey reflective stripes across the chest, back, and upper arms. A dark, possibly black or very dark grey, faux fur collar is visible around his neck, adding a textural contrast. The jacket also features large, functional-looking pockets on the chest and lower front. The composition is a close-up bust shot, with his face and lips large and unobstructed, suitable for talking video. The lighting is soft and even, highlighting the textures of his clothing and the contours of his face. The background is a plain, solid light grey, providing a clean and professional presentation without distraction."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-12T16:34:16.349Z",
-  "updatedAt": "2026-10-12T16:34:16.349Z"
+  "updatedAt": "2026-11-08T11:44:44.489Z"
 }

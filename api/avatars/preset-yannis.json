@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/e8b87ddf-57a5-4dc7-9b15-fd58202103e7.jpg",
   "decor": "",
-  "preview": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png",
+  "preview": "images/97bab364-39ea-4b3d-acab-26b0916765ab.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png"
+    "neutral": "images/97bab364-39ea-4b3d-acab-26b0916765ab.png"
   },
   "tonePrompts": {
     "neutral": "A neutral bust portrait of Yannis, a young man with a calm, thoughtful expression. His dark skin is covered with numerous prominent freckles, and he has short, tightly curled dark hair and a neatly trimmed dark beard. He wears a white astronaut suit, visible from the shoulders up, featuring a high collar and various embroidered patches. On his right chest, a circular blue NASA logo patch with a red swoosh is clearly visible, alongside an American flag patch on his upper right arm. A white strap with a metallic buckle crosses his chest. The suit's textured fabric and subtle folds are apparent, suggesting a durable, functional material. His gaze is direct and level, conveying a serene intelligence and quiet confidence. The lighting is soft and even, highlighting his facial features and the details of his suit without harsh shadows. The composition focuses on his head and upper torso, ensuring his face is large and unobstructed for talking video, without adding a human mouth. The background is a plain, light grey studio backdrop, providing a clean, professional presentation."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T14:39:50.818Z",
-  "updatedAt": "2026-10-12T17:58:59.121Z"
+  "updatedAt": "2026-11-08T11:44:44.068Z"
 }

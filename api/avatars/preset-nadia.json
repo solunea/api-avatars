@@ -796,10 +796,10 @@
   "decorPrompt": "",
   "photo": "images/583de266-62a8-4af3-bb43-c4d9432329b5.jpg",
   "decor": "",
-  "preview": "images/58026e40-65a6-4828-8252-06ca56aad6f8.png",
+  "preview": "images/d508cbbe-94e7-4075-bb68-c994bb7d501c.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/58026e40-65a6-4828-8252-06ca56aad6f8.png"
+    "neutral": "images/d508cbbe-94e7-4075-bb68-c994bb7d501c.png"
   },
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of Nadia, a woman with dark, straight, shoulder-length hair parted slightly off-center. Her face is oval, featuring a calm, neutral, and attentive expression. Her dark eyes gaze directly forward, conveying a thoughtful and poised presence. Her lips are naturally closed in a soft, neutral line. She wears a black collared shirt with a V-neck opening, layered beneath a dark, mid-thigh length coat. The coat has a distinct, contrasting dark collar, which appears to be made of a different material, possibly faux leather, adding a subtle textural contrast to the main body of the coat, which seems to be a textured fabric like wool. Her posture is relaxed and poised, with her shoulders slightly back, reflecting her composed and professional demeanor. The lighting is soft and even, highlighting her features without harsh shadows. The composition should be a head-and-shoulders portrait, with her face and upper body prominent, suitable for a talking video. Her facial features should remain large and unobstructed for clear communication, without adding a human mouth. The backdrop should be plain and light grey, ensuring focus remains entirely on the subject."
@@ -832,5 +832,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-12T18:07:19.449Z",
-  "updatedAt": "2026-10-13T08:54:31.597Z"
+  "updatedAt": "2026-11-08T11:44:44.809Z"
 }

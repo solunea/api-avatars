@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/15e6e633-3427-40bb-9397-81560568aa93.jpg",
   "decor": "",
-  "preview": "images/2236e7b2-2ae7-4a97-ab22-c9319c2fdcb3.png",
+  "preview": "images/14e38e48-5d7d-4b9c-a222-23c8f9292b14.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/2236e7b2-2ae7-4a97-ab22-c9319c2fdcb3.png"
+    "neutral": "images/14e38e48-5d7d-4b9c-a222-23c8f9292b14.png"
   },
   "tonePrompts": {
     "neutral": "A confident female leader, radiating calm assurance and approachability, stands facing the viewer with a composed, neutral expression. She has a medium skin tone, her eyes are a warm brown with a steady, intelligent gaze, and her lips are closed in a relaxed line that hints at a subtle, underlying warmth. Her short, impeccably styled bob haircut features rich dark brown strands subtly highlighted with lighter caramel tones, framing her face cleanly. Small, delicate silver hoop earrings adorn her ears. She wears a crisp, tailored white blazer made of a smooth, professional fabric, its lapels open over a fitted black ribbed top with a soft matte finish. A small, elegant gold-toned, abstract stylized pin is affixed to her left lapel. Her shoulders are naturally relaxed, conveying poise and presence without rigidity, reflecting her organized and attentive nature. The character is illuminated by soft, even studio lighting, emanating gently from the front-right, casting subtle, natural shadows that define her features and the textures of her clothing, maintaining a bright yet grounded aesthetic. The framing is a medium close-up, a bust shot extending to her mid-chest, capturing her head and upper torso with generous headroom above, emphasizing her professional demeanor."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-13T09:57:09.398Z",
-  "updatedAt": "2026-10-13T09:57:09.398Z"
+  "updatedAt": "2026-11-08T11:44:45.254Z"
 }

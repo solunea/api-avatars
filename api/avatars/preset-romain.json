@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/cb3d562b-c8f2-4106-ac95-a70f8824506b.jpg",
   "decor": "",
-  "preview": "images/92590686-052f-448a-8c19-faebb71ad1e9.png",
+  "preview": "images/1e1039a9-d520-47dd-97c7-254fd8764e58.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/92590686-052f-448a-8c19-faebb71ad1e9.png"
+    "neutral": "images/1e1039a9-d520-47dd-97c7-254fd8764e58.png"
   },
   "tonePrompts": {
     "neutral": "A bust portrait of Romain, a man with a calm and attentive expression, looking directly forward. He has short, dark, curly hair and a neatly trimmed dark beard and mustache. His eyes are visible behind clear, rectangular safety glasses with thick, transparent frames that sit comfortably on his nose. He wears a crisp white lab coat over a light-colored collared shirt, with the top button of the shirt visible. The lab coat's lapels are clearly defined. The composition is a head-and-shoulders shot, with his upper chest and shoulders visible, centered in the frame. The lighting is soft and even, highlighting the textures of his hair and clothing without harsh shadows. The background is a plain, solid medium gray, providing a clean and unobstructed backdrop. His facial features are large and clear, suitable for a talking video, with no obstruction to his mouth area, which maintains a neutral, closed-lip expression. The overall impression is one of professionalism and quiet competence."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T10:28:29.831Z",
-  "updatedAt": "2026-10-12T16:55:54.369Z"
+  "updatedAt": "2026-11-08T11:44:43.343Z"
 }

@@ -804,10 +804,10 @@
   "decorPrompt": "",
   "photo": "images/aa61c6c1-f8d0-4ae8-8431-d1f780c71d03.jpg",
   "decor": "",
-  "preview": "images/59147d8a-3cd1-45ec-930d-df748ac75d79.png",
+  "preview": "images/e2161998-1c4a-4633-a057-40f825436515.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/59147d8a-3cd1-45ec-930d-df748ac75d79.png"
+    "neutral": "images/e2161998-1c4a-4633-a057-40f825436515.png"
   },
   "tonePrompts": {
     "neutral": "A bust portrait of an elderly man, Rudy, with a calm and neutral expression, looking directly forward. His face is characterized by visible wrinkles, conveying a sense of age and experience. He has a long, thick, well-groomed white beard that covers his chin and extends down his chest. He wears a brown corduroy flat cap, which covers his head, and distinctive round glasses with thick, translucent orange frames. His ears are visible beneath the cap and behind the glasses. He is dressed in a light beige, long-sleeved collared shirt, buttoned up, with the sleeves rolled up slightly, though only the upper part is visible. Over his shirt, he wears a plain brown apron, with one strap visible over his right shoulder, indicating a working attire. The lighting is soft and even, highlighting the textures of his beard, skin, and clothing. The composition is a head-and-shoulders shot, framed to keep his facial features large and unobstructed for talking video, without adding a human mouth, against a plain, neutral background."
@@ -840,5 +840,5 @@
   },
   "preset": true,
   "createdAt": "2026-09-28T13:27:29.491Z",
-  "updatedAt": "2026-10-12T16:50:01.037Z"
+  "updatedAt": "2026-11-08T11:44:42.653Z"
 }

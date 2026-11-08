@@ -805,10 +805,10 @@
     "decorPrompt": "",
     "photo": "images/aa61c6c1-f8d0-4ae8-8431-d1f780c71d03.jpg",
     "decor": "",
-    "preview": "images/59147d8a-3cd1-45ec-930d-df748ac75d79.png",
+    "preview": "images/e2161998-1c4a-4633-a057-40f825436515.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/59147d8a-3cd1-45ec-930d-df748ac75d79.png"
+      "neutral": "images/e2161998-1c4a-4633-a057-40f825436515.png"
     },
     "tonePrompts": {
       "neutral": "A bust portrait of an elderly man, Rudy, with a calm and neutral expression, looking directly forward. His face is characterized by visible wrinkles, conveying a sense of age and experience. He has a long, thick, well-groomed white beard that covers his chin and extends down his chest. He wears a brown corduroy flat cap, which covers his head, and distinctive round glasses with thick, translucent orange frames. His ears are visible beneath the cap and behind the glasses. He is dressed in a light beige, long-sleeved collared shirt, buttoned up, with the sleeves rolled up slightly, though only the upper part is visible. Over his shirt, he wears a plain brown apron, with one strap visible over his right shoulder, indicating a working attire. The lighting is soft and even, highlighting the textures of his beard, skin, and clothing. The composition is a head-and-shoulders shot, framed to keep his facial features large and unobstructed for talking video, without adding a human mouth, against a plain, neutral background."
@@ -841,7 +841,7 @@
     },
     "preset": true,
     "createdAt": "2026-09-28T13:27:29.491Z",
-    "updatedAt": "2026-10-12T16:50:01.037Z"
+    "updatedAt": "2026-11-08T11:44:42.653Z"
   },
   {
     "id": "preset-sophia",
@@ -1649,10 +1649,10 @@
     "decorPrompt": "",
     "photo": "images/963e5f2f-0d6c-4051-a56d-73b0fa61b494.png",
     "decor": "",
-    "preview": "images/8093cc08-2627-4347-9dbf-e8876d4ce6a9.png",
+    "preview": "images/42ad6678-9d0d-42b1-abe4-92e82a888ca8.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/8093cc08-2627-4347-9dbf-e8876d4ce6a9.png"
+      "neutral": "images/42ad6678-9d0d-42b1-abe4-92e82a888ca8.png"
     },
     "tonePrompts": {
       "neutral": "A headshot of a young adult woman maintaining a neutral, calm, and confident expression, looking directly into the camera. She possesses a medium, slightly olive skin tone and an oval face shape, characterized by subtle high cheekbones. Her striking dark brown, almond-shaped eyes are framed by long, dark eyelashes and natural, well-defined dark eyebrows. Her nose is straight and slender, and her full lips are closed in a gentle, natural resting position, displaying a soft pinkish-nude color. Her long, sleek, dark brown hair is parted neatly in the middle, cascading smoothly over both shoulders and down her back. She is dressed in a crisp, bright white medical lab coat featuring a band collar, buttoned at the front. A classic black stethoscope with prominent silver metallic components is draped around her neck, with the earpieces resting symmetrically on her shoulders and the chest piece hanging centered against her upper chest. The pose is direct and frontal, with squared shoulders. Soft, even studio lighting illuminates her face from the front, creating a professional ambiance with minimal, gentle shadows that enhance her features. The background is a solid, plain light gray. The framing is tight and centered, cutting just above the crown of her head and just below her chest, prominently featuring her shoulders and the upper portion of the stethoscope."
@@ -1685,7 +1685,7 @@
     },
     "preset": true,
     "createdAt": "2026-09-28T14:57:42.569Z",
-    "updatedAt": "2026-10-11T16:37:18.123Z"
+    "updatedAt": "2026-11-08T11:44:42.773Z"
   },
   {
     "id": "preset-jude",
@@ -2492,10 +2492,10 @@
     "decorPrompt": "",
     "photo": "images/200bee67-58a3-4316-8b5f-85bf6b6719e9.jpg",
     "decor": "",
-    "preview": "images/27555f8e-35a0-480b-9372-faf4171e7dbe.png",
+    "preview": "images/733b67ba-6739-4f40-aebb-63b9948bf5b8.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/27555f8e-35a0-480b-9372-faf4171e7dbe.png"
+      "neutral": "images/733b67ba-6739-4f40-aebb-63b9948bf5b8.png"
     },
     "tonePrompts": {
       "neutral": "A bust-level portrait of Jude, a man with dark skin and a short, neatly trimmed beard, looking directly forward with a neutral, calm expression. He wears a classic straw boater hat adorned with a distinct navy blue ribbon. His attire includes a light beige blazer, a crisp white collared shirt unbuttoned at the top, revealing a thin gold chain, and a black V-neck cardigan worn underneath. The composition is a tight bust shot, ensuring his face and upper body are prominent and unobstructed, ideal for a talking video avatar without an artificial human mouth. The lighting is soft and even, casting minimal shadows to highlight his features clearly. The background is a plain, solid grey, providing a clean and professional aesthetic. The image should maintain a realistic photographic style, capturing the textures of his straw hat, fabric clothing, and the subtle sheen of his skin. His eyes are open and attentive, conveying a thoughtful presence. The framing should keep his head and shoulders centered, allowing ample space around his head for visual balance, while ensuring his facial features are large and clear for expressive communication."
@@ -2528,7 +2528,7 @@
     },
     "preset": true,
     "createdAt": "2026-09-29T13:15:16.414Z",
-    "updatedAt": "2026-10-12T16:52:19.381Z"
+    "updatedAt": "2026-11-08T11:44:42.945Z"
   },
   {
     "id": "preset-adrian",
@@ -3335,10 +3335,10 @@
     "decorPrompt": "",
     "photo": "images/de8bd26c-da06-4998-8582-6ee268ae52c2.jpg",
     "decor": "",
-    "preview": "images/3589e353-2a2b-4880-81ae-5e115ef5a42c.png",
+    "preview": "images/74f0e843-7a4f-4264-963e-e630eb584e53.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/3589e353-2a2b-4880-81ae-5e115ef5a42c.png"
+      "neutral": "images/74f0e843-7a4f-4264-963e-e630eb584e53.png"
     },
     "tonePrompts": {
       "neutral": "A mature man embodies a calm, poised, and professional presence with a thoughtfully neutral expression. His visible anatomy includes a well-groomed, salt-and-pepper haircut, neatly swept back from his forehead and parted on his left. A full, neatly trimmed beard, consistent in its grey and dark mix, frames his jawline. His skin is natural-toned, exhibiting subtle textural details, while his kind, brown eyes hold a direct, attentive gaze. He wears a crisp, white collared dress shirt, made of smooth cotton, under a tailored navy blue vest. The vest features a fine, vertical white pinstripe pattern on its woven fabric, fastened by small, dark, round buttons running down the front. A dark navy blue tie, made of smooth silk, is neatly tied with a four-in-hand knot, perfectly complementing the vest. He is posed upright, facing the viewer directly, with a subtly relaxed posture and shoulders squared, conveying his accessible yet confident personality. Soft, even studio lighting from the front illuminates his features, creating gentle highlights and minimal, diffused shadows. The framing is a clear bust-up shot, cropped just above his waist, ensuring his entire head, shirt collar, tie, and the upper half of his pinstriped vest are fully visible against a smooth, solid light grey background, preserving a clean, professional aesthetic."
@@ -3371,7 +3371,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T09:55:56.952Z",
-    "updatedAt": "2026-10-12T16:54:50.053Z"
+    "updatedAt": "2026-11-08T11:44:43.148Z"
   },
   {
     "id": "preset-romain",
@@ -4180,10 +4180,10 @@
     "decorPrompt": "",
     "photo": "images/cb3d562b-c8f2-4106-ac95-a70f8824506b.jpg",
     "decor": "",
-    "preview": "images/92590686-052f-448a-8c19-faebb71ad1e9.png",
+    "preview": "images/1e1039a9-d520-47dd-97c7-254fd8764e58.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/92590686-052f-448a-8c19-faebb71ad1e9.png"
+      "neutral": "images/1e1039a9-d520-47dd-97c7-254fd8764e58.png"
     },
     "tonePrompts": {
       "neutral": "A bust portrait of Romain, a man with a calm and attentive expression, looking directly forward. He has short, dark, curly hair and a neatly trimmed dark beard and mustache. His eyes are visible behind clear, rectangular safety glasses with thick, transparent frames that sit comfortably on his nose. He wears a crisp white lab coat over a light-colored collared shirt, with the top button of the shirt visible. The lab coat's lapels are clearly defined. The composition is a head-and-shoulders shot, with his upper chest and shoulders visible, centered in the frame. The lighting is soft and even, highlighting the textures of his hair and clothing without harsh shadows. The background is a plain, solid medium gray, providing a clean and unobstructed backdrop. His facial features are large and clear, suitable for a talking video, with no obstruction to his mouth area, which maintains a neutral, closed-lip expression. The overall impression is one of professionalism and quiet competence."
@@ -4216,7 +4216,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T10:28:29.831Z",
-    "updatedAt": "2026-10-12T16:55:54.369Z"
+    "updatedAt": "2026-11-08T11:44:43.343Z"
   },
   {
     "id": "preset-lydia",
@@ -5021,10 +5021,10 @@
     "decorPrompt": "",
     "photo": "images/fbf4c8f4-425e-4ace-b0aa-12dc84655132.jpg",
     "decor": "",
-    "preview": "images/29ba5763-48f9-4e77-bbe3-9a141fe63c22.png",
+    "preview": "images/47f426a9-cfb1-4497-b1f7-9180a7d4a259.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/29ba5763-48f9-4e77-bbe3-9a141fe63c22.png"
+      "neutral": "images/47f426a9-cfb1-4497-b1f7-9180a7d4a259.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of Lydia, a young woman with long, straight, dark brown hair parted in the middle, falling smoothly over her shoulders. Her face is framed by her hair, highlighting her clear, attentive green eyes and a neutral, composed expression. Her skin is fair with a natural, healthy glow. She wears a beige zippered hoodie, partially unzipped to reveal a plain white t-shirt underneath. The hoodie's fabric appears soft and comfortable, with visible texture. The zipper is silver. Her shoulders are relaxed, and her posture is upright, conveying a sense of calm and approachability. The composition is a tight bust shot, focusing on her upper body and face, with ample space around her head for talking video. The lighting is soft and even, coming from the front, casting minimal shadows and illuminating her features clearly against a plain, light beige backdrop. The image maintains a realistic rendering style, capturing fine details of her hair and clothing without exaggeration. Her expression is neutral and attentive, consistent with her calm and supportive persona."
@@ -5057,7 +5057,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:11:46.424Z",
-    "updatedAt": "2026-10-12T16:57:37.660Z"
+    "updatedAt": "2026-11-08T11:44:43.509Z"
   },
   {
     "id": "preset-jeanne",
@@ -5857,10 +5857,10 @@
     "decorPrompt": "",
     "photo": "images/0b7b0e32-f57a-4c64-b4f2-f7c42035f53a.jpg",
     "decor": "",
-    "preview": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png",
+    "preview": "images/4a1584b3-1060-48f6-9735-db6ea32b6a7d.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png"
+      "neutral": "images/4a1584b3-1060-48f6-9735-db6ea32b6a7d.png"
     },
     "tonePrompts": {
       "neutral": "A bust-up portrait of Jeanne, a young woman with a fair complexion delicately adorned with numerous brown freckles across her nose and cheeks. Her short, wavy, rich brown hair frames her face, ending just above her shoulders. Her eyes, a warm brown, meet the viewer directly with a soft, calm, and approachable neutral expression, reflecting her professional yet encouraging demeanor. Her lips are naturally closed, forming a gentle, subtle curve. She wears a crisp, light blue collared button-down shirt, with the top button unfastened, peeking out from under a tailored navy blue suit jacket. The suit fabric appears smooth and refined. Her shoulders are relaxed, and her posture conveys quiet confidence and composure, without rigidity. The lighting is soft and even, originating from the front-right, casting gentle highlights on her hair and skin, enhancing texture. The background is a plain, warm, light beige, providing a clean contrast. The framing is centered, capturing her head and upper chest, with the bottom of the frame cutting just below her suit lapels."
@@ -5893,7 +5893,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:55:57.728Z",
-    "updatedAt": "2026-10-13T08:50:19.294Z"
+    "updatedAt": "2026-11-08T11:44:43.632Z"
   },
   {
     "id": "preset-ryan",
@@ -6702,10 +6702,10 @@
     "decorPrompt": "",
     "photo": "images/046711e3-573a-46a7-8d8e-371c91c7046a.jpg",
     "decor": "",
-    "preview": "images/c37613c5-b29f-4120-8429-4670888ac602.png",
+    "preview": "images/61a88500-39b6-452f-b7f9-e89bf70b742f.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/c37613c5-b29f-4120-8429-4670888ac602.png"
+      "neutral": "images/61a88500-39b6-452f-b7f9-e89bf70b742f.png"
     },
     "tonePrompts": {
       "neutral": "A detailed bust portrait of Ryan, a man embodying a calm and engaging presence. He has short, neatly styled greying chestnut brown hair, with distinct silver strands visible throughout, particularly at the temples. His well-groomed beard is short, dark brown with integrated grey, meticulously trimmed to define his jawline and mustache area. His skin is fair to medium, smooth and healthy-looking, with subtle natural texture. His eyes, a warm hazel-green, meet the viewer's gaze directly and neutrally, conveying attentiveness and an inviting composure. His lips are closed in a relaxed, gentle line, hinting at his natural warmth. He is dressed in a smart, single-breasted navy blue blazer made from a finely woven, smooth wool-blend fabric, worn over a soft, plain crew-neck t-shirt in a matching deep navy shade. The blazer's lapels are visible, and the garment fits him perfectly, accentuating his modern, relaxed yet confident style. His head is held level, shoulders relaxed in a natural, upright posture. The scene is illuminated by soft, diffused front lighting, casting minimal shadows and emphasizing his approachable features against a clean, evenly lit, light grey background. The framing is a close bust shot, encompassing his head, neck, and upper chest, capturing his composed and thoughtful essence."
@@ -6738,7 +6738,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T11:58:06.850Z",
-    "updatedAt": "2026-10-12T17:03:09.750Z"
+    "updatedAt": "2026-11-08T11:44:43.732Z"
   },
   {
     "id": "preset-kevin",
@@ -7538,10 +7538,10 @@
     "decorPrompt": "",
     "photo": "images/5274391d-f859-4839-a1a9-6caa56d8d5b9.jpg",
     "decor": "",
-    "preview": "images/bb050d66-6414-407d-a561-810f35420692.png",
+    "preview": "images/23f95d08-1f03-4503-a5b4-36fe99458e1c.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/bb050d66-6414-407d-a561-810f35420692.png"
+      "neutral": "images/23f95d08-1f03-4503-a5b4-36fe99458e1c.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of a man named Kevin, featuring a neutral, direct gaze. He has short, neatly trimmed brown hair visible beneath a pristine white hard hat, which is securely worn on his head. A well-maintained, medium-length brown beard frames his face, connecting to his sideburns. Around his neck, a pair of bright yellow industrial earmuffs with green accents rests comfortably, their band visible across his collarbone. He wears a robust work jacket, predominantly red on the shoulders and upper chest, transitioning to a dark grey mid-section and black lower body and sleeves. Reflective grey stripes are visible on the red and dark grey sections of the jacket. The collar is black, and a glimpse of a dark blue or grey undershirt is visible at the neck. The lighting is even and soft, highlighting the textures of his protective gear and clothing. The composition is a tight bust shot, centered, with his head and upper torso filling the frame, ensuring his facial features are prominent and unobstructed for a talking video, without adding a human mouth. The background is a plain, solid light grey, providing a clean and professional presentation."
@@ -7574,7 +7574,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T12:00:01.473Z",
-    "updatedAt": "2026-10-13T08:46:24.161Z"
+    "updatedAt": "2026-11-08T11:44:43.894Z"
   },
   {
     "id": "preset-yannis",
@@ -8383,10 +8383,10 @@
     "decorPrompt": "",
     "photo": "images/e8b87ddf-57a5-4dc7-9b15-fd58202103e7.jpg",
     "decor": "",
-    "preview": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png",
+    "preview": "images/97bab364-39ea-4b3d-acab-26b0916765ab.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/c036a059-c631-42da-b84d-f47389f3d5f9.png"
+      "neutral": "images/97bab364-39ea-4b3d-acab-26b0916765ab.png"
     },
     "tonePrompts": {
       "neutral": "A neutral bust portrait of Yannis, a young man with a calm, thoughtful expression. His dark skin is covered with numerous prominent freckles, and he has short, tightly curled dark hair and a neatly trimmed dark beard. He wears a white astronaut suit, visible from the shoulders up, featuring a high collar and various embroidered patches. On his right chest, a circular blue NASA logo patch with a red swoosh is clearly visible, alongside an American flag patch on his upper right arm. A white strap with a metallic buckle crosses his chest. The suit's textured fabric and subtle folds are apparent, suggesting a durable, functional material. His gaze is direct and level, conveying a serene intelligence and quiet confidence. The lighting is soft and even, highlighting his facial features and the details of his suit without harsh shadows. The composition focuses on his head and upper torso, ensuring his face is large and unobstructed for talking video, without adding a human mouth. The background is a plain, light grey studio backdrop, providing a clean, professional presentation."
@@ -8419,7 +8419,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T14:39:50.818Z",
-    "updatedAt": "2026-10-12T17:58:59.121Z"
+    "updatedAt": "2026-11-08T11:44:44.068Z"
   },
   {
     "id": "preset-marie",
@@ -9219,10 +9219,10 @@
     "decorPrompt": "",
     "photo": "images/da2623f0-48cb-4e0d-ab01-4c5e8eca05f3.jpg",
     "decor": "",
-    "preview": "images/e5be5d05-7890-46e3-97e3-2aeb19bc3333.png",
+    "preview": "images/4b2ba9c9-48cd-48a1-b193-55cde2096fcf.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/e5be5d05-7890-46e3-97e3-2aeb19bc3333.png"
+      "neutral": "images/4b2ba9c9-48cd-48a1-b193-55cde2096fcf.png"
     },
     "tonePrompts": {
       "neutral": "Marie, a woman embodying a calm and poised presence, gazes directly forward with a neutral and composed facial expression. Her clear, light blue eyes, accentuated by round, amber-patterned tortoise-shell glasses, meet the viewer with steady assurance. Her lips are gently closed, forming a serene line that reflects her thoughtful and benevolent temperament. Her short, finely styled, chin-length grey hair is meticulously parted to her left, forming a smooth, elegant bob that frames her face. She is impeccably dressed in a light blue collared shirt, visible beneath a well-tailored, professional beige blazer. The blazer features neat lapels and a structured silhouette, adding to her authoritative yet warm appearance. Soft, even studio lighting bathes her from the front, creating a clean, shadow-minimal portrait that highlights her features with gentle clarity. Marie is framed in a tight, centered bust shot, extending from just above her head to the mid-chest level of her blazer. The background is a seamless, solid, pastel blue, providing a clean and understated backdrop that perfectly complements her professional yet encouraging demeanor."
@@ -9255,7 +9255,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-11T16:32:48.739Z",
-    "updatedAt": "2026-10-13T08:46:41.394Z"
+    "updatedAt": "2026-11-08T11:44:44.179Z"
   },
   {
     "id": "preset-louis",
@@ -10064,10 +10064,10 @@
     "decorPrompt": "",
     "photo": "images/ece28bfc-6abf-481d-a21a-f72cba7bb488.jpg",
     "decor": "",
-    "preview": "images/63ef97b5-8fd2-459d-bdf0-c1c7b14b34cb.png",
+    "preview": "images/469a7f74-51d6-48b0-9a60-2b3659e4ee45.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/63ef97b5-8fd2-459d-bdf0-c1c7b14b34cb.png"
+      "neutral": "images/469a7f74-51d6-48b0-9a60-2b3659e4ee45.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of a young man named Louis, with a neutral, attentive expression. He has a dark skin tone, a neatly trimmed short dark beard, and dark eyes that gaze directly forward. His dark hair is completely covered by a black knit beanie, which features a white rectangular patch on the front with a red dragon logo and white text. He wears a heavy-duty work jacket, predominantly bright orange with large navy blue sections on the lower torso and inner arms. The jacket has prominent grey reflective stripes across the chest, back, and upper arms. A dark, possibly black or very dark grey, faux fur collar is visible around his neck, adding a textural contrast. The jacket also features large, functional-looking pockets on the chest and lower front. The composition is a close-up bust shot, with his face and lips large and unobstructed, suitable for talking video. The lighting is soft and even, highlighting the textures of his clothing and the contours of his face. The background is a plain, solid light grey, providing a clean and professional presentation without distraction."
@@ -10100,7 +10100,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T16:34:16.349Z",
-    "updatedAt": "2026-10-12T16:34:16.349Z"
+    "updatedAt": "2026-11-08T11:44:44.489Z"
   },
   {
     "id": "preset-marc",
@@ -10906,10 +10906,10 @@
     "decorPrompt": "",
     "photo": "images/d0377b60-be86-4150-9ded-e4c52dc47cd4.jpg",
     "decor": "",
-    "preview": "images/afe6f357-5f42-45a5-a51b-b4c1ff5cb31c.png",
+    "preview": "images/16cdb0d0-b7c1-4979-996e-933f32506381.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/afe6f357-5f42-45a5-a51b-b4c1ff5cb31c.png"
+      "neutral": "images/16cdb0d0-b7c1-4979-996e-933f32506381.png"
     },
     "tonePrompts": {
       "neutral": "A bust portrait of Marc, a man with an oval face, dark brown eyes, and straight, dark eyebrows. His short, closely cropped dark hair and neatly trimmed beard frame his face, contributing to his composed appearance. He wears a light tan or khaki bomber jacket, made of a durable, slightly textured fabric, featuring a distinct black ribbed collar, cuffs, and hem. This is layered over a light grey zippered hoodie with a matching drawstring, and a dark grey t-shirt is visible at the neckline. His expression is calm and direct, with a steady gaze looking straight ahead, conveying a sense of quiet confidence and approachability. The composition is a head-and-shoulders shot, with his face and lips prominent and unobstructed, suitable for a talking video. The lighting is soft and even, highlighting his features without harsh shadows. The background is a plain, neutral light grey, ensuring focus remains entirely on the subject. His posture is relaxed yet attentive, reflecting his thoughtful and reliable persona."
@@ -10942,7 +10942,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T16:38:17.515Z",
-    "updatedAt": "2026-10-12T16:39:49.319Z"
+    "updatedAt": "2026-11-08T11:44:44.674Z"
   },
   {
     "id": "preset-nadia",
@@ -11742,10 +11742,10 @@
     "decorPrompt": "",
     "photo": "images/583de266-62a8-4af3-bb43-c4d9432329b5.jpg",
     "decor": "",
-    "preview": "images/58026e40-65a6-4828-8252-06ca56aad6f8.png",
+    "preview": "images/d508cbbe-94e7-4075-bb68-c994bb7d501c.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/58026e40-65a6-4828-8252-06ca56aad6f8.png"
+      "neutral": "images/d508cbbe-94e7-4075-bb68-c994bb7d501c.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of Nadia, a woman with dark, straight, shoulder-length hair parted slightly off-center. Her face is oval, featuring a calm, neutral, and attentive expression. Her dark eyes gaze directly forward, conveying a thoughtful and poised presence. Her lips are naturally closed in a soft, neutral line. She wears a black collared shirt with a V-neck opening, layered beneath a dark, mid-thigh length coat. The coat has a distinct, contrasting dark collar, which appears to be made of a different material, possibly faux leather, adding a subtle textural contrast to the main body of the coat, which seems to be a textured fabric like wool. Her posture is relaxed and poised, with her shoulders slightly back, reflecting her composed and professional demeanor. The lighting is soft and even, highlighting her features without harsh shadows. The composition should be a head-and-shoulders portrait, with her face and upper body prominent, suitable for a talking video. Her facial features should remain large and unobstructed for clear communication, without adding a human mouth. The backdrop should be plain and light grey, ensuring focus remains entirely on the subject."
@@ -11778,7 +11778,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T18:07:19.449Z",
-    "updatedAt": "2026-10-13T08:54:31.597Z"
+    "updatedAt": "2026-11-08T11:44:44.809Z"
   },
   {
     "id": "preset-lilly",
@@ -12584,10 +12584,10 @@
     "decorPrompt": "",
     "photo": "images/a79da686-0535-4082-8c89-cc16990293a4.jpg",
     "decor": "",
-    "preview": "images/a3e7fede-924f-4884-b401-eded3186c604.png",
+    "preview": "images/28fbeef2-f0e3-407b-88d5-47240f6ff9db.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/a3e7fede-924f-4884-b401-eded3186c604.png"
+      "neutral": "images/28fbeef2-f0e3-407b-88d5-47240f6ff9db.png"
     },
     "tonePrompts": {
       "neutral": "Lilly, a woman with smooth, warm dark skin, is depicted with a serene and inviting neutral expression. Her dark hair is meticulously styled into a substantial, intricately braided chignon, artfully secured high on her head, showcasing the detailed texture of the braids. Her lips are gently closed, forming a subtle, benevolent smile that conveys her calm and approachable nature. Her dark eyes, with a soft, direct gaze, meet the viewer, radiating warmth and quiet confidence. She wears a well-fitted, rust-orange long-sleeved sweatshirt crafted from a soft, matte fabric, featuring a comfortable crew neck. Adorning each ear is a discreet, two-part drop earring: a small, rectangular element in a muted green-gold tone, connected to a larger, flat, irregularly shaped gold-toned disc. She adopts a natural, poised posture, with her shoulders relaxed and level, and her head held straight, slightly inclined forward, expressing her inherent serenity and welcoming demeanor. Illumination is provided by soft, even, natural light, subtly defining her features without harsh shadows. The background is a uniform, clean light grey. The precise framing is a close-up portrait, extending from just above her braided updo to the mid-chest level, clearly capturing her complete hairstyle and the upper portion of her rust-orange sweatshirt."
@@ -12620,7 +12620,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T18:10:35.057Z",
-    "updatedAt": "2026-10-12T18:10:35.057Z"
+    "updatedAt": "2026-11-08T11:44:44.900Z"
   },
   {
     "id": "preset-yoriko",
@@ -13426,10 +13426,10 @@
     "decorPrompt": "",
     "photo": "images/0b219286-fab8-419b-80b3-9e0c234ed0f4.jpg",
     "decor": "",
-    "preview": "images/1d90bfbb-8845-4a5f-8e47-dec4081c7283.png",
+    "preview": "images/9ac505ec-3464-42bb-ad5e-8ac4c5a2cd36.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/1d90bfbb-8845-4a5f-8e47-dec4081c7283.png"
+      "neutral": "images/9ac505ec-3464-42bb-ad5e-8ac4c5a2cd36.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of Yoriko, a young adult woman with a calm and reflective demeanor. Her dark hair is neatly pulled back, revealing her ears, which are adorned with small, oval-shaped gold-toned stud earrings. Her face displays a gentle, neutral expression, with a soft, attentive gaze directed forward. Subtle makeup enhances her natural features, including a hint of red on her lips and well-defined eyebrows. She wears a V-neck, long-sleeved dress in a rich, warm brown color. The fabric appears soft and flowing, with subtle gathers or pleats visible around the neckline and shoulders. A delicate gold-toned necklace with a tiny pendant is visible on her neck. A light beige shoulder bag strap is visible over her right shoulder. Her head is held level, and her shoulders are relaxed, conveying quiet attentiveness. The composition is centered, with her facial features large and unobstructed for talking video, without an exaggerated human mouth. Soft, even, natural light illuminates her, and the background is a plain, light grey backdrop."
@@ -13462,7 +13462,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-12T18:17:15.466Z",
-    "updatedAt": "2026-10-12T18:17:38.367Z"
+    "updatedAt": "2026-11-08T11:44:45.016Z"
   },
   {
     "id": "preset-karine",
@@ -14271,10 +14271,10 @@
     "decorPrompt": "",
     "photo": "images/15e6e633-3427-40bb-9397-81560568aa93.jpg",
     "decor": "",
-    "preview": "images/2236e7b2-2ae7-4a97-ab22-c9319c2fdcb3.png",
+    "preview": "images/14e38e48-5d7d-4b9c-a222-23c8f9292b14.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/2236e7b2-2ae7-4a97-ab22-c9319c2fdcb3.png"
+      "neutral": "images/14e38e48-5d7d-4b9c-a222-23c8f9292b14.png"
     },
     "tonePrompts": {
       "neutral": "A confident female leader, radiating calm assurance and approachability, stands facing the viewer with a composed, neutral expression. She has a medium skin tone, her eyes are a warm brown with a steady, intelligent gaze, and her lips are closed in a relaxed line that hints at a subtle, underlying warmth. Her short, impeccably styled bob haircut features rich dark brown strands subtly highlighted with lighter caramel tones, framing her face cleanly. Small, delicate silver hoop earrings adorn her ears. She wears a crisp, tailored white blazer made of a smooth, professional fabric, its lapels open over a fitted black ribbed top with a soft matte finish. A small, elegant gold-toned, abstract stylized pin is affixed to her left lapel. Her shoulders are naturally relaxed, conveying poise and presence without rigidity, reflecting her organized and attentive nature. The character is illuminated by soft, even studio lighting, emanating gently from the front-right, casting subtle, natural shadows that define her features and the textures of her clothing, maintaining a bright yet grounded aesthetic. The framing is a medium close-up, a bust shot extending to her mid-chest, capturing her head and upper torso with generous headroom above, emphasizing her professional demeanor."
@@ -14307,7 +14307,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-13T09:57:09.398Z",
-    "updatedAt": "2026-10-13T09:57:09.398Z"
+    "updatedAt": "2026-11-08T11:44:45.254Z"
   },
   {
     "id": "preset-simone",
@@ -15116,10 +15116,10 @@
     "decorPrompt": "",
     "photo": "images/7ffa4ce8-fe74-40dd-8147-fb7f05a712ae.jpg",
     "decor": "",
-    "preview": "images/829cf1b1-21c2-494c-879f-8060794f220d.png",
+    "preview": "images/a0b0f2d9-ad1f-48f1-a096-7aa7fa4710df.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/829cf1b1-21c2-494c-879f-8060794f220d.png"
+      "neutral": "images/a0b0f2d9-ad1f-48f1-a096-7aa7fa4710df.png"
     },
     "tonePrompts": {
       "neutral": "A middle-aged woman, Caucasian, with dark hair neatly pulled back, wears a pristine white hard hat securely on her head. Her calm, composed face displays a neutral yet observant expression, reflecting a quiet confidence and reliability. Dark-rimmed glasses frame her dark brown eyes, which are attentive and focused. Her lips are closed, revealing a very subtle, almost imperceptible upward turn at the corners, hinting at her discreet warmth. Her skin has a smooth texture with natural, subtle lines around the eyes and mouth, conveying experience. Small, spherical pearl stud earrings adorn her earlobes. She is dressed in a crisp white collared shirt, subtly textured, worn under a black V-neck vest patterned with small, evenly spaced white polka dots. Her pose is front-facing, head level and shoulders relaxed, projecting natural authority and a grounded demeanor. Soft, bright, and even studio lighting from the front illuminates her, creating subtle, flattering shadows. The framing is a precise, centered bust shot, encompassing her head, the entire hard hat, shoulders, and extending to just above her mid-chest. The background is a clean, plain, out-of-focus light grey, emphasizing the subject."
@@ -15152,7 +15152,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-13T09:59:23.877Z",
-    "updatedAt": "2026-10-13T10:02:32.761Z"
+    "updatedAt": "2026-11-08T11:44:45.585Z"
   },
   {
     "id": "preset-dolores",
@@ -15961,10 +15961,10 @@
     "decorPrompt": "",
     "photo": "images/02b97bb5-ebaf-4dec-a519-97ee7d2db069.jpg",
     "decor": "",
-    "preview": "images/f2e2bd99-db4b-4f35-abb6-87f5046d0d3f.png",
+    "preview": "images/f1cb3673-22da-4f30-b69b-c43255c8d733.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/f2e2bd99-db4b-4f35-abb6-87f5046d0d3f.png"
+      "neutral": "images/f1cb3673-22da-4f30-b69b-c43255c8d733.png"
     },
     "tonePrompts": {
       "neutral": "A young woman with a warm, medium skin tone and long, dark brown hair, gently parted on the side and flowing over her shoulders. Her oval face presents a poised yet subtly engaging neutral expression, characterized by soft, naturally full lips, a straight nose, and direct, almond-shaped brown eyes under well-defined eyebrows. Her clear skin shows no visible makeup. She wears a form-fitting, black athletic sports bra, crafted from a smooth, breathable stretch fabric, accented by crisp white piping along the scoop neckline and thick shoulder straps. This highlights her visibly toned shoulders and upper chest. Her posture is naturally upright and relaxed, subtly leaning into a ready stance rather than a rigid one, reflecting her dynamic and authentic persona even in stillness. Soft, uniform studio lighting casts a gentle glow, minimizing harsh shadows and emphasizing the natural contours of her face and the texture of her hair. The framing is a precise bust-up shot, extending from mid-chest to just above the crown of her head, ensuring her entire face and upper torso are prominent against a solid light gray backdrop."
@@ -15997,7 +15997,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-13T10:02:02.691Z",
-    "updatedAt": "2026-10-13T10:02:20.257Z"
+    "updatedAt": "2026-11-08T11:44:45.812Z"
   },
   {
     "id": "preset-yannick",
@@ -16032,10 +16032,10 @@
     "decorPrompt": "",
     "photo": "images/7a02c185-28b1-4f83-90f9-7e55e17fae84.jpg",
     "decor": "",
-    "preview": "images/b89c9209-80e0-40f8-8041-26bf08f1bb7c.png",
+    "preview": "images/cf4f6bb7-d7a3-41ec-b3ce-b9b324697f92.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/b89c9209-80e0-40f8-8041-26bf08f1bb7c.png"
+      "neutral": "images/cf4f6bb7-d7a3-41ec-b3ce-b9b324697f92.png"
     },
     "tonePrompts": {
       "neutral": "A mature, bald human male with medium-toned, slightly tanned skin. His facial features are well-defined: dark, intelligent eyes, a straight nose, and prominent ears. He sports a neatly trimmed mustache and a short stubble beard, both salt-and-pepper grey, contrasting with his darker eyebrows. He wears a dark teal long-sleeved polo shirt made of soft, textured cotton jersey fabric. The shirt features a modern mandarin collar with a V-neck opening secured by three small, dark buttons, two of which are visible. The fabric drapes naturally, indicating a comfortable fit. He stands with a natural, relaxed posture, facing directly forward. His shoulders are slightly back and at ease, conveying a subtle air of confidence and warmth consistent with a sociable, relaxed, experienced personality. His expression is neutral, with a soft, steady gaze and a gentle, almost imperceptible hint of a smile at the corners of his mouth, suggesting an inner calm and approachable demeanor. There are no overt gestures. The subject is illuminated by soft, diffused, natural-looking light from slightly above and in front, casting subtle shadows that highlight the contours of his face without being harsh. The background is a clean, uniform medium grey, providing a clear contrast. The shot is a tightly framed bust portrait, centered, showing him from just above the top of his bald head down to mid-chest, capturing the full width of his shoulders and the upper part of his polo shirt."
@@ -16068,7 +16068,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-27T10:23:29.426Z",
-    "updatedAt": "2026-10-27T10:23:29.426Z"
+    "updatedAt": "2026-11-08T11:44:46.020Z"
   },
   {
     "id": "preset-lucie",
@@ -16877,10 +16877,10 @@
     "decorPrompt": "",
     "photo": "images/87c7f523-3311-4c41-af8d-69d445c44b16.jpg",
     "decor": "",
-    "preview": "images/abbcfe48-9ccd-4e03-9e1f-c28a69052575.png",
+    "preview": "images/98b6c880-7296-4305-a957-afce216fb220.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/abbcfe48-9ccd-4e03-9e1f-c28a69052575.png"
+      "neutral": "images/98b6c880-7296-4305-a957-afce216fb220.png"
     },
     "tonePrompts": {
       "neutral": "An East Asian woman embodying a determined, focused, and elegant reporter, exuding calm under pressure. Her oval face features fair skin with warm undertones, framing dark, intelligent eyes that gaze directly forward with a composed, attentive expression. Her naturally arched eyebrows are relaxed, and her full, deep red lips are gently closed, conveying poise without rigidity. Her abundant, dark, wavy hair, styled with natural volume, beautifully frames her face, cascading over her shoulders. A small, simple gold-colored hoop earring adorns her visible left ear. She is elegantly dressed in a vibrant, rich red, structured double-breasted jacket, crafted from a distinct textured tweed-like fabric. The jacket features four prominent, round, shiny gold-colored metal buttons arranged vertically on its front closure. Beneath, a high-collared blouse with a subtle, dark animal print in black and brown hues peeks out. Her posture is upright and subtly balanced, projecting a sense of professional readiness and calm confidence, aligning with her personality. Soft, even studio lighting originates from the front-left, meticulously illuminating her face and the intricate texture of her jacket, creating gentle highlights and defining shadows. The background is a clean, solid, neutral medium gray. The framing is a clear bust shot, encompassing her upper chest, with her entire head and voluminous hair perfectly centered within the frame, emphasizing her composed and professional demeanor."
@@ -16913,7 +16913,7 @@
     },
     "preset": true,
     "createdAt": "2026-10-27T12:29:14.626Z",
-    "updatedAt": "2026-10-27T12:29:14.626Z"
+    "updatedAt": "2026-11-08T11:44:46.285Z"
   },
   {
     "id": "preset-yasmine",
@@ -17722,10 +17722,10 @@
     "decorPrompt": "",
     "photo": "images/3a4cb314-e7fd-4097-bf0e-2994b9b27c84.jpg",
     "decor": "",
-    "preview": "images/41ab4711-67cc-4b5c-8390-2244a9654522.png",
+    "preview": "images/8128e985-da49-4001-a1cf-2e9963dc7a70.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/41ab4711-67cc-4b5c-8390-2244a9654522.png"
+      "neutral": "images/8128e985-da49-4001-a1cf-2e9963dc7a70.png"
     },
     "tonePrompts": {
       "neutral": "A head-and-shoulders portrait of Yasmine, a young woman with light skin, looking directly at the viewer with a neutral, calm expression. Her eyes are dark brown, framed by well-defined dark eyebrows and subtle eyeliner and mascara. Her lips are a soft, natural brown-pink, closed in a gentle, poised manner. She wears a light beige hijab, meticulously draped around her head and neck, covering her hair completely. The fabric is smooth and matte, creating soft folds. She is dressed in a loose-fitting, collared shirt of a similar light beige hue, visible from the shoulders down to the upper chest. A long, delicate gold chain necklace with a circular, coin-like gold pendant rests on her shirt, partially visible. Small gold hoop earrings are visible. The composition is a close-up bust shot, centered, with her head and upper torso filling the frame. The lighting is soft and even, highlighting her features without harsh shadows. The background is a plain, light grey, providing a clean and unobstructed backdrop."
@@ -17758,7 +17758,7 @@
     },
     "preset": true,
     "createdAt": "2026-11-08T10:47:30.302Z",
-    "updatedAt": "2026-11-08T10:47:30.302Z"
+    "updatedAt": "2026-11-08T11:44:46.456Z"
   },
   {
     "id": "preset-nassim",
@@ -17784,10 +17784,10 @@
     "decorPrompt": "",
     "photo": "images/b207af41-1643-413c-a6a5-614d464b4e02.jpg",
     "decor": "",
-    "preview": "images/69f5b3a8-8558-4bdf-af61-21697030d804.png",
+    "preview": "images/882be8c7-9836-4da2-b414-d216e6c301b0.png",
     "styleId": "",
     "tones": {
-      "neutral": "images/69f5b3a8-8558-4bdf-af61-21697030d804.png"
+      "neutral": "images/882be8c7-9836-4da2-b414-d216e6c301b0.png"
     },
     "tonePrompts": {
       "neutral": "A serious and attentive male construction professional, with medium complexion and dark eyes, looking directly forward with a neutral, calm expression. He has short dark hair mostly covered by a bright yellow hard hat made of plastic, slightly textured. Short, dark stubble covers his jawline and upper lip. Around his neck, resting on his chest, are bright yellow and black over-ear hearing protection earmuffs, made of smooth plastic cups and a black band. He wears a navy blue short-sleeved polo shirt underneath a sturdy navy blue work overall. The overall features two visible straps with black plastic buckles over his shoulders. His posture is natural, standing upright with shoulders square and relaxed, conveying a professional and safety-conscious demeanor. The visible surface materials include the smooth plastic of the hard hat and earmuffs, and the textured fabric of his cotton polo shirt and heavy-duty work overalls. Lighting is soft and even, highlighting his features without harsh shadows. The framing is a tight bust-up shot, encompassing his head, hard hat, earmuffs, shoulders, and the upper part of his overall, including both strap buckles, against a plain background. The overall style maintains the realistic, studio-like rendering of the reference image."
@@ -17820,6 +17820,6 @@
     },
     "preset": true,
     "createdAt": "2026-11-08T10:53:39.287Z",
-    "updatedAt": "2026-11-08T10:53:43.352Z"
+    "updatedAt": "2026-11-08T11:44:46.769Z"
   }
 ]

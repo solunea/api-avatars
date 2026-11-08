@@ -804,10 +804,10 @@
   "decorPrompt": "",
   "photo": "images/963e5f2f-0d6c-4051-a56d-73b0fa61b494.png",
   "decor": "",
-  "preview": "images/8093cc08-2627-4347-9dbf-e8876d4ce6a9.png",
+  "preview": "images/42ad6678-9d0d-42b1-abe4-92e82a888ca8.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/8093cc08-2627-4347-9dbf-e8876d4ce6a9.png"
+    "neutral": "images/42ad6678-9d0d-42b1-abe4-92e82a888ca8.png"
   },
   "tonePrompts": {
     "neutral": "A headshot of a young adult woman maintaining a neutral, calm, and confident expression, looking directly into the camera. She possesses a medium, slightly olive skin tone and an oval face shape, characterized by subtle high cheekbones. Her striking dark brown, almond-shaped eyes are framed by long, dark eyelashes and natural, well-defined dark eyebrows. Her nose is straight and slender, and her full lips are closed in a gentle, natural resting position, displaying a soft pinkish-nude color. Her long, sleek, dark brown hair is parted neatly in the middle, cascading smoothly over both shoulders and down her back. She is dressed in a crisp, bright white medical lab coat featuring a band collar, buttoned at the front. A classic black stethoscope with prominent silver metallic components is draped around her neck, with the earpieces resting symmetrically on her shoulders and the chest piece hanging centered against her upper chest. The pose is direct and frontal, with squared shoulders. Soft, even studio lighting illuminates her face from the front, creating a professional ambiance with minimal, gentle shadows that enhance her features. The background is a solid, plain light gray. The framing is tight and centered, cutting just above the crown of her head and just below her chest, prominently featuring her shoulders and the upper portion of the stethoscope."
@@ -840,5 +840,5 @@
   },
   "preset": true,
   "createdAt": "2026-09-28T14:57:42.569Z",
-  "updatedAt": "2026-10-11T16:37:18.123Z"
+  "updatedAt": "2026-11-08T11:44:42.773Z"
 }

@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/046711e3-573a-46a7-8d8e-371c91c7046a.jpg",
   "decor": "",
-  "preview": "images/c37613c5-b29f-4120-8429-4670888ac602.png",
+  "preview": "images/61a88500-39b6-452f-b7f9-e89bf70b742f.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/c37613c5-b29f-4120-8429-4670888ac602.png"
+    "neutral": "images/61a88500-39b6-452f-b7f9-e89bf70b742f.png"
   },
   "tonePrompts": {
     "neutral": "A detailed bust portrait of Ryan, a man embodying a calm and engaging presence. He has short, neatly styled greying chestnut brown hair, with distinct silver strands visible throughout, particularly at the temples. His well-groomed beard is short, dark brown with integrated grey, meticulously trimmed to define his jawline and mustache area. His skin is fair to medium, smooth and healthy-looking, with subtle natural texture. His eyes, a warm hazel-green, meet the viewer's gaze directly and neutrally, conveying attentiveness and an inviting composure. His lips are closed in a relaxed, gentle line, hinting at his natural warmth. He is dressed in a smart, single-breasted navy blue blazer made from a finely woven, smooth wool-blend fabric, worn over a soft, plain crew-neck t-shirt in a matching deep navy shade. The blazer's lapels are visible, and the garment fits him perfectly, accentuating his modern, relaxed yet confident style. His head is held level, shoulders relaxed in a natural, upright posture. The scene is illuminated by soft, diffused front lighting, casting minimal shadows and emphasizing his approachable features against a clean, evenly lit, light grey background. The framing is a close bust shot, encompassing his head, neck, and upper chest, capturing his composed and thoughtful essence."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T11:58:06.850Z",
-  "updatedAt": "2026-10-12T17:03:09.750Z"
+  "updatedAt": "2026-11-08T11:44:43.732Z"
 }

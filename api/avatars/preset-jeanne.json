@@ -796,10 +796,10 @@
   "decorPrompt": "",
   "photo": "images/0b7b0e32-f57a-4c64-b4f2-f7c42035f53a.jpg",
   "decor": "",
-  "preview": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png",
+  "preview": "images/4a1584b3-1060-48f6-9735-db6ea32b6a7d.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/091ae9a7-4172-454d-bb59-b32ebdad9e7a.png"
+    "neutral": "images/4a1584b3-1060-48f6-9735-db6ea32b6a7d.png"
   },
   "tonePrompts": {
     "neutral": "A bust-up portrait of Jeanne, a young woman with a fair complexion delicately adorned with numerous brown freckles across her nose and cheeks. Her short, wavy, rich brown hair frames her face, ending just above her shoulders. Her eyes, a warm brown, meet the viewer directly with a soft, calm, and approachable neutral expression, reflecting her professional yet encouraging demeanor. Her lips are naturally closed, forming a gentle, subtle curve. She wears a crisp, light blue collared button-down shirt, with the top button unfastened, peeking out from under a tailored navy blue suit jacket. The suit fabric appears smooth and refined. Her shoulders are relaxed, and her posture conveys quiet confidence and composure, without rigidity. The lighting is soft and even, originating from the front-right, casting gentle highlights on her hair and skin, enhancing texture. The background is a plain, warm, light beige, providing a clean contrast. The framing is centered, capturing her head and upper chest, with the bottom of the frame cutting just below her suit lapels."
@@ -832,5 +832,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T11:55:57.728Z",
-  "updatedAt": "2026-10-13T08:50:19.294Z"
+  "updatedAt": "2026-11-08T11:44:43.632Z"
 }

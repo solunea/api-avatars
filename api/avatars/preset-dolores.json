@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/02b97bb5-ebaf-4dec-a519-97ee7d2db069.jpg",
   "decor": "",
-  "preview": "images/f2e2bd99-db4b-4f35-abb6-87f5046d0d3f.png",
+  "preview": "images/f1cb3673-22da-4f30-b69b-c43255c8d733.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/f2e2bd99-db4b-4f35-abb6-87f5046d0d3f.png"
+    "neutral": "images/f1cb3673-22da-4f30-b69b-c43255c8d733.png"
   },
   "tonePrompts": {
     "neutral": "A young woman with a warm, medium skin tone and long, dark brown hair, gently parted on the side and flowing over her shoulders. Her oval face presents a poised yet subtly engaging neutral expression, characterized by soft, naturally full lips, a straight nose, and direct, almond-shaped brown eyes under well-defined eyebrows. Her clear skin shows no visible makeup. She wears a form-fitting, black athletic sports bra, crafted from a smooth, breathable stretch fabric, accented by crisp white piping along the scoop neckline and thick shoulder straps. This highlights her visibly toned shoulders and upper chest. Her posture is naturally upright and relaxed, subtly leaning into a ready stance rather than a rigid one, reflecting her dynamic and authentic persona even in stillness. Soft, uniform studio lighting casts a gentle glow, minimizing harsh shadows and emphasizing the natural contours of her face and the texture of her hair. The framing is a precise bust-up shot, extending from mid-chest to just above the crown of her head, ensuring her entire face and upper torso are prominent against a solid light gray backdrop."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-13T10:02:02.691Z",
-  "updatedAt": "2026-10-13T10:02:20.257Z"
+  "updatedAt": "2026-11-08T11:44:45.812Z"
 }

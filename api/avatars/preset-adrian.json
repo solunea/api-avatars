@@ -803,10 +803,10 @@
   "decorPrompt": "",
   "photo": "images/de8bd26c-da06-4998-8582-6ee268ae52c2.jpg",
   "decor": "",
-  "preview": "images/3589e353-2a2b-4880-81ae-5e115ef5a42c.png",
+  "preview": "images/74f0e843-7a4f-4264-963e-e630eb584e53.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/3589e353-2a2b-4880-81ae-5e115ef5a42c.png"
+    "neutral": "images/74f0e843-7a4f-4264-963e-e630eb584e53.png"
   },
   "tonePrompts": {
     "neutral": "A mature man embodies a calm, poised, and professional presence with a thoughtfully neutral expression. His visible anatomy includes a well-groomed, salt-and-pepper haircut, neatly swept back from his forehead and parted on his left. A full, neatly trimmed beard, consistent in its grey and dark mix, frames his jawline. His skin is natural-toned, exhibiting subtle textural details, while his kind, brown eyes hold a direct, attentive gaze. He wears a crisp, white collared dress shirt, made of smooth cotton, under a tailored navy blue vest. The vest features a fine, vertical white pinstripe pattern on its woven fabric, fastened by small, dark, round buttons running down the front. A dark navy blue tie, made of smooth silk, is neatly tied with a four-in-hand knot, perfectly complementing the vest. He is posed upright, facing the viewer directly, with a subtly relaxed posture and shoulders squared, conveying his accessible yet confident personality. Soft, even studio lighting from the front illuminates his features, creating gentle highlights and minimal, diffused shadows. The framing is a clear bust-up shot, cropped just above his waist, ensuring his entire head, shirt collar, tie, and the upper half of his pinstriped vest are fully visible against a smooth, solid light grey background, preserving a clean, professional aesthetic."
@@ -839,5 +839,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T09:55:56.952Z",
-  "updatedAt": "2026-10-12T16:54:50.053Z"
+  "updatedAt": "2026-11-08T11:44:43.148Z"
 }

@@ -802,10 +802,10 @@
   "decorPrompt": "",
   "photo": "images/d0377b60-be86-4150-9ded-e4c52dc47cd4.jpg",
   "decor": "",
-  "preview": "images/afe6f357-5f42-45a5-a51b-b4c1ff5cb31c.png",
+  "preview": "images/16cdb0d0-b7c1-4979-996e-933f32506381.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/afe6f357-5f42-45a5-a51b-b4c1ff5cb31c.png"
+    "neutral": "images/16cdb0d0-b7c1-4979-996e-933f32506381.png"
   },
   "tonePrompts": {
     "neutral": "A bust portrait of Marc, a man with an oval face, dark brown eyes, and straight, dark eyebrows. His short, closely cropped dark hair and neatly trimmed beard frame his face, contributing to his composed appearance. He wears a light tan or khaki bomber jacket, made of a durable, slightly textured fabric, featuring a distinct black ribbed collar, cuffs, and hem. This is layered over a light grey zippered hoodie with a matching drawstring, and a dark grey t-shirt is visible at the neckline. His expression is calm and direct, with a steady gaze looking straight ahead, conveying a sense of quiet confidence and approachability. The composition is a head-and-shoulders shot, with his face and lips prominent and unobstructed, suitable for a talking video. The lighting is soft and even, highlighting his features without harsh shadows. The background is a plain, neutral light grey, ensuring focus remains entirely on the subject. His posture is relaxed yet attentive, reflecting his thoughtful and reliable persona."
@@ -838,5 +838,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-12T16:38:17.515Z",
-  "updatedAt": "2026-10-12T16:39:49.319Z"
+  "updatedAt": "2026-11-08T11:44:44.674Z"
 }

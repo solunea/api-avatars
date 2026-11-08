@@ -805,10 +805,10 @@
   "decorPrompt": "",
   "photo": "images/3a4cb314-e7fd-4097-bf0e-2994b9b27c84.jpg",
   "decor": "",
-  "preview": "images/41ab4711-67cc-4b5c-8390-2244a9654522.png",
+  "preview": "images/8128e985-da49-4001-a1cf-2e9963dc7a70.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/41ab4711-67cc-4b5c-8390-2244a9654522.png"
+    "neutral": "images/8128e985-da49-4001-a1cf-2e9963dc7a70.png"
   },
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of Yasmine, a young woman with light skin, looking directly at the viewer with a neutral, calm expression. Her eyes are dark brown, framed by well-defined dark eyebrows and subtle eyeliner and mascara. Her lips are a soft, natural brown-pink, closed in a gentle, poised manner. She wears a light beige hijab, meticulously draped around her head and neck, covering her hair completely. The fabric is smooth and matte, creating soft folds. She is dressed in a loose-fitting, collared shirt of a similar light beige hue, visible from the shoulders down to the upper chest. A long, delicate gold chain necklace with a circular, coin-like gold pendant rests on her shirt, partially visible. Small gold hoop earrings are visible. The composition is a close-up bust shot, centered, with her head and upper torso filling the frame. The lighting is soft and even, highlighting her features without harsh shadows. The background is a plain, light grey, providing a clean and unobstructed backdrop."
@@ -841,5 +841,5 @@
   },
   "preset": true,
   "createdAt": "2026-11-08T10:47:30.302Z",
-  "updatedAt": "2026-11-08T10:47:30.302Z"
+  "updatedAt": "2026-11-08T11:44:46.456Z"
 }

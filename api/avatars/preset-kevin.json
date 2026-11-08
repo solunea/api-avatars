@@ -796,10 +796,10 @@
   "decorPrompt": "",
   "photo": "images/5274391d-f859-4839-a1a9-6caa56d8d5b9.jpg",
   "decor": "",
-  "preview": "images/bb050d66-6414-407d-a561-810f35420692.png",
+  "preview": "images/23f95d08-1f03-4503-a5b4-36fe99458e1c.png",
   "styleId": "",
   "tones": {
-    "neutral": "images/bb050d66-6414-407d-a561-810f35420692.png"
+    "neutral": "images/23f95d08-1f03-4503-a5b4-36fe99458e1c.png"
   },
   "tonePrompts": {
     "neutral": "A head-and-shoulders portrait of a man named Kevin, featuring a neutral, direct gaze. He has short, neatly trimmed brown hair visible beneath a pristine white hard hat, which is securely worn on his head. A well-maintained, medium-length brown beard frames his face, connecting to his sideburns. Around his neck, a pair of bright yellow industrial earmuffs with green accents rests comfortably, their band visible across his collarbone. He wears a robust work jacket, predominantly red on the shoulders and upper chest, transitioning to a dark grey mid-section and black lower body and sleeves. Reflective grey stripes are visible on the red and dark grey sections of the jacket. The collar is black, and a glimpse of a dark blue or grey undershirt is visible at the neck. The lighting is even and soft, highlighting the textures of his protective gear and clothing. The composition is a tight bust shot, centered, with his head and upper torso filling the frame, ensuring his facial features are prominent and unobstructed for a talking video, without adding a human mouth. The background is a plain, solid light grey, providing a clean and professional presentation."
@@ -832,5 +832,5 @@
   },
   "preset": true,
   "createdAt": "2026-10-11T12:00:01.473Z",
-  "updatedAt": "2026-10-13T08:46:24.161Z"
+  "updatedAt": "2026-11-08T11:44:43.894Z"
 }
