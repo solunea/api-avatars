@@ -1,0 +1,62 @@
+{
+  "id": "preset-nassim",
+  "schemaVersion": 2,
+  "name": "Nassim",
+  "description": "Nassim est un homme au regard sérieux, portant un casque de chantier jaune, des protections auditives et une salopette de travail bleue, incarnant le professionnalisme et l'attention à la sécurité.",
+  "tags": [],
+  "voiceKey": "gemini-3.8:Kore",
+  "speechPersonality": "Voix basse et ferme, débit posé. Nassim s'exprime avec des phrases courtes et des consignes claires, sans détour, reflétant son sérieux et son souci de la sécurité sur le chantier. Son ton est direct et professionnel, jamais superflu.",
+  "posePrompts": {
+    "neutral": "Nassim stands waist-up, maintaining a serious and attentive expression, with a balanced posture and his head held level. He holds the clipboard in his left hand and the pen in his right, reflecting his professional demeanor.",
+    "success": "Nassim maintains a professional, subtly pleased expression, with a slight, almost imperceptible nod. He holds the clipboard in his left hand, his right hand resting gently on it, conveying quiet satisfaction with a job well done.",
+    "failure": "Nassim adopts a calm, reassuring posture, his expression conveying understanding and encouragement. He holds the clipboard in his left hand, his right hand extended slightly forward with an open palm, inviting another attempt."
+  },
+  "sourceMode": "photo",
+  "sourcePrompt": "",
+  "creationBrief": "•\tPersonnalité : professionnel du chantier, sérieux, attentif à la sécurité, peu bavard.\n•\tParole : voix basse et ferme, phrases courtes, consignes claires, aucun détour.",
+  "descriptionsOutdated": true,
+  "outdatedDescriptions": [
+    "bust"
+  ],
+  "decorMode": "image",
+  "decorPrompt": "",
+  "photo": "images/b207af41-1643-413c-a6a5-614d464b4e02.jpg",
+  "decor": "",
+  "preview": "images/69f5b3a8-8558-4bdf-af61-21697030d804.png",
+  "styleId": "",
+  "tones": {
+    "neutral": "images/69f5b3a8-8558-4bdf-af61-21697030d804.png"
+  },
+  "tonePrompts": {
+    "neutral": "A serious and attentive male construction professional, with medium complexion and dark eyes, looking directly forward with a neutral, calm expression. He has short dark hair mostly covered by a bright yellow hard hat made of plastic, slightly textured. Short, dark stubble covers his jawline and upper lip. Around his neck, resting on his chest, are bright yellow and black over-ear hearing protection earmuffs, made of smooth plastic cups and a black band. He wears a navy blue short-sleeved polo shirt underneath a sturdy navy blue work overall. The overall features two visible straps with black plastic buckles over his shoulders. His posture is natural, standing upright with shoulders square and relaxed, conveying a professional and safety-conscious demeanor. The visible surface materials include the smooth plastic of the hard hat and earmuffs, and the textured fabric of his cotton polo shirt and heavy-duty work overalls. Lighting is soft and even, highlighting his features without harsh shadows. The framing is a tight bust-up shot, encompassing his head, hard hat, earmuffs, shoulders, and the upper part of his overall, including both strap buckles, against a plain background. The overall style maintains the realistic, studio-like rendering of the reference image."
+  },
+  "characterSheet": "images/397e7282-9a3b-4774-be6b-d73f3f0aca09.png",
+  "characterSheetPrompt": "A comprehensive character reference sheet for Nassim, presented with three distinct full-body views: front, profile, and back, all against a clean white background. In the front view, Nassim stands upright, facing the viewer, holding a light-colored clipboard in his left hand and a dark pen in his right hand, both held at waist level. He wears a bright yellow hard hat, yellow ear defenders around his neck, a dark blue short-sleeved polo shirt, and dark blue work overalls with visible shoulder straps and black buckles. Black work gloves cover his hands, and sturdy grey work boots are on his feet. The profile view shows Nassim facing right, maintaining the same attire and equipment; his right arm is slightly bent, holding the pen, while his left arm is relaxed. The back view displays Nassim from behind, showcasing the full back of his blue overalls, the hard hat, and the ear defenders, with the straps of his overalls clearly visible. All views accurately depict his morphology, clothing details, and equipment, including the texture of the hard hat, the fabric of the overalls, and the design of his boots, ensuring consistency across all perspectives. The overall presentation is clean and illustrative, ideal for character modeling.",
+  "sheetRegions": {
+    "front": {
+      "x": 0,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    },
+    "profile": {
+      "x": 0.3333333333333333,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    },
+    "back": {
+      "x": 0.6666666666666666,
+      "y": 0,
+      "width": 0.3333333333333333,
+      "height": 1
+    }
+  },
+  "framingPrompts": {
+    "bust": "A detailed bust portrait of Nassim, capturing his head, shoulders, and upper chest, designed for a talking video avatar. He maintains a serious, attentive, and professional expression, looking directly forward. His face is prominent and unobstructed, with his eyes, nose, and the area around his mouth clearly visible, without adding a human mouth. He wears a bright yellow hard hat, which covers the top of his head. Around his neck, resting on his shoulders, are bright yellow ear defenders with black padding. He is dressed in a dark blue polo shirt, and the upper portion of dark blue work overalls, including the shoulder straps with black plastic buckles, is visible. The composition is tightly framed to keep his facial features large and central, ensuring clear visibility for expressive communication. The lighting is soft and even, casting minimal shadows and highlighting the textures of his protective gear and uniform. The background is a plain, solid grey, ensuring no distractions from the character.",
+    "fullBody": "A full-body image of Nassim, standing in a natural, attentive posture that conveys professionalism and seriousness, with every extremity and all equipment clearly visible. He stands with a balanced weight distribution, his head held level, and a direct, focused gaze. He wears a bright yellow hard hat, yellow ear defenders resting around his neck, a dark blue short-sleeved polo shirt, and dark blue work overalls with visible shoulder straps and black buckles. His hands are covered by black work gloves, and he holds a light-colored clipboard in his left hand and a dark pen in his right hand, both held naturally at waist level. Sturdy grey work boots are visible on both feet. The composition includes generous margins around the entire figure, ensuring no cropping of any part of his body or equipment. The lighting is even and bright, clearly defining his silhouette and the details of his uniform and tools. The background is a plain, solid grey, providing a clean and professional context for the complete character."
+  },
+  "preset": true,
+  "createdAt": "2026-11-08T10:53:39.287Z",
+  "updatedAt": "2026-11-08T10:53:43.352Z"
+}

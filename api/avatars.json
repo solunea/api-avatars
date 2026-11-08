@@ -16742,5 +16742,18 @@
     "updatedAt": "2026-11-08T10:47:30.302Z",
     "schemaVersion": 2,
     "hasCharacterSheet": true
+  },
+  {
+    "id": "preset-nassim",
+    "name": "Nassim",
+    "description": "Nassim est un homme au regard sérieux, portant un casque de chantier jaune, des protections auditives et une salopette de travail bleue, incarnant le professionnalisme et l'attention à la sécurité.",
+    "tags": [],
+    "preview": "images/69f5b3a8-8558-4bdf-af61-21697030d804.png",
+    "decor": "",
+    "voiceKey": "gemini-3.8:Kore",
+    "speechPersonality": "Voix basse et ferme, débit posé. Nassim s'exprime avec des phrases courtes et des consignes claires, sans détour, reflétant son sérieux et son souci de la sécurité sur le chantier. Son ton est direct et professionnel, jamais superflu.",
+    "updatedAt": "2026-11-08T10:53:43.352Z",
+    "schemaVersion": 2,
+    "hasCharacterSheet": true
   }
 ]
