@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import sharp from 'sharp';
-import {generateAvatarImage, IDEOGRAM_MODEL, FLUX_MODEL} from '../lib/image-generation.js';
+import {generateAvatarImage, IDEOGRAM_MODEL, IDEOGRAM_FALLBACK_MODEL, FLUX_MODEL} from '../lib/image-generation.js';
 
 const source = await sharp({create: {width: 32, height: 32, channels: 3, background: '#ff0000'}}).png().toBuffer();
 const data = bytes => `data:image/png;base64,${bytes.toString('base64')}`;
@@ -38,20 +38,33 @@ test('prepares a canvas without distorting the first source and keeps remaining 
     assert.ok(Math.abs(width / height - 2) / 2 < 0.01);
 });
 
-test('Flux receives the original inputs after an Ideogram failure and reports its own estimated cost', async () => {
+test('Ideogram 4.5 receives the same payload after a 4.6 failure', async () => {
+    const requests = [];
+    const result = await generateAvatarImage(async (model, {input}) => {
+        requests.push({model, input});
+        if (model === IDEOGRAM_MODEL) throw Error('HTTP 502');
+        return data(input.images[0]);
+    }, {...basic, input_images: [source], seed: 42});
+    assert.deepEqual(requests.map(item => item.model), ['ideogram-ai/ideogram-4-6', 'ideogram-ai/ideogram-4-5']);
+    assert.deepEqual(requests[1].input, requests[0].input);
+    assert.equal(result.model, IDEOGRAM_FALLBACK_MODEL);
+    assert.equal(result.cost, 0.008);
+});
+
+test('Flux receives the original inputs after both Ideogram versions fail and reports its own estimated cost', async () => {
     const original = {...basic, input_images: [source]};
     const requests = [];
     const result = await generateAvatarImage(async (model, options) => {
         requests.push({model, input: options.input});
-        if (model === IDEOGRAM_MODEL) throw Error('HTTP 502');
+        if (model !== FLUX_MODEL) throw Error('HTTP 502');
         return data(source);
     }, original);
-    assert.deepEqual(requests.map(item => item.model), [IDEOGRAM_MODEL, FLUX_MODEL]);
-    assert.equal(requests[1].input, original);
-    assert.deepEqual(requests[1].input.input_images, [source]);
+    assert.deepEqual(requests.map(item => item.model), [IDEOGRAM_MODEL, IDEOGRAM_FALLBACK_MODEL, FLUX_MODEL]);
+    assert.equal(requests[2].input, original);
+    assert.deepEqual(requests[2].input.input_images, [source]);
     assert.equal(result.model, FLUX_MODEL);
     assert.notEqual(result.cost, 0.008);
-    assert.deepEqual(result.attempts.map(attempt => attempt.status), ['error', 'success']);
+    assert.deepEqual(result.attempts.map(attempt => attempt.status), ['error', 'error', 'success']);
 });
 
 test('six references go straight to Flux and none are discarded', async () => {

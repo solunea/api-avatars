@@ -16,7 +16,7 @@ import {providerErrorMessage} from '../lib/provider-error.js';
 
 async function imageResult(model, options) {
   let bytes = png;
-  if (model === 'ideogram-ai/ideogram-4-5') bytes = await sharp(options.input.images[0]).flatten({background:'white'}).png().toBuffer();
+  if (model === 'ideogram-ai/ideogram-4-6') bytes = await sharp(options.input.images[0]).flatten({background:'white'}).png().toBuffer();
   if (model.startsWith('851-labs/')) {
     const {width, height} = await sharp(options.input.image).metadata();
     const image = new PNG({width,height});
@@ -300,7 +300,7 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   const events = [];
   const run = async (model, options) => {calls.push({model, options});return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);};
   const result = await generateBundle(root, {name:'Ada', photo:'images/photo.png', decor:''}, run, event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 2);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length, 2);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 2);
   assert.equal(calls.filter(call => call.model === 'google/gemini-2.5-flash').length, 1);
   assert.equal(calls.find(call => call.model === 'google/gemini-2.5-flash').options.input.images.length, 3);
@@ -313,7 +313,7 @@ test('génération IA prépare le neutre et une planche assemblée sans décor',
   assert.equal(result.speechPersonality, 'Voix chaleureuse, débit posé et articulation nette.');
   assert.equal(result.description, 'Portrait de Ada.');
   assert.deepEqual(result.posePrompts,posePrompts);
-  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6');
   assert.equal(generationCalls[0].options.input.images.length, 1);
   assert.equal(generationCalls[0].options.input.quality, 'very_low');
   assert.equal(generationCalls[1].options.input.images.length, 2);
@@ -352,7 +352,7 @@ test('un prompt crée une référence puis un avatar v2 valide sans photo import
     return model.startsWith('google/') ? [detailedSheetBundle] : imageResult(model, options);
   };
   const result = await generateBundle(root, {name:'Ada', sourceMode:'prompt', sourcePrompt}, run, event => events.push(event));
-  const images = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  const images = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6');
   assert.equal(images.length, 3);
   assert.match(images[0].input.prompt, /Une guide aux cheveux bouclés/);
   assert.match(images[0].input.prompt, /empty placeholder/);
@@ -374,7 +374,7 @@ test('une reprise depuis un prompt réutilise la photo après un échec du neutr
   let imageCalls = 0;
   const draft = {name:'Ada', sourceMode:'prompt', sourcePrompt:'Une guide en veste bleue', only:'neutral', describe:false};
   await assert.rejects(generateBundle(root, draft, async (model, options) => {
-    if (model === 'ideogram-ai/ideogram-4-5' && ++imageCalls === 1) return imageResult(model, options);
+    if (model === 'ideogram-ai/ideogram-4-6' && ++imageCalls === 1) return imageResult(model, options);
     throw new Error('HTTP 502');
   }, event => events.push(event)), /502/);
   const photo = events.find(event => event.type === 'portrait' && event.tone === 'photo').path;
@@ -384,7 +384,7 @@ test('une reprise depuis un prompt réutilise la photo après un échec du neutr
     return imageResult(model, options);
   });
   assert.equal(resumed.photo, photo);
-  assert.equal(requests.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
+  assert.equal(requests.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length, 1);
   assert.doesNotMatch(requests[0].input.prompt, /empty placeholder/);
 });
 
@@ -416,7 +416,7 @@ for (const sourceMode of ['photo','prompt']) for (const decorMode of ['image','p
       decorMode,decorPrompt:'Un salon lumineux',photo:sourceMode === 'photo' ? 'images/photo.png' : '',
       decor:decorMode === 'image' ? 'images/decor.png' : '',only:'neutral',describe:false},
       async (model,options) => { calls.push({model,input:options.input}); return imageResult(model,options); },event => events.push(event));
-    const imageCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+    const imageCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6');
     assert.equal(imageCalls.length,1 + Number(sourceMode === 'prompt') + Number(decorMode === 'prompt'));
     assert.equal(imageCalls.at(-1).input.images.length,2);
     assert.ok(existsSync(join(root,result.photo)));
@@ -431,7 +431,7 @@ test('une reprise conserve les deux références générées depuis des descript
   const draft = {name:'Ada',sourceMode:'prompt',sourcePrompt:'Une guide',decorMode:'prompt',decorPrompt:'Un salon',only:'neutral',describe:false};
   let successes = 0;
   await assert.rejects(generateBundle(root,draft,async (model,options) => {
-    if (model === 'ideogram-ai/ideogram-4-5' && ++successes <= 2) return imageResult(model,options);
+    if (model === 'ideogram-ai/ideogram-4-6' && ++successes <= 2) return imageResult(model,options);
     throw new Error('HTTP 502');
   },event => events.push(event)),/502/);
   const resume = Object.fromEntries(events.filter(event => event.type === 'portrait').map(event => [event.tone,event.path]));
@@ -441,7 +441,7 @@ test('une reprise conserve les deux références générées depuis des descript
   });
   assert.equal(result.photo,resume.photo);
   assert.equal(result.decor,resume.decor);
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length,1);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length,1);
   assert.equal(calls[0].input.images.length,2);
 });
 
@@ -455,7 +455,7 @@ test('régénérer le neutre ne relance ni la planche ni les descriptions', asyn
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'neutral',describe:false}, run,
     event => events.push(event));
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral']);
   assert.equal(result.tones.neutral, result.preview);
@@ -471,7 +471,7 @@ test('régénérer la planche réutilise le neutre sans analyser les description
   };
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',only:'characterSheet',describe:false,
     resume:{neutral:'images/neutral.png'}}, run);
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('google/')).length, 0);
   assert.equal(result.tones.neutral, 'images/neutral.png');
@@ -488,7 +488,7 @@ test('génération avec décor transmet les deux références au neutre puis à 
   const {width, height} = await sharp(join(root, result.preview)).metadata();
   assert.deepEqual([width, height], [1000, 1000]);
   assert.equal(calls.length, 4);
-  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5');
+  const generationCalls = calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6');
   assert.equal(generationCalls[0].options.input.images.length, 2);
   assert.deepEqual(generationCalls[0].options.input.images[1], png);
   assert.equal(generationCalls[1].options.input.images.length, 2);
@@ -515,7 +515,7 @@ test('un neutre existant déclenche automatiquement la génération de la planch
     event => events.push(event));
   assert.equal(result.tones.neutral, 'images/neutral.png');
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
-  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-5').length, 1);
+  assert.equal(calls.filter(call => call.model === 'ideogram-ai/ideogram-4-6').length, 1);
   assert.equal(calls.filter(call => call.model.startsWith('851-labs/')).length, 1);
   assert.deepEqual(events.filter(event => event.type === 'portrait').map(event => event.tone), ['neutral', 'characterSheet']);
 });
@@ -527,7 +527,7 @@ test('une erreur de planche réutilise le neutre terminé à la reprise', async 
   const run = async (model, options) => {
     calls.push({model, options});
     if (model.startsWith('google/')) return [detailedSheetBundle];
-    if (['ideogram-ai/ideogram-4-5', 'black-forest-labs/flux-2-pro'].includes(model)
+    if (['ideogram-ai/ideogram-4-6', 'ideogram-ai/ideogram-4-5', 'black-forest-labs/flux-2-pro'].includes(model)
       && options.input.prompt.includes('character reference sheet') && failSheet) throw new Error('status 502 Bad Gateway');
     return imageResult(model, options);
   };
@@ -540,7 +540,7 @@ test('une erreur de planche réutilise le neutre terminé à la reprise', async 
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral}}, run);
   assert.ok(result.characterSheet && existsSync(join(root, result.characterSheet)));
   assert.deepEqual(calls.slice(callsBeforeResume).map(call => call.model),
-    ['ideogram-ai/ideogram-4-5', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
+    ['ideogram-ai/ideogram-4-6', '851-labs/background-remover:a029dff38972b5fda4ec5d75d7d1cd25aeff621d2cf4946a41055d7db66b80bc', 'google/gemini-2.5-flash']);
 });
 
 test('après une erreur de description, la reprise ne relance aucune image', async t => {
@@ -563,7 +563,7 @@ test('après une erreur de description, la reprise ne relance aucune image', asy
   const result = await generateBundle(root, {name:'Ada',photo:'images/photo.png',resume:{neutral,characterSheet}}, run,
     event => resumedEvents.push(event));
   assert.equal(result.characterSheet, characterSheet);
-  assert.equal(calls.filter(model => model === 'ideogram-ai/ideogram-4-5').length, 2);
+  assert.equal(calls.filter(model => model === 'ideogram-ai/ideogram-4-6').length, 2);
   assert.equal(resumedEvents.find(event => event.tone === 'characterSheet').reused, true);
 });
 
